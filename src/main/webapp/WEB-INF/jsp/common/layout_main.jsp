@@ -26,16 +26,27 @@
         </head>
         <body>
             <div data-role="page" id="${pageid}">
-                <div data-role="header" role="banner">                  
+                <div data-role="header" role="banner"> 
+                    <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal" data-mini="true">
+                        <c:if test="${not actionBean.homePageFlag}">
+                            <sdynattr:link href="/Presentation.action"
+                                           class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
+                                <stripes:label name="label.home" />
+                            </sdynattr:link>
+                        </c:if>
+                        <stripes:layout-component name="button.return"/>
+                    </div>
                     <h2>
                         <stripes:layout-component name="header.title"/>
                     </h2>
                     <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal" data-mini="true">
-                        <sdynattr:link href="/Information.action"
-                                       class="ui-btn ui-corner-all ui-icon-info ui-btn-icon-notext"
-                                       role="button">
-                            <stripes:label name="label.info" />
-                        </sdynattr:link>
+                        <c:if test="${actionBean.homePageFlag}">
+                            <sdynattr:link href="/Information.action"
+                                           class="ui-btn ui-corner-all ui-icon-info ui-btn-icon-notext"
+                                           role="button">
+                                <stripes:label name="label.info" />
+                            </sdynattr:link>
+                        </c:if>
                     </div>
                 </div>
                 <div data-role="content" style="padding: 15px" align="center">
@@ -47,7 +58,7 @@
                     </div>
 
                     <h2>
-                        <span>&copy;2012-2014 Nord Trading Network. <a href="http://www.apache.org/licenses/LICENSE-2.0.html">ALv2</a></span>
+                        <span>&copy;2012-2014 Nord Trading Network. <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License, v.2.0</a></span>
                     </h2>
 
                     <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal" data-mini="true">
