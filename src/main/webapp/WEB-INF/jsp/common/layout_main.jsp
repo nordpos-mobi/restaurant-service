@@ -28,13 +28,13 @@
             <div data-role="page" id="${pageid}">
                 <div data-role="header" role="banner"> 
                     <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal" data-mini="true">
+                        <stripes:layout-component name="button.return"/>
                         <c:if test="${not actionBean.homePageFlag}">
                             <sdynattr:link href="/Presentation.action"
                                            class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
                                 <stripes:label name="label.home" />
                             </sdynattr:link>
                         </c:if>
-                        <stripes:layout-component name="button.return"/>
                     </div>
                     <h2>
                         <stripes:layout-component name="header.title"/>

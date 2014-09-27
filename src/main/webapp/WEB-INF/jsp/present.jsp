@@ -22,7 +22,12 @@
             <a href="http://www.nordpos.mobi">
                 <img src="<c:url value='/image/logo.png' />" alt="NORD POS mobi"/>
             </a>            
-                <h2><stripes:label name="label.present" /></h2>
+            <h2><stripes:label name="label.present" /></h2>
+            <sdynattr:link href="/Catalog.action"
+                           event="category"
+                           class="ui-btn-center ui-btn ui-shadow ui-corner-all">
+                <stripes:label name="label.ProductsCatalogue" />
+            </sdynattr:link>            
         </div>
     </stripes:layout-component>
 

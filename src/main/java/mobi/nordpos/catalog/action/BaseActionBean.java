@@ -50,4 +50,15 @@ public abstract class BaseActionBean implements ActionBean {
         this.hasHomePage = hasHomePage;
     }
 
+    public String getDataBaseURL() {
+        return getContext().getServletContext().getInitParameter("db.URL");
+    }
+
+    public String getDataBaseUser() {
+        return getContext().getServletContext().getInitParameter("db.user");
+    }
+
+    public String getDataBasePassword() {
+        return getContext().getServletContext().getInitParameter("db.password");
+    }    
 }
