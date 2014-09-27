@@ -7,6 +7,21 @@
 
     <display-name>nordpos.mobi: Product Catalog</display-name>
        
+    <context-param>
+        <param-name>db.URL</param-name>
+        <param-value>jdbc:mysql://localhost:3306/demo-database</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>db.user</param-name>
+        <param-value>user</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>db.password</param-name>
+        <param-value>password</param-value>
+    </context-param>
+
     <!-- STRIPES LOCALIZATION PARAMETERS -->
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
