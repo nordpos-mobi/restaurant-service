@@ -1,7 +1,8 @@
 <%--
     Document   : login
     Author     : Andrey Svininykh (svininykh@gmail.com)
-    Copyright  : Nord Trading Network.
+    Copyright  : Nord Trading Network
+    License    : Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 --%>
 
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
@@ -9,13 +10,17 @@
                        title="Home"
                        pageid="home">
 
-    <stripes:layout-component name="button.return">
-
-    </stripes:layout-component>
-
     <stripes:layout-component name="header.title">
         NORD POS mobi
     </stripes:layout-component>
+
+    <stripes:layout-component name="button.action">
+        <sdynattr:link href="/Information.action"
+                       class="ui-btn ui-corner-all ui-icon-info ui-btn-icon-notext"
+                       role="button">
+            <stripes:label name="label.info" />
+        </sdynattr:link>
+    </stripes:layout-component> 
 
     <stripes:layout-component name="content">
         <div class="ui-body">            

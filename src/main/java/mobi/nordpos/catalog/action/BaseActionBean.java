@@ -30,8 +30,6 @@ public abstract class BaseActionBean implements ActionBean {
 
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-    Boolean hasHomePage = false;
-
     @Override
     public MobileActionBeanContext getContext() {
         return this.context;
@@ -40,14 +38,6 @@ public abstract class BaseActionBean implements ActionBean {
     @Override
     public void setContext(ActionBeanContext actionBeanContext) {
         this.context = (MobileActionBeanContext) actionBeanContext;
-    }
-
-    public Boolean getHomePageFlag() {
-        return hasHomePage;
-    }
-
-    public void setHomePageFlag(Boolean hasHomePage) {
-        this.hasHomePage = hasHomePage;
     }
 
     public String getDataBaseURL() {
