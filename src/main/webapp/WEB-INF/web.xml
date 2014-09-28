@@ -14,12 +14,12 @@
     
     <context-param>
         <param-name>db.user</param-name>
-        <param-value>root</param-value>
+        <param-value>dbuser</param-value>
     </context-param>
     
     <context-param>
         <param-name>db.password</param-name>
-        <param-value>root</param-value>
+        <param-value>dbpassword</param-value>
     </context-param>
 
     <!-- STRIPES LOCALIZATION PARAMETERS -->

@@ -32,7 +32,8 @@ import net.sourceforge.stripes.action.Resolution;
 public class ProductCategoryActionBean extends BaseActionBean {
 
     private static final String CATEGORY_LIST = "/WEB-INF/jsp/category_list.jsp";
-    private static final String CATEGORY_CHANGE = "/WEB-INF/jsp/category_change.jsp";
+    private static final String CATEGORY_CREATE = "/WEB-INF/jsp/category_create.jsp";
+//    private static final String CATEGORY_EDIT = "/WEB-INF/jsp/category_edit.jsp";
 
     ConnectionSource connection;
 
@@ -40,19 +41,23 @@ public class ProductCategoryActionBean extends BaseActionBean {
     private String code;
 
     @DefaultHandler
-    public Resolution list() throws SQLException {
+    public Resolution list() {
         return new ForwardResolution(CATEGORY_LIST);
     }
 
-    public Resolution change() throws SQLException {
-        return new ForwardResolution(CATEGORY_CHANGE);
+    public Resolution create() {
+        return new ForwardResolution(CATEGORY_CREATE);
     }
+    
+//    public Resolution edit() {
+//        return new ForwardResolution(CATEGORY_EDIT);
+//    }    
 
     public Resolution add() throws SQLException {
         ProductCategory category = new ProductCategory();
         category.setId(UUID.randomUUID());
         category.setName(name);
-        category.setCode(code);
+        category.setCode(code);        
         try {
             this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
