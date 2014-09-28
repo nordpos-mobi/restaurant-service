@@ -29,9 +29,9 @@
     <stripes:layout-component name="button.action">
         <sdynattr:link href="/ProductCategory.action"
                        event="edit"                       
-                       class="ui-btn ui-shadow ui-corner-all ui-icon-edit ui-btn-icon-left"
+                       class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left"
                        data-prefetch="true">
-            <stripes:label name="label.edit" />
+            <stripes:label name="label.create" />
         </sdynattr:link>          
     </stripes:layout-component>
 

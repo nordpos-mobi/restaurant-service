@@ -31,17 +31,23 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
-        <ul data-role="listview" 
-            data-filter="true" 
+        <ul data-role="listview" data-filter="true"
             data-filter-placeholder="${actionBean.getLocalizationKey("label.ProductCategory.search")}"
-            data-inset="true">
+            data-inset="true" data-split-icon="edit" data-split-theme="a">
             <c:forEach items="${actionBean.categoryList}" var="category">                
                 <li>
-                    <stripes:link href="/Product.action"
-                                  event="list">
+                    <sdynattr:link href="/Product.action"
+                                   event="list"
+                                   data-transition="slide">
                         <stripes:param name="categoryId" value="${category.id.toString()}"/>
                         <h3><c:out value="${category.name}"/></h3>
-                    </stripes:link>
+                    </sdynattr:link>
+                    <sdynattr:link href="/ProductCategory.action"
+                                   event="edit"
+                                   data-transition="slide">
+                        <stripes:param name="categoryId" value="${category.id.toString()}"/>
+                        <stripes:label name="label.edit" />
+                    </sdynattr:link>
                 </li>
             </c:forEach>
         </ul>

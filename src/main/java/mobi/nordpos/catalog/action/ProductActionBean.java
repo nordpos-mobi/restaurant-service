@@ -97,7 +97,6 @@ public class ProductActionBean extends BaseActionBean {
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
-    
 
     public List<Product> getProductList() throws SQLException {
         try {
