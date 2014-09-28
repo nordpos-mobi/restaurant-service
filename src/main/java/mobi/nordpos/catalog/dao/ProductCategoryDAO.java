@@ -6,14 +6,16 @@ package mobi.nordpos.catalog.dao;
 import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 import mobi.nordpos.catalog.model.ProductCategory;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public interface ProductCategoryDAO extends Dao<ProductCategory, String> {
+public interface ProductCategoryDAO extends Dao<ProductCategory, UUID> {
 
-    public ProductCategory read(String productCategoryId) throws SQLException;
-    public List<ProductCategory> getList() throws SQLException;
-    
+    public ProductCategory read(UUID id) throws SQLException;
+
+    public ProductCategory read(String code) throws SQLException;
+
 }

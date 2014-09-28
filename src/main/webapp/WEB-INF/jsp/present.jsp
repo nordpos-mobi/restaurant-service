@@ -29,7 +29,7 @@
             </a>            
             <h2><stripes:label name="label.present" /></h2>
             <sdynattr:link href="/Catalog.action"
-                           event="category"
+                           event="categoryList"
                            class="ui-btn-center ui-btn ui-shadow ui-corner-all">
                 <stripes:label name="label.ProductsCatalogue" />
             </sdynattr:link>            

@@ -17,15 +17,15 @@ import net.sourceforge.stripes.action.Resolution;
  */
 public class CatalogActionBean extends BaseActionBean {
 
-    private static final String CATEGORY = "/WEB-INF/jsp/category_list.jsp";
+    private static final String CATEGORY_LIST = "/WEB-INF/jsp/category_list.jsp";
 
     private String categoryId;
     private String productId;
 
     private List<ProductCategory> categoryList;
 
-    public Resolution category() throws SQLException {
-        return new ForwardResolution(CATEGORY);
+    public Resolution categoryList() throws SQLException {
+        return new ForwardResolution(CATEGORY_LIST);
     }
 
     public void setCategoryId(String categoryId) {
@@ -43,7 +43,7 @@ public class CatalogActionBean extends BaseActionBean {
             ((JdbcConnectionSource) connectionSource).setUsername(getDataBaseUser());
             ((JdbcConnectionSource) connectionSource).setPassword(getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connectionSource);
-            return productCategoryDao.getList();
+            return productCategoryDao.queryForAll();
         } finally {
             if (connectionSource != null) {
                 connectionSource.close();
