@@ -7,9 +7,11 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 import mobi.nordpos.catalog.dao.ormlite.ProductCategoryPersist;
 import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 
 /**
@@ -20,39 +22,63 @@ public class ProductCategoryActionBean extends BaseActionBean {
     private static final String CATEGORY_LIST = "/WEB-INF/jsp/category_list.jsp";
     private static final String CATEGORY_CHANGE = "/WEB-INF/jsp/category_change.jsp";
 
-    private String categoryId;
-    private String productId;
+    ConnectionSource connection;
 
-    private List<ProductCategory> categoryList;
-
+    private String name;
+    private String code;
+    
     public Resolution list() throws SQLException {
         return new ForwardResolution(CATEGORY_LIST);
     }
-    
-    public Resolution add() throws SQLException {
-        return new ForwardResolution(CATEGORY_CHANGE);
-    }    
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public Resolution change() throws SQLException {
+        return new ForwardResolution(CATEGORY_CHANGE);
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public Resolution add() throws SQLException {
+        ProductCategory category = new ProductCategory();
+        category.setId(UUID.randomUUID());
+        category.setName(name);
+        category.setCode(code);
+        try {
+            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
+            productCategoryDao.createIfNotExists(category);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return new ForwardResolution(CATEGORY_LIST);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public List<ProductCategory> getCategoryList() throws SQLException {
-        ConnectionSource connectionSource = null;
         try {
-            connectionSource = new JdbcConnectionSource(getDataBaseURL());
-            ((JdbcConnectionSource) connectionSource).setUsername(getDataBaseUser());
-            ((JdbcConnectionSource) connectionSource).setPassword(getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connectionSource);
+            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
             return productCategoryDao.queryForAll();
         } finally {
-            if (connectionSource != null) {
-                connectionSource.close();
+            if (connection != null) {
+                connection.close();
             }
         }
     }
+
 }

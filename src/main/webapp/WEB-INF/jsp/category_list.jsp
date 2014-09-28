@@ -22,17 +22,20 @@
 
     <stripes:layout-component name="button.action">
         <sdynattr:link href="/ProductCategory.action"
-                       event="add"                       
+                       event="change"                       
                        class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-action">
             <stripes:label name="label.add" />
         </sdynattr:link>          
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
-        <ul data-role="listview" data-count-theme="b" data-inset="true">
+        <ul data-role="listview" 
+            data-filter="true" 
+            data-filter-placeholder="${actionBean.getLocalizationKey("label.ProductCategory.search")}"
+            data-inset="true">
             <c:forEach items="${actionBean.categoryList}" var="category">                
                 <li>
-                    <c:out value="category.name"/>
+                    <c:out value="${category.name}"/>
                 </li>
             </c:forEach>
         </ul>

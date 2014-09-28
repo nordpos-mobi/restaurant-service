@@ -9,17 +9,17 @@
        
     <context-param>
         <param-name>db.URL</param-name>
-        <param-value>jdbc:mysql://localhost:3306/demo-database</param-value>
+        <param-value>jdbc:mysql://localhost:3306/demo-database?useUnicode=yes&amp;characterEncoding=UTF-8</param-value>
     </context-param>
     
     <context-param>
         <param-name>db.user</param-name>
-        <param-value>root</param-value>
+        <param-value>dbuser</param-value>
     </context-param>
     
     <context-param>
         <param-name>db.password</param-name>
-        <param-value>root</param-value>
+        <param-value>dbpassword</param-value>
     </context-param>
 
     <!-- STRIPES LOCALIZATION PARAMETERS -->
@@ -98,4 +98,11 @@
     <session-config>
         <session-timeout>10</session-timeout>    <!-- 10 minutes -->
     </session-config>
+    
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>    
 </web-app>

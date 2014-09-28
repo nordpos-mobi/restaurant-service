@@ -36,7 +36,7 @@ public class ProductCategory {
     @DatabaseField(id = true, columnName = ID)
     private UUID id;
 
-    @DatabaseField(columnName = NAME, unique = true,  canBeNull = false)
+    @DatabaseField(columnName = NAME, unique = true, canBeNull = false)
     private String name;
 
     @DatabaseField(columnName = CODE)
