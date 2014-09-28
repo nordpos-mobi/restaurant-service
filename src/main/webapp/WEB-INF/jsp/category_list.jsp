@@ -23,7 +23,8 @@
     <stripes:layout-component name="button.action">
         <sdynattr:link href="/ProductCategory.action"
                        event="change"                       
-                       class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-action">
+                       class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left"
+                       data-prefetch="true">
             <stripes:label name="label.add" />
         </sdynattr:link>          
     </stripes:layout-component>

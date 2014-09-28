@@ -18,4 +18,6 @@ public interface ProductCategoryDAO extends Dao<ProductCategory, UUID> {
 
     public ProductCategory read(String code) throws SQLException;
 
+    public List<ProductCategory> getList() throws SQLException;
+
 }

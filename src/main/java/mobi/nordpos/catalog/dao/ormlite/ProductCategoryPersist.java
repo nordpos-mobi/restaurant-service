@@ -26,6 +26,14 @@ public class ProductCategoryPersist extends BaseDaoImpl<ProductCategory, UUID> i
     }
 
     @Override
+    public List<ProductCategory> getList() throws SQLException {
+        productCategoryDao = DaoManager.createDao(connectionSource, ProductCategory.class);
+        QueryBuilder qb = productCategoryDao.queryBuilder().orderBy(ProductCategory.NAME, true);
+        qb.where().isNotNull(ProductCategory.ID);
+        return qb.query();
+    }
+
+    @Override
     public ProductCategory read(UUID id) throws SQLException {
         productCategoryDao = DaoManager.createDao(connectionSource, ProductCategory.class);
         return productCategoryDao.queryForId(id);

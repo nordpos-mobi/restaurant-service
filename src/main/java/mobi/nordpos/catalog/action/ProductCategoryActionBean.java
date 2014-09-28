@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 import mobi.nordpos.catalog.dao.ormlite.ProductCategoryPersist;
 import mobi.nordpos.catalog.model.ProductCategory;
+import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 
 /**
@@ -27,6 +27,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
     private String name;
     private String code;
     
+    @DefaultHandler
     public Resolution list() throws SQLException {
         return new ForwardResolution(CATEGORY_LIST);
     }
@@ -72,8 +73,8 @@ public class ProductCategoryActionBean extends BaseActionBean {
     public List<ProductCategory> getCategoryList() throws SQLException {
         try {
             this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.queryForAll();
+            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);         
+            return productCategoryDao.getList();
         } finally {
             if (connection != null) {
                 connection.close();
