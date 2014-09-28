@@ -11,11 +11,12 @@
                        pageid="home">
 
     <stripes:layout-component name="header.title">
-        NORD POS mobi
+        Project NORD POS mobi
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">
-        <sdynattr:link href="/Information.action"
+        <sdynattr:link href="/Presentation.action"
+                       event="info"
                        class="ui-btn ui-corner-all ui-icon-info ui-btn-icon-notext"
                        role="button">
             <stripes:label name="label.info" />

@@ -13,6 +13,7 @@
     <stripes:layout-component name="button.return">
         <sdynattr:link href="/Presentation.action"
                        class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-notext">            
+            <stripes:label name="label.home" />
         </sdynattr:link>          
     </stripes:layout-component>
 
@@ -25,7 +26,7 @@
                        event="change"                       
                        class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left"
                        data-prefetch="true">
-            <stripes:label name="label.add" />
+            <stripes:label name="label.create" />
         </sdynattr:link>          
     </stripes:layout-component>
 
