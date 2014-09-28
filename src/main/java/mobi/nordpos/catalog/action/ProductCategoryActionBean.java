@@ -15,18 +15,23 @@ import net.sourceforge.stripes.action.Resolution;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public class CatalogActionBean extends BaseActionBean {
+public class ProductCategoryActionBean extends BaseActionBean {
 
     private static final String CATEGORY_LIST = "/WEB-INF/jsp/category_list.jsp";
+    private static final String CATEGORY_CHANGE = "/WEB-INF/jsp/category_change.jsp";
 
     private String categoryId;
     private String productId;
 
     private List<ProductCategory> categoryList;
 
-    public Resolution categoryList() throws SQLException {
+    public Resolution list() throws SQLException {
         return new ForwardResolution(CATEGORY_LIST);
     }
+    
+    public Resolution add() throws SQLException {
+        return new ForwardResolution(CATEGORY_CHANGE);
+    }    
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;

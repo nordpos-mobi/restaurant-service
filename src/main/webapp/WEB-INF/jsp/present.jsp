@@ -1,5 +1,5 @@
 <%--
-    Document   : login
+    Document   : present
     Author     : Andrey Svininykh (svininykh@gmail.com)
     Copyright  : Nord Trading Network
     License    : Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -28,8 +28,8 @@
                 <img src="<c:url value='/image/logo.png' />" alt="NORD POS mobi"/>
             </a>            
             <h2><stripes:label name="label.present" /></h2>
-            <sdynattr:link href="/Catalog.action"
-                           event="categoryList"
+            <sdynattr:link href="/ProductCategory.action"
+                           event="list"
                            class="ui-btn-center ui-btn ui-shadow ui-corner-all">
                 <stripes:label name="label.ProductsCatalogue" />
             </sdynattr:link>            

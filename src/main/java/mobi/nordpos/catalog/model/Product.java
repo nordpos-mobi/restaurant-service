@@ -26,8 +26,8 @@ import java.util.UUID;
 public class Product {
 
     public static final String ID = "ID";
-    public static final String CODE = "CODE";
     public static final String NAME = "NAME";
+    public static final String CODE = "CODE";
     public static final String PRICEBUY = "PRICEBUY";
     public static final String PRICESELL = "PRICESELL";
     public static final String CATEGORY = "CATEGORY";
@@ -35,11 +35,11 @@ public class Product {
     @DatabaseField(id = true, columnName = ID)
     private UUID id;
 
-    @DatabaseField(columnName = CODE, unique = true, canBeNull = false)
-    private String code;
-
     @DatabaseField(columnName = NAME, unique = true, canBeNull = false)
     private String name;
+    
+    @DatabaseField(columnName = CODE, unique = true, canBeNull = false)
+    private String code;
 
     @DatabaseField(columnName = PRICEBUY, canBeNull = false)
     private Double pricebuy;
@@ -58,20 +58,20 @@ public class Product {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Double getPriceBuy() {

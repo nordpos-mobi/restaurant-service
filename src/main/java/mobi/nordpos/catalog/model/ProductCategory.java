@@ -39,7 +39,7 @@ public class ProductCategory {
     @DatabaseField(columnName = NAME, unique = true,  canBeNull = false)
     private String name;
 
-    @DatabaseField(columnName = CODE, canBeNull = false)
+    @DatabaseField(columnName = CODE)
     private String code;
 
     @ForeignCollectionField(orderAscending = true, orderColumnName = Product.NAME)

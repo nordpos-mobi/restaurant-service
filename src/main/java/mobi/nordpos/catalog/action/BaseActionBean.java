@@ -18,6 +18,7 @@ package mobi.nordpos.catalog.action;
 import mobi.nordpos.catalog.ext.MobileActionBeanContext;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
+import net.sourceforge.stripes.controller.StripesFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,5 +51,10 @@ public abstract class BaseActionBean implements ActionBean {
 
     public String getDataBasePassword() {
         return getContext().getServletContext().getInitParameter("db.password");
+    }    
+    
+    public String getLocalizationKey(String key) {
+        return StripesFilter.getConfiguration().getLocalizationBundleFactory()
+                .getFormFieldBundle(getContext().getLocale()).getString(key);
     }    
 }

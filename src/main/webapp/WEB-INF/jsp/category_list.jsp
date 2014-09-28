@@ -12,8 +12,7 @@
 
     <stripes:layout-component name="button.return">
         <sdynattr:link href="/Presentation.action"
-                       class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
-            <stripes:label name="label.home" />
+                       class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-notext">            
         </sdynattr:link>          
     </stripes:layout-component>
 
@@ -22,6 +21,11 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">
+        <sdynattr:link href="/ProductCategory.action"
+                       event="add"                       
+                       class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-action">
+            <stripes:label name="label.add" />
+        </sdynattr:link>          
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
