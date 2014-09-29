@@ -27,10 +27,11 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">
-        <sdynattr:link href="/ProductCategory.action"
-                       event="edit"                       
+        <sdynattr:link href="/Product.action"
+                       event="create"                       
                        class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left"
                        data-prefetch="true">
+            <stripes:param name="categoryId" value="${actionBean.productCategory.id}"/>
             <stripes:label name="label.create" />
         </sdynattr:link>          
     </stripes:layout-component>

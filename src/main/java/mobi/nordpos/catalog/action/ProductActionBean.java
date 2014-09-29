@@ -16,7 +16,6 @@
 package mobi.nordpos.catalog.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
@@ -37,16 +36,18 @@ public class ProductActionBean extends BaseActionBean {
     private static final String PRODUCT_CREATE = "/WEB-INF/jsp/product_create.jsp";
 //    private static final String PRODUCT_EDIT = "/WEB-INF/jsp/product_edit.jsp";
 
-    private String name;
-    private String code;
+    private Product product = new Product();
+    private ProductCategory category = new ProductCategory();        
     private String categoryId;    
 
     @DefaultHandler
-    public Resolution list() {
+    public Resolution list() throws SQLException {
+        category = getProductCategory();
         return new ForwardResolution(PRODUCT_LIST);
     }
 
-    public Resolution create() {
+    public Resolution create() throws SQLException {
+        category = getProductCategory();
         return new ForwardResolution(PRODUCT_CREATE);
     }
     
@@ -54,38 +55,29 @@ public class ProductActionBean extends BaseActionBean {
 //        return new ForwardResolution(PRODUCT_EDIT);
 //    }    
 
-//    public Resolution add() throws SQLException {
-//        Product product = new Product();
-//        product.setId(UUID.randomUUID());
-//        product.setName(name);
-//        product.setCode(code);
-//        try {
-//            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-//            ProductPersist productDao = new ProductPersist(connection);
-//            productDao.createIfNotExists(product);
-//        } finally {
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }
-//
-//        return new ForwardResolution(PRODUCT_LIST);
-//    }
+    public Resolution add() throws SQLException {
+        product.setId(UUID.randomUUID());
+        product.setProductCategory(getProductCategory());
+        product.setPriceBuy(0.0);
+        try {
+            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            ProductPersist productDao = new ProductPersist(connection);
+            productDao.createIfNotExists(product);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
 
-    public String getName() {
-        return name;
+        return new ForwardResolution(PRODUCT_LIST);
+    }
+   
+    public Product getProduct() {
+        return product;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+    public void setProduct(Product product) {
+        this.product = product;
     }
     
     public String getCategoryId() {
@@ -95,7 +87,15 @@ public class ProductActionBean extends BaseActionBean {
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
+    
+    public ProductCategory getCategory() {
+        return category;
+    }
 
+    public void setCategory(ProductCategory category) {
+        this.category = category;
+    }
+        
     public List<Product> getProductList() throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());

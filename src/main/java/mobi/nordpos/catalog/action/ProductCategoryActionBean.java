@@ -36,7 +36,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
 
     private String categoryId;
     
-    private ProductCategory category = new ProductCategory();   
+    private ProductCategory category = new ProductCategory();
     
     @DefaultHandler
     public Resolution list() {
