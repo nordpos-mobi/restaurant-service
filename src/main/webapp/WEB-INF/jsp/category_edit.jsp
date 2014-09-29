@@ -27,7 +27,43 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">
+
+        <a href="#deleteCategoryDialog" 
+           data-rel="popup" 
+           data-position-to="window" 
+           data-transition="pop" 
+           class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-left ui-btn-b ui-shadow">
+            <stripes:label name="label.delete" />
+        </a>
+        <div data-role="popup" 
+             id="deleteCategoryDialog" 
+             data-overlay-theme="b" data-theme="b" 
+             data-dismissible="false" style="max-width:400px;">
+            <div data-role="header" data-theme="a">
+                <h1><stripes:label name="label.dialog.ProductCategoryDelete" /></h1>
+            </div>
+            <div role="main" class="ui-content">
+                <h3 class="ui-title">
+                    <c:out value="${actionBean.name}"/>
+                </h3>
+                <p><stripes:label name="label.ask.ProductCategoryDelete" /></p>
+                <sdynattr:link href="/ProductCategory.action"
+                               event="delete"                       
+                               class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-left ui-btn-a ui-btn-inline ui-shadow">
+                    <stripes:param name="categoryId" value="${actionBean.categoryId}"/>
+                    <stripes:label name="yes" />
+                </sdynattr:link>    
+                <a href="#" 
+                   class="ui-btn ui-corner-all ui-icon-forbidden ui-btn-icon-left ui-btn-b ui-btn-inline ui-shadow" 
+                   data-rel="back" 
+                   data-transition="flow">
+                    <stripes:label name="no" />
+                </a>                
+            </div>
+        </div>        
+
     </stripes:layout-component>
+
 
     <stripes:layout-component name="content">
         <stripes:errors />

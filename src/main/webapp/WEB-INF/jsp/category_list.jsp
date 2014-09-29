@@ -40,7 +40,8 @@
                                    event="list"
                                    data-transition="slide">
                         <stripes:param name="categoryId" value="${category.id.toString()}"/>
-                        <h3><c:out value="${category.name}"/></h3>
+                        <c:out value="${category.name}"/>
+                        <span class="ui-li-count"><c:out value="${category.productList.size()}"/></span>
                     </sdynattr:link>
                     <sdynattr:link href="/ProductCategory.action"
                                    event="edit"

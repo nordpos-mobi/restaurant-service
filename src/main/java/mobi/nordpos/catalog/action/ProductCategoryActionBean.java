@@ -40,6 +40,8 @@ public class ProductCategoryActionBean extends BaseActionBean {
     private String name;
     private String code;
     private String categoryId;
+    
+    private ProductCategory category;    
 
     @DefaultHandler
     public Resolution list() {
@@ -51,14 +53,14 @@ public class ProductCategoryActionBean extends BaseActionBean {
     }
 
     public Resolution edit() throws SQLException {
-        ProductCategory category = getCategory();
+        category = getProductCategory();
         this.name = category.getName();
         this.code = category.getCode();
         return new ForwardResolution(CATEGORY_EDIT);
     }
 
     public Resolution add() throws SQLException {
-        ProductCategory category = new ProductCategory();
+        category = new ProductCategory();
         category.setId(UUID.randomUUID());
         category.setName(name);
         category.setCode(code);
@@ -75,7 +77,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
     }
 
     public Resolution update() throws SQLException {  
-        ProductCategory category = new ProductCategory();        
+        category = new ProductCategory();        
         category.setId(UUID.fromString(categoryId));
         category.setName(name);
         category.setCode(code);
@@ -90,6 +92,19 @@ public class ProductCategoryActionBean extends BaseActionBean {
         }
         return new ForwardResolution(CATEGORY_LIST);
     }
+    
+    public Resolution delete() throws SQLException {        
+        try {
+            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
+            productCategoryDao.deleteById(UUID.fromString(categoryId));
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return new ForwardResolution(CATEGORY_LIST);
+    }    
 
     public String getName() {
         return name;
@@ -115,6 +130,14 @@ public class ProductCategoryActionBean extends BaseActionBean {
         this.categoryId = categoryId;
     }
 
+    public ProductCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ProductCategory category) {
+        this.category = category;
+    }
+    
     public List<ProductCategory> getCategoryList() throws SQLException {
         try {
             this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -127,7 +150,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
         }
     }
 
-    public ProductCategory getCategory() throws SQLException {
+    public ProductCategory getProductCategory() throws SQLException {
         try {
             this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
