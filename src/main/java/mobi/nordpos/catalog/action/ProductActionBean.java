@@ -37,8 +37,6 @@ public class ProductActionBean extends BaseActionBean {
     private static final String PRODUCT_CREATE = "/WEB-INF/jsp/product_create.jsp";
 //    private static final String PRODUCT_EDIT = "/WEB-INF/jsp/product_edit.jsp";
 
-    ConnectionSource connection;
-
     private String name;
     private String code;
     private String categoryId;    
@@ -100,7 +98,7 @@ public class ProductActionBean extends BaseActionBean {
 
     public List<Product> getProductList() throws SQLException {
         try {
-            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductPersist productDao = new ProductPersist(connection);
             return productDao.getList(categoryId);
         } finally {
@@ -112,7 +110,7 @@ public class ProductActionBean extends BaseActionBean {
     
     public ProductCategory getProductCategory() throws SQLException {
         try {
-            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
             return productCategoryDao.read(UUID.fromString(categoryId));
         } finally {

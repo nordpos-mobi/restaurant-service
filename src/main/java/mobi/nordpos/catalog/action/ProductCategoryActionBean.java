@@ -16,7 +16,6 @@
 package mobi.nordpos.catalog.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
@@ -33,9 +32,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
 
     private static final String CATEGORY_LIST = "/WEB-INF/jsp/category_list.jsp";
     private static final String CATEGORY_CREATE = "/WEB-INF/jsp/category_create.jsp";
-    private static final String CATEGORY_EDIT = "/WEB-INF/jsp/category_edit.jsp";
-
-    ConnectionSource connection;
+    private static final String CATEGORY_EDIT = "/WEB-INF/jsp/category_edit.jsp";    
 
     private String categoryId;
     
@@ -58,7 +55,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
     public Resolution add() throws SQLException {        
         category.setId(UUID.randomUUID());
         try {
-            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
             productCategoryDao.createIfNotExists(category);
         } finally {
@@ -72,7 +69,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
     public Resolution update() throws SQLException {      
         category.setId(UUID.fromString(categoryId));
         try {
-            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
             productCategoryDao.update(category);
         } finally {
@@ -85,7 +82,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
     
     public Resolution delete() throws SQLException {        
         try {
-            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
             productCategoryDao.deleteById(UUID.fromString(categoryId));
         } finally {
@@ -114,7 +111,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
     
     public List<ProductCategory> getCategoryList() throws SQLException {
         try {
-            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
             return productCategoryDao.getList();
         } finally {
@@ -126,7 +123,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
 
     public ProductCategory getProductCategory() throws SQLException {
         try {
-            this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
             return productCategoryDao.read(UUID.fromString(categoryId));
         } finally {

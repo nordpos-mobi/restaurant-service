@@ -15,6 +15,7 @@
  */
 package mobi.nordpos.catalog.action;
 
+import com.j256.ormlite.support.ConnectionSource;
 import mobi.nordpos.catalog.ext.MobileActionBeanContext;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
@@ -30,6 +31,8 @@ public abstract class BaseActionBean implements ActionBean {
     private MobileActionBeanContext context;
 
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+    
+    ConnectionSource connection;
 
     @Override
     public MobileActionBeanContext getContext() {
