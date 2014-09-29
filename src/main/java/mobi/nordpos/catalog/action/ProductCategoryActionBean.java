@@ -37,12 +37,10 @@ public class ProductCategoryActionBean extends BaseActionBean {
 
     ConnectionSource connection;
 
-    private String name;
-    private String code;
     private String categoryId;
     
-    private ProductCategory category;    
-
+    private ProductCategory category = new ProductCategory();   
+    
     @DefaultHandler
     public Resolution list() {
         return new ForwardResolution(CATEGORY_LIST);
@@ -54,16 +52,11 @@ public class ProductCategoryActionBean extends BaseActionBean {
 
     public Resolution edit() throws SQLException {
         category = getProductCategory();
-        this.name = category.getName();
-        this.code = category.getCode();
         return new ForwardResolution(CATEGORY_EDIT);
     }
 
-    public Resolution add() throws SQLException {
-        category = new ProductCategory();
+    public Resolution add() throws SQLException {        
         category.setId(UUID.randomUUID());
-        category.setName(name);
-        category.setCode(code);
         try {
             this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
@@ -76,11 +69,8 @@ public class ProductCategoryActionBean extends BaseActionBean {
         return new ForwardResolution(CATEGORY_LIST);
     }
 
-    public Resolution update() throws SQLException {  
-        category = new ProductCategory();        
+    public Resolution update() throws SQLException {      
         category.setId(UUID.fromString(categoryId));
-        category.setName(name);
-        category.setCode(code);
         try {
             this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
@@ -105,22 +95,6 @@ public class ProductCategoryActionBean extends BaseActionBean {
         }
         return new ForwardResolution(CATEGORY_LIST);
     }    
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getCategoryId() {
         return categoryId;

@@ -35,14 +35,14 @@
             <ul data-role="listview" data-inset="true">                
                 <li class="ui-field-contain">
                     <label for="name"><stripes:label name="label.ProductCategory.name" /></label>
-                    <input name="name" id="name" type="text"
+                    <input name="category.name" id="name" type="text"
                            placeholder="${actionBean.getLocalizationKey("label.ProductCategory.name")}" 
                            value=""
                            data-clear-btn="true">
                 </li>
                 <li class="ui-field-contain">
                     <label for="code"><stripes:label name="label.ProductCategory.code" /></label>
-                    <input name="code" id="code" type="text"
+                    <input name="category.code" id="code" type="text"
                            placeholder="${actionBean.getLocalizationKey("label.ProductCategory.code")}" 
                            value="${actionBean.getCategoryList().size() + 1}"
                            data-clear-btn="true">

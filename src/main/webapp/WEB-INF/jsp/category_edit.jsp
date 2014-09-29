@@ -44,7 +44,7 @@
             </div>
             <div role="main" class="ui-content">
                 <h3 class="ui-title">
-                    <c:out value="${actionBean.name}"/>
+                    <c:out value="${actionBean.category.name}"/>
                 </h3>
                 <p><stripes:label name="label.ask.ProductCategoryDelete" /></p>
                 <sdynattr:link href="/ProductCategory.action"
@@ -68,20 +68,20 @@
     <stripes:layout-component name="content">
         <stripes:errors />
         <stripes:form action="/ProductCategory.action?update">
-            <stripes:hidden name="categoryId" value="${actionBean.categoryId}"/>
+            <stripes:hidden name="categoryId" value="${actionBean.category.id}"/>
             <ul data-role="listview" data-inset="true">                
                 <li class="ui-field-contain">
                     <label for="name"><stripes:label name="label.ProductCategory.name" /></label>
-                    <input name="name" id="name" type="text"
+                    <input name="category.name" id="name" type="text"
                            placeholder="${actionBean.getLocalizationKey("label.ProductCategory.name")}" 
-                           value="${actionBean.name}"
+                           value="${actionBean.category.name}"
                            data-clear-btn="true">
                 </li>
                 <li class="ui-field-contain">
                     <label for="code"><stripes:label name="label.ProductCategory.code" /></label>
-                    <input name="code" id="code" type="text"
+                    <input name="category.code" id="code" type="text"
                            placeholder="${actionBean.getLocalizationKey("label.ProductCategory.code")}" 
-                           value="${actionBean.code}"
+                           value="${actionBean.category.code}"
                            data-clear-btn="true">
                 </li>
                 <li class="ui-body ui-body-b">
