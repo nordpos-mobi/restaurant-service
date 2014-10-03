@@ -53,7 +53,8 @@
                     <stripes:label name="label.Product.price" for="productPrice"/>
                     <input name="product.priceSell" id="productPrice" type="number"
                            placeholder="${actionBean.getLocalizationKey("label.ProductSellPrice.enter")}"
-                           pattern="[0-9]*" value=""
+                           step="0.01"                           
+                           value="0.00"
                            data-clear-btn="true">
                 </li>
                 <li class="ui-body ui-body-b">

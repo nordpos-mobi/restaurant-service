@@ -40,10 +40,25 @@
         <ul data-role="listview" 
             data-filter="true" 
             data-filter-placeholder="${actionBean.getLocalizationKey("label.Product.search")}"
-            data-inset="true">
+            data-inset="true"
+            data-split-icon="edit" data-split-theme="a">
             <c:forEach items="${actionBean.productList}" var="product">                
                 <li>
-                    <c:out value="${product.name}"/>
+                    <a><c:out value="${product.name}"/>
+                        <p class="ui-li-aside">
+                            <strong>
+                                <fmt:formatNumber value="${product.priceSell}"
+                                                  type="CURRENCY"
+                                                  pattern="#0.00 ¤"                                                  
+                                                  maxFractionDigits="2" 
+                                                  minFractionDigits="2"/>
+                            </strong>
+                        </p>
+                    </a>
+                    <a>
+                        <%--<stripes:param name="productId" value="${product.id}"/>
+                        <stripes:label name="label.edit" />--%>
+                    </a>
                 </li>
             </c:forEach>
         </ul>
