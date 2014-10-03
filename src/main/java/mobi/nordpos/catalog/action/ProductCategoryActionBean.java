@@ -24,6 +24,7 @@ import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.SimpleMessage;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -32,12 +33,12 @@ public class ProductCategoryActionBean extends BaseActionBean {
 
     private static final String CATEGORY_LIST = "/WEB-INF/jsp/category_list.jsp";
     private static final String CATEGORY_CREATE = "/WEB-INF/jsp/category_create.jsp";
-    private static final String CATEGORY_EDIT = "/WEB-INF/jsp/category_edit.jsp";    
+    private static final String CATEGORY_EDIT = "/WEB-INF/jsp/category_edit.jsp";
 
     private String categoryId;
-    
+
     private ProductCategory category = new ProductCategory();
-    
+
     @DefaultHandler
     public Resolution list() {
         return new ForwardResolution(CATEGORY_LIST);
@@ -52,21 +53,25 @@ public class ProductCategoryActionBean extends BaseActionBean {
         return new ForwardResolution(CATEGORY_EDIT);
     }
 
-    public Resolution add() throws SQLException {        
+    public Resolution add() throws SQLException {
         category.setId(UUID.randomUUID());
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            productCategoryDao.createIfNotExists(category);
+            getContext().getMessages().add(
+                    new SimpleMessage(getLocalizationKey("label.message.ProductCategory.added"),
+                            productCategoryDao.createIfNotExists(category).getName())
+            );
         } finally {
             if (connection != null) {
                 connection.close();
             }
         }
+
         return new ForwardResolution(CATEGORY_LIST);
     }
 
-    public Resolution update() throws SQLException {      
+    public Resolution update() throws SQLException {
         category.setId(UUID.fromString(categoryId));
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -79,8 +84,8 @@ public class ProductCategoryActionBean extends BaseActionBean {
         }
         return new ForwardResolution(CATEGORY_LIST);
     }
-    
-    public Resolution delete() throws SQLException {        
+
+    public Resolution delete() throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
@@ -91,7 +96,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
             }
         }
         return new ForwardResolution(CATEGORY_LIST);
-    }    
+    }
 
     public String getCategoryId() {
         return categoryId;
@@ -108,7 +113,7 @@ public class ProductCategoryActionBean extends BaseActionBean {
     public void setCategory(ProductCategory category) {
         this.category = category;
     }
-    
+
     public List<ProductCategory> getCategoryList() throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());

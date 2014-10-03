@@ -31,6 +31,7 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
+        <stripes:messages/>
         <ul data-role="listview" data-filter="true"
             data-filter-placeholder="${actionBean.getLocalizationKey("label.ProductCategory.search")}"
             data-inset="true" data-split-icon="edit" data-split-theme="a">

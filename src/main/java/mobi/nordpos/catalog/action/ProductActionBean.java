@@ -24,8 +24,11 @@ import mobi.nordpos.catalog.dao.ormlite.ProductPersist;
 import mobi.nordpos.catalog.model.Product;
 import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
+import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.SimpleMessage;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -37,8 +40,8 @@ public class ProductActionBean extends BaseActionBean {
 //    private static final String PRODUCT_EDIT = "/WEB-INF/jsp/product_edit.jsp";
 
     private Product product = new Product();
-    private ProductCategory category = new ProductCategory();        
-    private String categoryId;    
+    private ProductCategory category = new ProductCategory();
+    private String categoryId;
 
     @DefaultHandler
     public Resolution list() throws SQLException {
@@ -50,10 +53,6 @@ public class ProductActionBean extends BaseActionBean {
         category = getProductCategory();
         return new ForwardResolution(PRODUCT_CREATE);
     }
-    
-//    public Resolution edit() {
-//        return new ForwardResolution(PRODUCT_EDIT);
-//    }    
 
     public Resolution add() throws SQLException {
         product.setId(UUID.randomUUID());
@@ -62,16 +61,19 @@ public class ProductActionBean extends BaseActionBean {
         try {
             this.connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductPersist productDao = new ProductPersist(connection);
-            productDao.createIfNotExists(product);
+            getContext().getMessages().add(
+                    new SimpleMessage(getLocalizationKey("label.message.Product.added"),
+                            productDao.createIfNotExists(product).getName(), product.getProductCategory().getName())
+            );
         } finally {
             if (connection != null) {
                 connection.close();
             }
         }
 
-        return new ForwardResolution(PRODUCT_LIST);
+        return new ForwardResolution(ProductActionBean.class, "list");
     }
-   
+
     public Product getProduct() {
         return product;
     }
@@ -79,7 +81,7 @@ public class ProductActionBean extends BaseActionBean {
     public void setProduct(Product product) {
         this.product = product;
     }
-    
+
     public String getCategoryId() {
         return categoryId;
     }
@@ -87,7 +89,7 @@ public class ProductActionBean extends BaseActionBean {
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
-    
+
     public ProductCategory getCategory() {
         return category;
     }
@@ -95,7 +97,7 @@ public class ProductActionBean extends BaseActionBean {
     public void setCategory(ProductCategory category) {
         this.category = category;
     }
-        
+
     public List<Product> getProductList() throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -107,7 +109,7 @@ public class ProductActionBean extends BaseActionBean {
             }
         }
     }
-    
+
     public ProductCategory getProductCategory() throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -118,6 +120,6 @@ public class ProductActionBean extends BaseActionBean {
                 connection.close();
             }
         }
-    }    
+    }
 
 }
