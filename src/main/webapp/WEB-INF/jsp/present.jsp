@@ -29,11 +29,10 @@
                 <img src="<c:url value='/image/logo.png' />" alt="NORD POS mobi"/>
             </a>            
             <h2><stripes:label name="label.present" /></h2>
-            <sdynattr:link href="/ProductCategory.action"
-                           event="list"
-                           class="ui-btn-center ui-btn ui-shadow ui-corner-all">
-                <stripes:label name="label.ProductsCatalogue" />
-            </sdynattr:link>            
+            <stripes:errors />
+            <stripes:form action="/CategoryList.action">                
+                <sdynattr:submit name="catalog" data-theme="a" />
+            </stripes:form>
         </div>
     </stripes:layout-component>
 

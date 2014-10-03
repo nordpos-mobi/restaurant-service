@@ -15,7 +15,7 @@
                        class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-notext">            
             <stripes:label name="label.home" />
         </sdynattr:link>    
-        <sdynattr:link href="/ProductCategory.action"
+        <sdynattr:link href="/CategoryList.action"
                        class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-left"
                        data-prefetch="true">
             <stripes:label name="label.categories" />

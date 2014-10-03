@@ -15,7 +15,7 @@
                        class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
             <stripes:label name="label.home" />
         </sdynattr:link>          
-        <sdynattr:link href="/ProductCategory.action"
+        <sdynattr:link href="/CategoryList.action"
                        class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-left"
                        data-prefetch="true">
             <stripes:label name="label.categories" />
@@ -29,22 +29,23 @@
     <stripes:layout-component name="button.action">
     </stripes:layout-component>
 
-    <stripes:layout-component name="content">
+    <stripes:layout-component name="content">        
         <stripes:errors />
-        <stripes:form action="/ProductCategory.action?add">
+        <stripes:messages />
+        <stripes:form action="/CategoryCreate.action?add">
             <ul data-role="listview" data-inset="true">                
                 <li class="ui-field-contain">
                     <stripes:label name="label.ProductCategory.name" for="categoryName" />
-                    <input name="category.name" id="name" type="text"
+                    <input name="category.name" id="categoryName" type="text"
                            placeholder="${actionBean.getLocalizationKey("label.ProductCategory.name")}" 
                            value=""
                            data-clear-btn="true">
                 </li>
                 <li class="ui-field-contain">
                     <stripes:label name="label.ProductCategory.code" for="categoryCode" />
-                    <input name="category.code" id="code" type="text"
+                    <input name="category.code" id="categoryCode" type="text"
                            placeholder="${actionBean.getLocalizationKey("label.ProductCategory.code")}" 
-                           value="${actionBean.getCategoryList().size() + 1}"
+                           value="${actionBean.category.code}"
                            data-clear-btn="true">
                 </li>
                 <li class="ui-body ui-body-b">

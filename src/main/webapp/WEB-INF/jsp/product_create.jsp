@@ -32,6 +32,7 @@
 
     <stripes:layout-component name="content">
         <stripes:errors />
+        <stripes:messages />
         <stripes:form action="/Product.action?add">
             <stripes:hidden name="categoryId" value="${actionBean.category.id}"/>
             <ul data-role="listview" data-inset="true">                

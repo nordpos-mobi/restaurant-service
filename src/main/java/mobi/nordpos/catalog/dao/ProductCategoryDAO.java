@@ -26,8 +26,6 @@ import mobi.nordpos.catalog.model.ProductCategory;
  */
 public interface ProductCategoryDAO extends Dao<ProductCategory, UUID> {
 
-    public ProductCategory read(UUID id) throws SQLException;
-
     public ProductCategory read(String code) throws SQLException;
 
     public List<ProductCategory> getList() throws SQLException;

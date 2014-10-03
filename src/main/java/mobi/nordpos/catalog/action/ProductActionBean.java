@@ -24,9 +24,7 @@ import mobi.nordpos.catalog.dao.ormlite.ProductPersist;
 import mobi.nordpos.catalog.model.Product;
 import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.SimpleMessage;
 
@@ -114,7 +112,7 @@ public class ProductActionBean extends BaseActionBean {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.read(UUID.fromString(categoryId));
+            return productCategoryDao.queryForId(UUID.fromString(categoryId));
         } finally {
             if (connection != null) {
                 connection.close();
