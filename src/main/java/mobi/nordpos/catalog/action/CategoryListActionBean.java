@@ -42,15 +42,21 @@ public class CategoryListActionBean extends CategoryBaseActionBean {
     public List<ProductCategory> getCategoryList() {
         return categoryList;
     }
-    
+
     public void setCategoryList(List<ProductCategory> categoryList) {
         this.categoryList = categoryList;
-    }    
+    }
 
     @ValidationMethod
     public void validateCategoryListIsAvalaible(ValidationErrors errors) {
         try {
-            setCategoryList(readCategoryList());
+            List<ProductCategory> productList = readCategoryList();
+            if (productList != null) {
+                setCategoryList(productList);
+            } else {
+                errors.addGlobalError(new SimpleError(
+                        getLocalizationKey("label.error.ProductCategory.CatalogEmpty")));
+            }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));

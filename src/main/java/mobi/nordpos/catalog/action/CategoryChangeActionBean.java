@@ -78,7 +78,7 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
 
     @ValidationMethod(on = "delete")
     public void validateProductListIsEmpty(ValidationErrors errors) throws SQLException {
-        setCategory(readProductCategory(getCategory().getId()));        
+        setCategory(readProductCategory(getCategory().getId()));
         if (!getCategory().getProductCollection().isEmpty()) {
             errors.addGlobalError(new SimpleError(
                     getLocalizationKey("label.error.ProductCategory.IncludeProducts"), getCategory().getName(), getCategory().getProductCollection().size()
@@ -106,7 +106,13 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
     @ValidationMethod(on = "form")
     public void validateCategoryListIsAvalaible(ValidationErrors errors) {
         try {
-            setCategory(readProductCategory(getCategory().getId()));
+            ProductCategory category = readProductCategory(getCategory().getId());
+            if (category != null) {
+                setCategory(category);
+            } else {
+                errors.add("category.id", new SimpleError(
+                        getLocalizationKey("label.error.ProductCategory.CatalogNotInclude"), getCategory().getId().toString()));
+            }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
