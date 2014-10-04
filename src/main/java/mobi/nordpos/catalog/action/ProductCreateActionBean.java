@@ -21,7 +21,6 @@ import mobi.nordpos.catalog.ext.UUIDTypeConverter;
 import mobi.nordpos.catalog.model.Product;
 import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.SimpleMessage;
@@ -48,17 +47,38 @@ public class ProductCreateActionBean extends ProductBaseActionBean {
         try {
             getContext().getMessages().add(
                     new SimpleMessage(getLocalizationKey("label.message.Product.added"),
-                            createProduct(product).getName())
+                            createProduct(product).getName(), product.getProductCategory().getName())
             );
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError("{2} {3}", ex.getErrorCode(), ex.getMessage()));
             return getContext().getSourcePageResolution();
         }
-        return new ForwardResolution(CategoryListActionBean.class);
+        return new ForwardResolution(CategoryProductListActionBean.class)
+                .addParameter("category.id", product.getProductCategory().getId());
     }
 
     @ValidateNestedProperties({
+        @Validate(on = {"add"},
+                field = "id",
+                required = true,
+                converter = UUIDTypeConverter.class),
+        @Validate(on = {"add"},
+                field = "name",
+                required = true,
+                trim = true,
+                maxlength = 255),
+        @Validate(on = {"add"},
+                field = "code",
+                required = true,
+                trim = true,
+                maxlength = 12),
+        @Validate(on = {"add"},
+                field = "priceSell",
+                required = true),
+        @Validate(on = {"add"},
+                field = "priceBuy",
+                required = true),
         @Validate(field = "productCategory.id",
                 required = true,
                 converter = UUIDTypeConverter.class)
@@ -67,7 +87,7 @@ public class ProductCreateActionBean extends ProductBaseActionBean {
     public void setProduct(Product product) {
         super.setProduct(product);
     }
-    
+
     @ValidationMethod
     public void validateProductCategoryIdIsAvalaible(ValidationErrors errors) {
         try {
@@ -83,9 +103,8 @@ public class ProductCreateActionBean extends ProductBaseActionBean {
                     new SimpleError(ex.getMessage()));
         }
     }
-    
 
     public String getRandomId() {
         return UUID.randomUUID().toString();
-    }    
+    }
 }

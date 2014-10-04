@@ -14,13 +14,12 @@
         <sdynattr:link href="/Presentation.action"
                        class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
             <stripes:label name="label.home" />
-        </sdynattr:link>          
-        <sdynattr:link href="/Product.action"
-                       event="list"
+        </sdynattr:link>                  
+        <sdynattr:link href="/CategoryProductList.action"
                        class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-left">
-            <stripes:param name="categoryId" value="${actionBean.category.id}"/>
-            <c:out value="${actionBean.category.name}"/>
-        </sdynattr:link>           
+            <stripes:param name="category.id" value="${actionBean.product.productCategory.id}"/>
+            <c:out value="${actionBean.product.productCategory.name}"/>
+        </sdynattr:link>                   
     </stripes:layout-component>
 
     <stripes:layout-component name="header.title">
@@ -33,8 +32,12 @@
     <stripes:layout-component name="content">
         <stripes:errors />
         <stripes:messages />
-        <stripes:form action="/Product.action?add">
-            <stripes:hidden name="categoryId" value="${actionBean.category.id}"/>
+        <stripes:form action="/ProductCreate.action?add">
+            <div>
+                <stripes:hidden name="product.id" value="${actionBean.randomId}"/>
+                <stripes:hidden name="product.productCategory.id" value="${actionBean.product.productCategory.id}"/>
+                <stripes:hidden name="product.priceBuy" value="0.0"/>
+            </div>
             <ul data-role="listview" data-inset="true">                
                 <li class="ui-field-contain">
                     <stripes:label name="label.Product.name" for="productName" />
@@ -68,10 +71,8 @@
                         </div>
                     </fieldset>
                 </li>
-            </ul>
+            </ul>        
         </stripes:form>
-
-
     </stripes:layout-component>
 
     <stripes:layout-component name="footer">
