@@ -47,6 +47,11 @@
             <param-name>ActionBeanContext.Class</param-name>
             <param-value>mobi.nordpos.catalog.ext.MobileActionBeanContext</param-value>
         </init-param>               
+                   
+        <init-param>
+            <param-name>Extension.Packages</param-name>
+            <param-value>>mobi.nordpos.catalog.ext</param-value>
+        </init-param>
         
         <!-- STRIPES LOCALES -->
         <init-param>

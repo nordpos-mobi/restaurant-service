@@ -19,12 +19,14 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import java.sql.SQLException;
 import java.util.UUID;
 import mobi.nordpos.catalog.dao.ormlite.ProductCategoryPersist;
+import mobi.nordpos.catalog.ext.UUIDTypeConverter;
 import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
+import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
 
@@ -34,8 +36,6 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 public class CategoryChangeActionBean extends CategoryBaseActionBean {
 
     private static final String CATEGORY_EDIT = "/WEB-INF/jsp/category_edit.jsp";
-
-    private String categoryId;
 
     @DefaultHandler
     public Resolution form() throws SQLException {
@@ -101,24 +101,21 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
     @ValidationMethod
     public void validateCategoryListIsAvalaible(ValidationErrors errors) {
         try {
-            setCategory(readProductCategory(UUID.fromString(getCategoryId())));
+            setCategory(readProductCategory(getCategory().getId()));
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
         }
     }
 
+    @ValidateNestedProperties({
+        @Validate(field = "id",
+                required = true,
+                converter = UUIDTypeConverter.class)
+    })
     @Override
     public void setCategory(ProductCategory category) {
         super.setCategory(category);
     }
 
-    @Validate(required = true)
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
-    }
 }

@@ -48,8 +48,7 @@
                     <sdynattr:link href="/CategoryChange.action"
                                    data-transition="slide">
                         <stripes:param name="category"/>
-                        <stripes:param name="categoryId" value="${category.id}"/>
-                        <stripes:param name="category.code" value="${category.code}"/>
+                        <stripes:param name="category.id" value="${category.id}"/>
                         <stripes:label name="label.edit" />
                     </sdynattr:link>
                 </li>
