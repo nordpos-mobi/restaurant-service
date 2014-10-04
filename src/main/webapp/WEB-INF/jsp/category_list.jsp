@@ -24,7 +24,6 @@
     <stripes:layout-component name="button.action">
         <sdynattr:link href="/CategoryCreate.action"                       
                        class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left">
-            <stripes:param name="category"/>
             <stripes:param name="category.code" value="${actionBean.categoryList.size() + 1}"/>
             <stripes:label name="label.create" />
         </sdynattr:link>          

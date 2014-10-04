@@ -17,6 +17,7 @@ package mobi.nordpos.catalog.action;
 
 import java.sql.SQLException;
 import java.util.UUID;
+import mobi.nordpos.catalog.ext.UUIDTypeConverter;
 import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontValidate;
@@ -44,7 +45,6 @@ public class CategoryCreateActionBean extends CategoryBaseActionBean {
 
     public Resolution add() {
         ProductCategory category = getCategory();
-        category.setId(UUID.randomUUID());
         try {
             getContext().getMessages().add(
                     new SimpleMessage(getLocalizationKey("label.message.ProductCategory.added"),
@@ -59,6 +59,9 @@ public class CategoryCreateActionBean extends CategoryBaseActionBean {
     }
 
     @ValidateNestedProperties({
+        @Validate(field = "id",
+                required = true,
+                converter = UUIDTypeConverter.class),
         @Validate(field = "name",
                 required = true,
                 trim = true,
@@ -88,4 +91,8 @@ public class CategoryCreateActionBean extends CategoryBaseActionBean {
             }
         }
     }
+    
+    public String getRandomId() {
+        return UUID.randomUUID().toString();
+    }    
 }

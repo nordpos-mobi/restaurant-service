@@ -49,7 +49,6 @@
                 <p><stripes:label name="label.ask.ProductCategoryDelete" /></p>
                 <stripes:form action="/CategoryChange.action?delete">
                     <div>
-                        <stripes:hidden name="category"/>
                         <stripes:hidden name="category.id" value="${actionBean.category.id}"/>                    
                     </div>
                     <sdynattr:submit name="yes" data-theme="a" data-icon="check"/>                    
@@ -70,7 +69,6 @@
         <stripes:errors />
         <stripes:form action="/CategoryChange.action?update">
             <div>
-                <stripes:hidden name="category"/>
                 <stripes:hidden name="category.id" value="${actionBean.category.id}"/>                    
                 <stripes:hidden name="codeCurrent" value="${actionBean.category.code}"/>               
             </div>
