@@ -58,11 +58,7 @@ public class ProductCreateActionBean extends ProductBaseActionBean {
                 .addParameter("category.id", product.getProductCategory().getId());
     }
 
-    @ValidateNestedProperties({
-        @Validate(on = {"add"},
-                field = "id",
-                required = true,
-                converter = UUIDTypeConverter.class),
+    @ValidateNestedProperties({        
         @Validate(on = {"add"},
                 field = "name",
                 required = true,
@@ -104,7 +100,4 @@ public class ProductCreateActionBean extends ProductBaseActionBean {
         }
     }
 
-    public String getRandomId() {
-        return UUID.randomUUID().toString();
-    }
 }

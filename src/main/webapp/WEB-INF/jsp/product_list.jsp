@@ -40,8 +40,7 @@
         <ul data-role="listview" 
             data-filter="true" 
             data-filter-placeholder="${actionBean.getLocalizationKey("label.Product.search")}"
-            data-inset="true"
-            data-split-icon="edit" data-split-theme="a">
+            data-inset="true">
             <c:forEach items="${actionBean.productList}" var="product">                
                 <li>
                     <a><c:out value="${product.name}"/>
@@ -54,8 +53,6 @@
                                                   minFractionDigits="2"/>
                             </strong>
                         </p>
-                    </a>
-                    <a>
                     </a>
                 </li>
             </c:forEach>

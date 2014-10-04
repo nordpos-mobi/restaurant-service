@@ -32,7 +32,7 @@ public class Product {
     public static final String PRICESELL = "PRICESELL";
     public static final String CATEGORY = "CATEGORY";
 
-    @DatabaseField(id = true, columnName = ID)
+    @DatabaseField(generatedId = true, columnName = ID)
     private UUID id;
 
     @DatabaseField(columnName = NAME, unique = true, canBeNull = false)

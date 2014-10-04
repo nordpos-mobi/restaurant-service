@@ -34,9 +34,9 @@
         <stripes:messages />
         <stripes:form action="/ProductCreate.action?add">
             <div>
-                <stripes:hidden name="product.id" value="${actionBean.randomId}"/>
+                <stripes:hidden name="product.priceBuy" value="0.0"/>                
                 <stripes:hidden name="product.productCategory.id" value="${actionBean.product.productCategory.id}"/>
-                <stripes:hidden name="product.priceBuy" value="0.0"/>
+                <stripes:hidden name="product.productCategory.name" value="${actionBean.product.productCategory.name}"/>
             </div>
             <ul data-role="listview" data-inset="true">                
                 <li class="ui-field-contain">
