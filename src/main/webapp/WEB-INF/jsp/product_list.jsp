@@ -27,15 +27,12 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">
-        <%--
-        <sdynattr:link href="/Product.action"
-                       event="create"                       
-                       class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left"
-                       data-prefetch="true">
-            <stripes:param name="categoryId" value="${actionBean.productCategory.id}"/>
+        <sdynattr:link href="/ProductCreate.action"
+                       class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left">
+            <stripes:param name="product.code" value="${actionBean.category.productList.size() + 1}"/>
+            <stripes:param name="product.productCategory.id" value="${actionBean.category.id}"/>
             <stripes:label name="label.create" />
         </sdynattr:link>          
-        --%>
     </stripes:layout-component>
 
     <stripes:layout-component name="content">

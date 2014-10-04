@@ -15,8 +15,13 @@
  */
 package mobi.nordpos.catalog.action;
 
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
+import java.sql.SQLException;
+import java.util.UUID;
+import mobi.nordpos.catalog.dao.ormlite.ProductCategoryPersist;
 import mobi.nordpos.catalog.ext.MobileActionBeanContext;
+import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.controller.StripesFilter;
@@ -59,5 +64,18 @@ public abstract class BaseActionBean implements ActionBean {
     public String getLocalizationKey(String key) {
         return StripesFilter.getConfiguration().getLocalizationBundleFactory()
                 .getFormFieldBundle(getContext().getLocale()).getString(key);
-    }    
+    }   
+    
+    protected ProductCategory readProductCategory(UUID uuid) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
+            return productCategoryDao.queryForId(uuid);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+    
 }

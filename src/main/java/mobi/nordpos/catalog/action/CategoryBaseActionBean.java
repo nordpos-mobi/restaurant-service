@@ -49,18 +49,6 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
         }
     }
 
-    protected ProductCategory readProductCategory(UUID uuid) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.queryForId(uuid);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
     protected ProductCategory readProductCategory(String code) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
