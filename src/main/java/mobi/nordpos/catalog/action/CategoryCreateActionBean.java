@@ -62,7 +62,10 @@ public class CategoryCreateActionBean extends CategoryBaseActionBean {
         @Validate(field = "name",
                 required = true,
                 trim = true,
-                maxlength = 255)
+                maxlength = 255),
+        @Validate(field = "code",
+                trim = true,
+                maxlength = 4)
     })
     @Override
     public void setCategory(ProductCategory category) {
@@ -71,16 +74,18 @@ public class CategoryCreateActionBean extends CategoryBaseActionBean {
 
     @ValidationMethod
     public void validateCategoryCodeIsUnique(ValidationErrors errors) {
-        String code = getCategory().getCode();
-        try {
-            if (readProductCategory(code) != null) {
-                errors.addGlobalError(new SimpleError(
-                        getLocalizationKey("label.error.ProductCategory.AlreadyExists"), code
-                ));
+        String codeCreate = getCategory().getCode();
+        if (codeCreate != null && !codeCreate.isEmpty()) {
+            try {
+                if (readProductCategory(codeCreate) != null) {
+                    errors.addGlobalError(new SimpleError(
+                            getLocalizationKey("label.error.ProductCategory.AlreadyExists"), codeCreate
+                    ));
+                }
+            } catch (SQLException ex) {
+                getContext().getValidationErrors().addGlobalError(
+                        new SimpleError(ex.getMessage()));
             }
-        } catch (SQLException ex) {
-            getContext().getValidationErrors().addGlobalError(
-                    new SimpleError(ex.getMessage()));
         }
     }
 }

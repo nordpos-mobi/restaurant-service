@@ -15,7 +15,7 @@
                        class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
             <stripes:label name="label.home" />
         </sdynattr:link>          
-        <sdynattr:link href="/ProductCategory.action"
+        <sdynattr:link href="/CategoryList.action"
                        class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-left"
                        data-prefetch="true">
             <stripes:label name="label.categories" />
@@ -64,11 +64,13 @@
 
     <stripes:layout-component name="content">
         <stripes:errors />
-        <stripes:form action="/ProductCategory.action?update">
+        <stripes:form action="/CategoryChange.action?update">
             <div>
                 <stripes:hidden name="category"/>
+                <stripes:hidden name="category.id" value="${actionBean.category.id}"/>                    
+                <stripes:hidden name="codeCurrent" value="${actionBean.category.code}"/>               
             </div>
-            <ul data-role="listview" data-inset="true">                
+            <ul data-role="listview" data-inset="true">  
                 <li class="ui-field-contain">
                     <label for="categoryName"><stripes:label name="label.ProductCategory.name" /></label>
                     <input name="category.name" id="categoryName" type="text"

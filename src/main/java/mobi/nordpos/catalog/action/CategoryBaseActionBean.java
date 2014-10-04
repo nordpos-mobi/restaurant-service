@@ -83,6 +83,18 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
                 connection.close();
             }
         }
-    }    
+    }   
+    
+    protected Boolean updateProductCategory(ProductCategory category) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
+            return productCategoryDao.update(category) > 0;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }      
 
 }

@@ -17,13 +17,13 @@ package mobi.nordpos.catalog.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import java.sql.SQLException;
-import java.util.UUID;
 import mobi.nordpos.catalog.dao.ormlite.ProductCategoryPersist;
 import mobi.nordpos.catalog.ext.UUIDTypeConverter;
 import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.SimpleMessage;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
@@ -37,23 +37,27 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
 
     private static final String CATEGORY_EDIT = "/WEB-INF/jsp/category_edit.jsp";
 
+    private String codeCurrent;
+
     @DefaultHandler
     public Resolution form() throws SQLException {
         return new ForwardResolution(CATEGORY_EDIT);
     }
 
-    public Resolution update() throws SQLException {
+    public Resolution update() {
         ProductCategory category = getCategory();
         try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            productCategoryDao.update(category);
-        } finally {
-            if (connection != null) {
-                connection.close();
+            if (updateProductCategory(category)) {
+                getContext().getMessages().add(
+                        new SimpleMessage(getLocalizationKey("label.message.ProductCategory.updated"),
+                                category.getName()));
             }
+        } catch (SQLException ex) {
+            getContext().getValidationErrors().addGlobalError(
+                    new SimpleError("{2} {3}", ex.getErrorCode(), ex.getMessage()));
+            return getContext().getSourcePageResolution();
         }
-        return new ForwardResolution(CategoryListActionBean.class, "list");
+        return new ForwardResolution(CategoryListActionBean.class);
     }
 
     public Resolution delete() throws SQLException {
@@ -70,7 +74,7 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
                 connection.close();
             }
         }
-        return new ForwardResolution(CategoryListActionBean.class, "list");
+        return new ForwardResolution(CategoryListActionBean.class);
     }
 
     @ValidationMethod(on = "delete")
@@ -85,20 +89,22 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
 
     @ValidationMethod(on = "update")
     public void validateCategoryCodeIsUnique(ValidationErrors errors) {
-        String code = getCategory().getCode();
-        try {
-            if (readProductCategory(code) != null) {
-                errors.addGlobalError(new SimpleError(
-                        getLocalizationKey("label.error.ProductCategory.AlreadyExists"), code
-                ));
+        String codeUpdate = getCategory().getCode();
+        if (codeUpdate != null && !codeUpdate.isEmpty() && !codeUpdate.equals(getCodeCurrent())) {
+            try {
+                if (readProductCategory(codeUpdate) != null) {
+                    errors.addGlobalError(new SimpleError(
+                            getLocalizationKey("label.error.ProductCategory.AlreadyExists"), codeUpdate
+                    ));
+                }
+            } catch (SQLException ex) {
+                getContext().getValidationErrors().addGlobalError(
+                        new SimpleError(ex.getMessage()));
             }
-        } catch (SQLException ex) {
-            getContext().getValidationErrors().addGlobalError(
-                    new SimpleError(ex.getMessage()));
         }
     }
 
-    @ValidationMethod
+    @ValidationMethod(on = "form")
     public void validateCategoryListIsAvalaible(ValidationErrors errors) {
         try {
             setCategory(readProductCategory(getCategory().getId()));
@@ -109,13 +115,30 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
     }
 
     @ValidateNestedProperties({
-        @Validate(field = "id",
+        @Validate(on = {"form", "update", "delete"},
+                field = "id",
                 required = true,
-                converter = UUIDTypeConverter.class)
+                converter = UUIDTypeConverter.class),
+        @Validate(on = {"update"},
+                field = "name",
+                required = true,
+                trim = true,
+                maxlength = 255),
+        @Validate(on = {"update"},
+                field = "code",
+                trim = true,
+                maxlength = 4)
     })
     @Override
     public void setCategory(ProductCategory category) {
         super.setCategory(category);
     }
 
+    public String getCodeCurrent() {
+        return codeCurrent;
+    }
+
+    public void setCodeCurrent(String codeCurrent) {
+        this.codeCurrent = codeCurrent;
+    }
 }
