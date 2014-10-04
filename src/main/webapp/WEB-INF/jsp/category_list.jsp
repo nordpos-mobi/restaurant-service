@@ -37,16 +37,14 @@
             data-inset="true" data-split-icon="edit" data-split-theme="a">
             <c:forEach items="${actionBean.categoryList}" var="category">                
                 <li>
-                    <sdynattr:link href="/Product.action"
-                                   event="list"
+                    <sdynattr:link href="/CategoryProductList.action"
                                    data-transition="slide">
-                        <stripes:param name="categoryId" value="${category.id}"/>
+                        <stripes:param name="category.id" value="${category.id}"/>
                         <c:out value="${category.name}"/>
                         <span class="ui-li-count"><c:out value="${category.productList.size()}"/></span>
                     </sdynattr:link>
                     <sdynattr:link href="/CategoryChange.action"
                                    data-transition="slide">
-                        <stripes:param name="category"/>
                         <stripes:param name="category.id" value="${category.id}"/>
                         <stripes:label name="label.edit" />
                     </sdynattr:link>

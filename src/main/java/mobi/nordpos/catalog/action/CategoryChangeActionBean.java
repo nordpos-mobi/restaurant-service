@@ -104,14 +104,14 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
     }
 
     @ValidationMethod(on = "form")
-    public void validateCategoryListIsAvalaible(ValidationErrors errors) {
+    public void validateCategoryIdIsAvalaible(ValidationErrors errors) {
         try {
             ProductCategory category = readProductCategory(getCategory().getId());
             if (category != null) {
                 setCategory(category);
             } else {
                 errors.add("category.id", new SimpleError(
-                        getLocalizationKey("label.error.ProductCategory.CatalogNotInclude"), getCategory().getId().toString()));
+                        getLocalizationKey("label.error.ProductCategory.CatalogNotInclude")));
             }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(

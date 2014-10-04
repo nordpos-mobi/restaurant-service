@@ -23,10 +23,11 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="header.title">
-        <c:out value="${actionBean.productCategory.name}"/>
+        <c:out value="${actionBean.category.name}"/>
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">
+        <%--
         <sdynattr:link href="/Product.action"
                        event="create"                       
                        class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left"
@@ -34,9 +35,11 @@
             <stripes:param name="categoryId" value="${actionBean.productCategory.id}"/>
             <stripes:label name="label.create" />
         </sdynattr:link>          
+        --%>
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
+        <stripes:errors/>
         <stripes:messages/>
         <ul data-role="listview" 
             data-filter="true" 
@@ -57,12 +60,10 @@
                         </p>
                     </a>
                     <a>
-                        <%--<stripes:param name="productId" value="${product.id}"/>
-                        <stripes:label name="label.edit" />--%>
                     </a>
                 </li>
             </c:forEach>
-        </ul>
+        </ul>        
     </stripes:layout-component>
 
     <stripes:layout-component name="footer">

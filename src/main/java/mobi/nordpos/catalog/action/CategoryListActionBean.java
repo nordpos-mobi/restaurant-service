@@ -49,14 +49,8 @@ public class CategoryListActionBean extends CategoryBaseActionBean {
 
     @ValidationMethod
     public void validateCategoryListIsAvalaible(ValidationErrors errors) {
-        try {
-            List<ProductCategory> productList = readCategoryList();
-            if (productList != null) {
-                setCategoryList(productList);
-            } else {
-                errors.addGlobalError(new SimpleError(
-                        getLocalizationKey("label.error.ProductCategory.CatalogEmpty")));
-            }
+        try {            
+            setCategoryList(readCategoryList());
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
