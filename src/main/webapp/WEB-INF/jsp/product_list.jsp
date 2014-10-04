@@ -43,7 +43,10 @@
             data-inset="true">
             <c:forEach items="${actionBean.productList}" var="product">                
                 <li>
-                    <a><c:out value="${product.name}"/>
+                    <sdynattr:link href="/ProductView.action"
+                                   data-transition="slide">
+                        <stripes:param name="product.code" value="${product.code}"/>
+                        <c:out value="${product.name}"/>
                         <p class="ui-li-aside">
                             <strong>
                                 <fmt:formatNumber value="${product.priceSell}"
@@ -53,7 +56,7 @@
                                                   minFractionDigits="2"/>
                             </strong>
                         </p>
-                    </a>
+                    </sdynattr:link>
                 </li>
             </c:forEach>
         </ul>        

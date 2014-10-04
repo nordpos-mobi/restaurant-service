@@ -15,9 +15,7 @@
  */
 package mobi.nordpos.catalog.action;
 
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import java.sql.SQLException;
-import mobi.nordpos.catalog.dao.ormlite.ProductCategoryPersist;
 import mobi.nordpos.catalog.ext.UUIDTypeConverter;
 import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -111,7 +109,7 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
                 setCategory(category);
             } else {
                 errors.add("category.id", new SimpleError(
-                        getLocalizationKey("label.error.ProductCategory.CatalogNotInclude")));
+                        getLocalizationKey("label.error.CatalogNotInclude")));
             }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(

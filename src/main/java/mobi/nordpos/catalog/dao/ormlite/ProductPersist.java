@@ -21,7 +21,6 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.UUID;
 import mobi.nordpos.catalog.dao.*;
 import mobi.nordpos.catalog.model.Product;
@@ -38,9 +37,11 @@ public class ProductPersist extends BaseDaoImpl<Product, UUID> implements Produc
     }
 
     @Override
-    public Product read(UUID productId) throws SQLException {
+    public Product read(String code) throws SQLException {
         productDao = DaoManager.createDao(connectionSource, Product.class);
-        return productDao.queryForId(productId);
+        QueryBuilder qb = productDao.queryBuilder();
+        qb.where().like(Product.CODE, code);
+        return (Product) qb.queryForFirst();
     }
 
 }

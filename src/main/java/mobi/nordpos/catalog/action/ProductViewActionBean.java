@@ -16,10 +16,7 @@
 package mobi.nordpos.catalog.action;
 
 import java.sql.SQLException;
-import java.util.List;
-import mobi.nordpos.catalog.ext.UUIDTypeConverter;
 import mobi.nordpos.catalog.model.Product;
-import mobi.nordpos.catalog.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -32,49 +29,41 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public class CategoryProductListActionBean extends CategoryBaseActionBean {
+public class ProductViewActionBean extends ProductBaseActionBean {
 
-    private static final String PRODUCT_LIST = "/WEB-INF/jsp/product_list.jsp";
-
-    private List<Product> productList;
+    private static final String PRODUCT_VIEW = "/WEB-INF/jsp/product_view.jsp";
 
     @DefaultHandler
-    public Resolution view() {
-        return new ForwardResolution(PRODUCT_LIST);
-    }
-           
-    @ValidateNestedProperties({
-        @Validate(field = "id",
-                required = true,
-                converter = UUIDTypeConverter.class)
-    })     
-    @Override
-    public void setCategory(ProductCategory category) {
-        super.setCategory(category);
-    }
-    
-    public List<Product> getProductList() {
-        return productList;
+    public Resolution content() {
+        return new ForwardResolution(PRODUCT_VIEW);
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+
+    @ValidateNestedProperties({        
+        @Validate(field = "code",
+                required = true,
+                trim = true,
+                maxlength = 12)
+    })
+    @Override
+    public void setProduct(Product product) {
+        super.setProduct(product);
     }
 
     @ValidationMethod
-    public void validateCategoryIdIsAvalaible(ValidationErrors errors) {
+    public void validateProductCodeIsAvalaible(ValidationErrors errors) {
         try {
-            ProductCategory category = readProductCategory(getCategory().getId());
-            if (category != null) {
-                setCategory(category);
-                setProductList(category.getProductList());
+            Product product = readProduct(getProduct().getCode());
+            if (product != null) {
+                setProduct(product);
             } else {
-                errors.add("category.id", new SimpleError(
+                errors.add("product.code", new SimpleError(
                         getLocalizationKey("label.error.CatalogNotInclude")));
             }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
         }
-    }    
+    }
+
 }

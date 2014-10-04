@@ -25,5 +25,6 @@ import mobi.nordpos.catalog.model.Product;
  */
 public interface ProductDAO extends Dao<Product, UUID> {
 
-    public Product read(UUID productId) throws SQLException;
+        public Product read(String code) throws SQLException;
+
 }

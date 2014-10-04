@@ -47,6 +47,18 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
             }
         }
     }
+    
+    protected Product readProduct(String code) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            ProductPersist productDao = new ProductPersist(connection);
+            return productDao.read(code);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }    
 
     protected Product createProduct(Product product) throws SQLException {
         try {

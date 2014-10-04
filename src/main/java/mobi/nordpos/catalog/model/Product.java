@@ -47,7 +47,11 @@ public class Product {
     @DatabaseField(columnName = PRICESELL, canBeNull = false)
     private Double pricesell;
 
-    @DatabaseField(foreign = true, columnName = CATEGORY, canBeNull = false)
+    @DatabaseField(foreign = true,
+            columnName = CATEGORY,
+            foreignColumnName = ProductCategory.ID,
+            foreignAutoRefresh = true,
+            canBeNull = false)
     private ProductCategory productCategory;
 
     public UUID getId() {

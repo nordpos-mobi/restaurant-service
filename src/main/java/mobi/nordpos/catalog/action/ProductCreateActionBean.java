@@ -16,7 +16,6 @@
 package mobi.nordpos.catalog.action;
 
 import java.sql.SQLException;
-import java.util.UUID;
 import mobi.nordpos.catalog.ext.UUIDTypeConverter;
 import mobi.nordpos.catalog.model.Product;
 import mobi.nordpos.catalog.model.ProductCategory;
@@ -91,8 +90,8 @@ public class ProductCreateActionBean extends ProductBaseActionBean {
             if (category != null) {
                 getProduct().setProductCategory(category);
             } else {
-                errors.add("category.id", new SimpleError(
-                        getLocalizationKey("label.error.ProductCategory.CatalogNotInclude")));
+                errors.add("product.category.id", new SimpleError(
+                        getLocalizationKey("label.error.CatalogNotInclude")));
             }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(

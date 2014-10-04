@@ -49,7 +49,7 @@ public class ProductCategoryPersist extends BaseDaoImpl<ProductCategory, UUID> i
     public ProductCategory read(String code) throws SQLException {
         productCategoryDao = DaoManager.createDao(connectionSource, ProductCategory.class);
         QueryBuilder qb = productCategoryDao.queryBuilder();
-        qb.where().like(ProductCategory.CODE, code);        
+        qb.where().like(ProductCategory.CODE, code);
         return (ProductCategory) qb.queryForFirst();
     }    
 
