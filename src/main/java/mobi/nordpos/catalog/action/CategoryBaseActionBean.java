@@ -60,7 +60,7 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
             }
         }
     }
-    
+
     protected ProductCategory readProductCategory(String code) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -71,8 +71,8 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
                 connection.close();
             }
         }
-    }    
-    
+    }
+
     protected ProductCategory createProductCategory(ProductCategory category) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -83,8 +83,8 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
                 connection.close();
             }
         }
-    }   
-    
+    }
+
     protected Boolean updateProductCategory(ProductCategory category) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -95,6 +95,18 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
                 connection.close();
             }
         }
-    }      
+    }
+
+    protected Boolean deleteProductCategory(UUID id) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
+            return productCategoryDao.deleteById(id) > 0;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
 
 }

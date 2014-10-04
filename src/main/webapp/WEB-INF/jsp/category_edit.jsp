@@ -47,11 +47,15 @@
                     <c:out value="${actionBean.category.name}"/>
                 </h3>
                 <p><stripes:label name="label.ask.ProductCategoryDelete" /></p>
-                <stripes:form action="/ProductCategory.action?delete">
-                    <sdynattr:submit name="yes" data-theme="a" data-icon="check"/>
+                <stripes:form action="/CategoryChange.action?delete">
+                    <div>
+                        <stripes:hidden name="category"/>
+                        <stripes:hidden name="category.id" value="${actionBean.category.id}"/>                    
+                    </div>
+                    <sdynattr:submit name="yes" data-theme="a" data-icon="check"/>                    
                 </stripes:form>
                 <a href="#" 
-                   class="ui-btn ui-corner-all ui-icon-forbidden ui-btn-icon-left ui-btn-b ui-btn-inline ui-shadow" 
+                   class="ui-btn ui-corner-all ui-icon-forbidden ui-btn-icon-left ui-btn-b ui-shadow" 
                    data-rel="back" 
                    data-transition="flow">
                     <stripes:label name="no" />

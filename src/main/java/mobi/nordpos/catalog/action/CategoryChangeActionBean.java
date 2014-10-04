@@ -61,28 +61,27 @@ public class CategoryChangeActionBean extends CategoryBaseActionBean {
     }
 
     public Resolution delete() throws SQLException {
+        ProductCategory category = getCategory();
         try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            productCategoryDao.deleteById(getCategory().getId());
+            if (deleteProductCategory(category.getId())) {
+                getContext().getMessages().add(
+                        new SimpleMessage(getLocalizationKey("label.message.ProductCategory.deleted"),
+                                category.getName()));
+            }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError("{2} {3}", ex.getErrorCode(), ex.getMessage()));
-            return new ForwardResolution(CategoryListActionBean.class, "list");
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
+            return getContext().getSourcePageResolution();
         }
         return new ForwardResolution(CategoryListActionBean.class);
     }
 
     @ValidationMethod(on = "delete")
     public void validateProductListIsEmpty(ValidationErrors errors) throws SQLException {
-        ProductCategory category = getCategory();
-        if (!category.getProductCollection().isEmpty()) {
+        setCategory(readProductCategory(getCategory().getId()));        
+        if (!getCategory().getProductCollection().isEmpty()) {
             errors.addGlobalError(new SimpleError(
-                    getLocalizationKey("label.error.ProductCategory.IncludeProducts"), category.getName(), category.getProductCollection().size()
+                    getLocalizationKey("label.error.ProductCategory.IncludeProducts"), getCategory().getName(), getCategory().getProductCollection().size()
             ));
         }
     }
