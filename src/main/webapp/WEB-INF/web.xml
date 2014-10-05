@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     version="3.0">
 
-    <display-name>nordpos.mobi: Product Catalog</display-name>
+    <display-name>nordpos.mobi: Restaurant Service</display-name>
        
     <context-param>
         <param-name>db.URL</param-name>
@@ -40,17 +40,17 @@
         <!-- STRIPES ACTIONS -->
         <init-param>
             <param-name>ActionResolver.Packages</param-name>
-            <param-value>mobi.nordpos.catalog</param-value>
+            <param-value>mobi.nordpos.restaurant</param-value>
         </init-param>
 
         <init-param>
             <param-name>ActionBeanContext.Class</param-name>
-            <param-value>mobi.nordpos.catalog.ext.MobileActionBeanContext</param-value>
+            <param-value>mobi.nordpos.restaurant.ext.MobileActionBeanContext</param-value>
         </init-param>               
                    
         <init-param>
             <param-name>Extension.Packages</param-name>
-            <param-value>>mobi.nordpos.catalog.ext</param-value>
+            <param-value>>mobi.nordpos.restaurant.ext</param-value>
         </init-param>
         
         <!-- STRIPES LOCALES -->
@@ -62,7 +62,7 @@
         <!-- Optional init parameter for the Stripes Filter. -->
         <init-param>
             <param-name>Extension.Packages</param-name>
-            <param-value>mobi.nordpos.catalog.ext</param-value>
+            <param-value>mobi.nordpos.restaurant.ext</param-value>
         </init-param>
     </filter>
 

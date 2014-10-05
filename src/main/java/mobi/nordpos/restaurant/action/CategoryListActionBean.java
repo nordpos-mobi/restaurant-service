@@ -13,11 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package mobi.nordpos.catalog.action;
+package mobi.nordpos.restaurant.action;
 
 import java.sql.SQLException;
 import java.util.List;
-import mobi.nordpos.catalog.model.ProductCategory;
+import mobi.nordpos.restaurant.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;

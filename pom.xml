@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>mobi.nordpos</groupId>
-    <artifactId>product-catalog</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <artifactId>restaurant-service</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>product-catalog</name>
+    <name>restaurant-service</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

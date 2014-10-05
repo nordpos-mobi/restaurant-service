@@ -13,15 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package mobi.nordpos.catalog.action;
+package mobi.nordpos.restaurant.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 import java.util.UUID;
-import mobi.nordpos.catalog.dao.ormlite.ProductCategoryPersist;
-import mobi.nordpos.catalog.ext.MobileActionBeanContext;
-import mobi.nordpos.catalog.model.ProductCategory;
+import mobi.nordpos.restaurant.dao.ormlite.ProductCategoryPersist;
+import mobi.nordpos.restaurant.ext.MobileActionBeanContext;
+import mobi.nordpos.restaurant.model.ProductCategory;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.controller.StripesFilter;

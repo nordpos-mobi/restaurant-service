@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package mobi.nordpos.catalog.ext;
+package mobi.nordpos.restaurant.ext;
 
 import java.util.Collection;
 import java.util.Locale;

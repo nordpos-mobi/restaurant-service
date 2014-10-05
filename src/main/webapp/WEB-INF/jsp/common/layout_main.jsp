@@ -54,7 +54,7 @@
                     </h2>
 
                     <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal" data-mini="true">
-                        <a href="https://github.com/nordpos-mobi" data-role="button" data-icon="github" data-iconpos="notext">nordpos-mobi</a>
+                        <a href="https://github.com/nordpos-mobi/restaurant-service" data-role="button" data-icon="github" data-iconpos="notext">nordpos-mobi.restaurant-service</a>
                     </div>                    
                 </div>
             </div>

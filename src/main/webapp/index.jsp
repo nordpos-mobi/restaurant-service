@@ -15,7 +15,7 @@
         <title>NORD POS mobi - Loading...</title>
     </head>
     <body>
-        <stripes:url var="url" beanclass="mobi.nordpos.catalog.action.PresentationActionBean" prependContext="false" />
+        <stripes:url var="url" beanclass="mobi.nordpos.restaurant.action.PresentationActionBean" prependContext="false" />
         <jsp:forward page="${url}" />
     </body>
 </html>

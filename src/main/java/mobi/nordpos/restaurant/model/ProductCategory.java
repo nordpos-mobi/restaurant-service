@@ -4,60 +4,51 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package mobi.nordpos.catalog.model;
+package mobi.nordpos.restaurant.model;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-@DatabaseTable(tableName = "PRODUCTS")
-public class Product {
+@DatabaseTable(tableName = "CATEGORIES")
+public class ProductCategory {
 
     public static final String ID = "ID";
     public static final String NAME = "NAME";
     public static final String CODE = "CODE";
-    public static final String PRICEBUY = "PRICEBUY";
-    public static final String PRICESELL = "PRICESELL";
-    public static final String CATEGORY = "CATEGORY";
 
-    @DatabaseField(generatedId = true, columnName = ID)
+    @DatabaseField(id = true, columnName = ID)
     private UUID id;
 
     @DatabaseField(columnName = NAME, unique = true, canBeNull = false)
     private String name;
-    
-    @DatabaseField(columnName = CODE, unique = true, canBeNull = false)
+
+    @DatabaseField(columnName = CODE)
     private String code;
 
-    @DatabaseField(columnName = PRICEBUY, canBeNull = false)
-    private Double pricebuy;
-
-    @DatabaseField(columnName = PRICESELL, canBeNull = false)
-    private Double pricesell;
-
-    @DatabaseField(foreign = true,
-            columnName = CATEGORY,
-            foreignColumnName = ProductCategory.ID,
-            foreignAutoRefresh = true,
-            canBeNull = false)
-    private ProductCategory productCategory;
+    @ForeignCollectionField(orderAscending = true, orderColumnName = Product.NAME)
+    private ForeignCollection<Product> productCollection;
 
     public UUID getId() {
         return id;
     }
-  
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -69,7 +60,7 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getCode() {
         return code;
     }
@@ -78,28 +69,12 @@ public class Product {
         this.code = code;
     }
 
-    public Double getPriceBuy() {
-        return pricebuy;
+    public ForeignCollection<Product> getProductCollection() {
+        return this.productCollection;
     }
 
-    public void setPriceBuy(Double pricebuy) {
-        this.pricebuy = pricebuy;
-    }
-
-    public Double getPriceSell() {
-        return pricesell;
-    }
-
-    public void setPriceSell(Double pricesell) {
-        this.pricesell = pricesell;
-    }
-
-    public ProductCategory getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(ProductCategory productCategory) {
-        this.productCategory = productCategory;
+    public List<Product> getProductList() {
+        return Arrays.asList(this.getProductCollection().toArray(new Product[this.getProductCollection().size()]));
     }
 
     @Override
@@ -112,7 +87,7 @@ public class Product {
         if (other == null || other.getClass() != getClass()) {
             return false;
         }
-        return name.equals(((Product) other).name);
+        return name.equals(((ProductCategory) other).name);
     }
 
 }

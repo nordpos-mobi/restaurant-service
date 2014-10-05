@@ -13,13 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package mobi.nordpos.catalog.action;
+package mobi.nordpos.restaurant.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import java.sql.SQLException;
 import java.util.UUID;
-import mobi.nordpos.catalog.dao.ormlite.ProductPersist;
-import mobi.nordpos.catalog.model.Product;
+import mobi.nordpos.restaurant.dao.ormlite.ProductPersist;
+import mobi.nordpos.restaurant.model.Product;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>

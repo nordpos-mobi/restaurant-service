@@ -13,8 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package mobi.nordpos.catalog.dao.ormlite;
+package mobi.nordpos.restaurant.dao.ormlite;
 
+import mobi.nordpos.restaurant.dao.ProductCategoryDAO;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -23,8 +24,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-import mobi.nordpos.catalog.dao.*;
-import mobi.nordpos.catalog.model.ProductCategory;
+import mobi.nordpos.restaurant.model.ProductCategory;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
