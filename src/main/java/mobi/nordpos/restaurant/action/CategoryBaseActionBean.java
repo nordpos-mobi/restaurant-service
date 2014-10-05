@@ -18,7 +18,6 @@ package mobi.nordpos.restaurant.action;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 import mobi.nordpos.restaurant.dao.ormlite.ProductCategoryPersist;
 import mobi.nordpos.restaurant.model.ProductCategory;
 
@@ -60,41 +59,4 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
             }
         }
     }
-
-    protected ProductCategory createProductCategory(ProductCategory category) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.createIfNotExists(category);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected Boolean updateProductCategory(ProductCategory category) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.update(category) > 0;
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected Boolean deleteProductCategory(UUID id) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.deleteById(id) > 0;
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
 }

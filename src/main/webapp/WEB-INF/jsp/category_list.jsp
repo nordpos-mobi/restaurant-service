@@ -21,32 +21,31 @@
         <stripes:label name="label.ProductCategory"/>
     </stripes:layout-component>
 
-    <stripes:layout-component name="button.action">
-        <sdynattr:link href="/CategoryCreate.action"                       
-                       class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left">
-            <stripes:param name="category.code" value="${actionBean.categoryList.size() + 1}"/>
-            <stripes:label name="label.create" />
-        </sdynattr:link>          
+    <stripes:layout-component name="button.action">         
     </stripes:layout-component>
 
-    <stripes:layout-component name="content">
-        <stripes:messages />
+    <%-- Main content of the page implementation to the template for view --%>
+    <stripes:layout-component name="content">        
+        <%-- Errors after run action --%>
         <stripes:errors />
+        <%-- Messages about completed action --%>
+        <stripes:messages />
+        <%-- Listview include search by the name of elements --%>
         <ul data-role="listview" data-filter="true"
             data-filter-placeholder="${actionBean.getLocalizationKey("label.ProductCategory.search")}"
-            data-inset="true" data-split-icon="edit" data-split-theme="a">
+            data-inset="true">
+            <%-- Create dynamic listview. --%>
             <c:forEach items="${actionBean.categoryList}" var="category">                
                 <li>
+                    <%-- Link to view the selected child elements of the list --%>
                     <sdynattr:link href="/CategoryProductList.action"
                                    data-transition="slide">
+                        <%-- Key parameter for search child elements --%>
                         <stripes:param name="category.id" value="${category.id}"/>
+                        <%-- Name of the list item --%>
                         <c:out value="${category.name}"/>
+                        <%-- Addional information about number of child elements --%>
                         <span class="ui-li-count"><c:out value="${category.productList.size()}"/></span>
-                    </sdynattr:link>
-                    <sdynattr:link href="/CategoryChange.action"
-                                   data-transition="slide">
-                        <stripes:param name="category.id" value="${category.id}"/>
-                        <stripes:label name="label.edit" />
                     </sdynattr:link>
                 </li>
             </c:forEach>

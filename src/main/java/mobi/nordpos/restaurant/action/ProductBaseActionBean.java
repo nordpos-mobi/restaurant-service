@@ -35,7 +35,7 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
     public void setProduct(Product product) {
         this.product = product;
     }
-    
+
     protected Product readProduct(UUID uuid) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -47,48 +47,12 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
             }
         }
     }
-    
+
     protected Product readProduct(String code) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductPersist productDao = new ProductPersist(connection);
             return productDao.read(code);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }    
-
-    protected Product createProduct(Product product) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductPersist productDao = new ProductPersist(connection);
-            return productDao.createIfNotExists(product);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected Boolean updateProduct(Product product) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductPersist productDao = new ProductPersist(connection);
-            return productDao.update(product) > 0;
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected Boolean deleteProduct(UUID id) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductPersist productDao = new ProductPersist(connection);
-            return productDao.deleteById(id) > 0;
         } finally {
             if (connection != null) {
                 connection.close();
