@@ -36,6 +36,12 @@
         <display-name>Stripes Filter</display-name>
         <filter-name>StripesFilter</filter-name>
         <filter-class>net.sourceforge.stripes.controller.StripesFilter</filter-class>
+        
+        <!-- Optional init parameter for the Stripes Filter. -->
+        <init-param>
+            <param-name>Extension.Packages</param-name>
+            <param-value>mobi.nordpos.restaurant.ext</param-value>
+        </init-param>
 
         <!-- STRIPES ACTIONS -->
         <init-param>
@@ -46,11 +52,6 @@
         <init-param>
             <param-name>ActionBeanContext.Class</param-name>
             <param-value>mobi.nordpos.restaurant.ext.MobileActionBeanContext</param-value>
-        </init-param>               
-                   
-        <init-param>
-            <param-name>Extension.Packages</param-name>
-            <param-value>>mobi.nordpos.restaurant.ext</param-value>
         </init-param>
         
         <!-- STRIPES LOCALES -->
@@ -58,12 +59,7 @@
             <param-name>LocalePicker.Locales</param-name>
             <param-value>en:UTF-8,ru:UTF-8</param-value>
         </init-param>
-        
-        <!-- Optional init parameter for the Stripes Filter. -->
-        <init-param>
-            <param-name>Extension.Packages</param-name>
-            <param-value>mobi.nordpos.restaurant.ext</param-value>
-        </init-param>
+                
     </filter>
 
     <!-- FILTER MAPPINGS -->

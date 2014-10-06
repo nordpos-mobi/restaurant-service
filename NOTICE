@@ -1,0 +1,23 @@
+restaurant-service
+
+Copyright 2012-2014 Nord Trading Network
+This product includes Java Servlet 3.0 (JSR 315)
+developed for NORD POS mobi project 
+    http://www.nordpos.mobi/
+    Licensed under Apache License Version 2.0
+
+Copyright 2009 Ben Gunter
+This source code contains source code derived from the 
+SecurityInterceptor written by Ben Gunter for Stripes
+Examples Webapp. The original source code is available from 
+    https://github.com/StripesFramework/stripes/
+    Licensed under Apache License Version 2.0
+
+Copyright 2007-2009 Openbravo, S.L.
+This source code contains source code of utilities
+for encode user passwords. This utilities are part
+of Openbravo Java POS. The original software is available from
+    http://www.openbravo.com/product/pos
+    Licensed under GNU General Public License Version 3
+
+

@@ -20,8 +20,10 @@ import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 import java.util.UUID;
 import mobi.nordpos.restaurant.dao.ormlite.ProductCategoryPersist;
+import mobi.nordpos.restaurant.dao.ormlite.UserPersist;
 import mobi.nordpos.restaurant.ext.MobileActionBeanContext;
 import mobi.nordpos.restaurant.model.ProductCategory;
+import mobi.nordpos.restaurant.model.User;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.controller.StripesFilter;
@@ -77,5 +79,17 @@ public abstract class BaseActionBean implements ActionBean {
             }
         }
     }
+    
+    protected User readUser(String name) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            UserPersist userDao = new UserPersist(connection);
+            return userDao.read(name);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }    
     
 }
