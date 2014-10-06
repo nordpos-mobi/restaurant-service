@@ -43,7 +43,7 @@ public class ProductViewActionBean extends ProductBaseActionBean {
         @Validate(field = "code",
                 required = true,
                 trim = true,
-                maxlength = 12)
+                maxlength = 13)
     })
     @Override
     public void setProduct(Product product) {
