@@ -29,7 +29,7 @@
         <%-- Listview include search by the name of elements --%>
         <ul data-role="listview" data-filter="true"
             data-filter-placeholder="<fmt:message key='label.ProductCategory.search' />"
-            data-inset="true" data-split-icon="edit" data-split-theme="a">
+            data-inset="true">
             <%-- Create dynamic listview. --%>
             <c:forEach items="${actionBean.categoryList}" var="category">                
                 <li>

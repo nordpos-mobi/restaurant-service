@@ -32,8 +32,13 @@
             <sdynattr:link href="/CategoryList.action"
                            class="ui-btn ui-shadow ui-corner-all"
                            role="button">
-                <fmt:message key="label.Catalog" />
-            </sdynattr:link>            
+                <fmt:message key="label.RestaurantMenu" />
+            </sdynattr:link>
+            <sdynattr:link href="/FloorList.action"
+                           class="ui-btn ui-shadow ui-corner-all"
+                           role="button">
+                <fmt:message key="label.RestaurantFloor" />
+            </sdynattr:link>  
         </div>
     </stripes:layout-component>
 
