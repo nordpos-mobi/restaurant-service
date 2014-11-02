@@ -49,7 +49,7 @@ public class CategoryListActionBean extends CategoryBaseActionBean {
 
     @ValidationMethod
     public void validateCategoryListIsAvalaible(ValidationErrors errors) {
-        try {            
+        try {
             setCategoryList(readCategoryList());
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(

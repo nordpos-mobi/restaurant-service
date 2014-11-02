@@ -16,32 +16,30 @@
 package mobi.nordpos.restaurant.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.stmt.QueryBuilder;
 import java.sql.SQLException;
-import java.util.List;
-import mobi.nordpos.restaurant.dao.ormlite.ProductCategoryPersist;
-import mobi.nordpos.restaurant.model.ProductCategory;
+import mobi.nordpos.restaurant.dao.ormlite.UserPersist;
+import mobi.nordpos.restaurant.model.User;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public abstract class CategoryBaseActionBean extends BaseActionBean {
+public abstract class UserBaseActionBean extends BaseActionBean {
 
-    private ProductCategory category;
+    private User user;
 
-    public ProductCategory getCategory() {
-        return category;
+    public User getUser() {
+        return user;
     }
 
-    public void setCategory(ProductCategory category) {
-        this.category = category;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    protected List<ProductCategory> readCategoryList() throws SQLException {
+    protected User readUser(String name) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.getList();
+            UserPersist userDao = new UserPersist(connection);
+            return userDao.read(name);
         } finally {
             if (connection != null) {
                 connection.close();
@@ -49,13 +47,23 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
         }
     }
 
-    protected ProductCategory readProductCategory(String column, String value) throws SQLException {
+    protected User createUser(User user) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            QueryBuilder qb = productCategoryDao.queryBuilder();
-            qb.where().like(column, value);
-            return (ProductCategory) qb.queryForFirst();
+            UserPersist userDao = new UserPersist(connection);
+            return userDao.createIfNotExists(user);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+
+    protected Boolean updateUser(User user) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            UserPersist userDao = new UserPersist(connection);
+            return userDao.update(user) > 0;
         } finally {
             if (connection != null) {
                 connection.close();

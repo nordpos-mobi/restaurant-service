@@ -15,33 +15,21 @@
  */
 package mobi.nordpos.restaurant.dao.ormlite;
 
-import mobi.nordpos.restaurant.dao.ProductDAO;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
-import java.util.UUID;
 import mobi.nordpos.restaurant.model.Product;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public class ProductPersist extends BaseDaoImpl<Product, UUID> implements ProductDAO {
+public class ProductPersist extends BaseDaoImpl<Product, String> {
 
-    Dao<Product, UUID> productDao;
+    Dao<Product, String> productDao;
 
     public ProductPersist(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, Product.class);
-    }
-
-    @Override
-    public Product read(String code) throws SQLException {
-        productDao = DaoManager.createDao(connectionSource, Product.class);
-        QueryBuilder qb = productDao.queryBuilder();
-        qb.where().like(Product.CODE, code);
-        return (Product) qb.queryForFirst();
     }
 
 }

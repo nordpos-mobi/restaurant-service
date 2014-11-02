@@ -16,7 +16,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
-package mobi.nordpos.restaurant.util;
+package com.openbravo.pos.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

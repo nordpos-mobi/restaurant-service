@@ -16,8 +16,9 @@
 package mobi.nordpos.restaurant.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.QueryBuilder;
 import java.sql.SQLException;
-import java.util.UUID;
+import java.util.List;
 import mobi.nordpos.restaurant.dao.ormlite.ProductPersist;
 import mobi.nordpos.restaurant.model.Product;
 
@@ -36,11 +37,11 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
         this.product = product;
     }
 
-    protected Product readProduct(UUID uuid) throws SQLException {
+    protected Product readProduct(String id) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductPersist productDao = new ProductPersist(connection);
-            return productDao.queryForId(uuid);
+            return productDao.queryForId(id);
         } finally {
             if (connection != null) {
                 connection.close();
@@ -48,11 +49,13 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
         }
     }
 
-    protected Product readProduct(String code) throws SQLException {
+    protected Product readProduct(String table, String value) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductPersist productDao = new ProductPersist(connection);
-            return productDao.read(code);
+            QueryBuilder qb = productDao.queryBuilder();
+            qb.where().like(table, value);
+            return (Product) qb.queryForFirst();
         } finally {
             if (connection != null) {
                 connection.close();

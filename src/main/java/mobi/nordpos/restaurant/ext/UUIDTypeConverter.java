@@ -32,7 +32,7 @@ public class UUIDTypeConverter implements TypeConverter<UUID> {
 
     private static final SimpleError UUID_NOT_VALID_ERROR = new SimpleError(
             "The UUID {1} is not valid.");
-    private static final Pattern pattern = Pattern.compile(
+    private static final Pattern PATTERN = Pattern.compile(
             "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}");
 
     @Override
@@ -40,7 +40,7 @@ public class UUIDTypeConverter implements TypeConverter<UUID> {
             Class<? extends UUID> type,
             Collection<ValidationError> errors) {
         UUID uuid;
-        Matcher matcher = pattern.matcher(string);
+        Matcher matcher = PATTERN.matcher(string);
         if (matcher.find()) {
             try {
                 uuid = UUID.fromString(string);

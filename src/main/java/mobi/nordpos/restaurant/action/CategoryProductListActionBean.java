@@ -17,13 +17,14 @@ package mobi.nordpos.restaurant.action;
 
 import java.sql.SQLException;
 import java.util.List;
-import mobi.nordpos.restaurant.ext.UUIDTypeConverter;
 import mobi.nordpos.restaurant.model.Product;
 import mobi.nordpos.restaurant.model.ProductCategory;
+import mobi.nordpos.restaurant.model.TaxCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.validation.SimpleError;
+import net.sourceforge.stripes.validation.StringTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import net.sourceforge.stripes.validation.ValidationErrors;
@@ -42,17 +43,17 @@ public class CategoryProductListActionBean extends CategoryBaseActionBean {
     public Resolution view() {
         return new ForwardResolution(PRODUCT_LIST);
     }
-           
+
     @ValidateNestedProperties({
         @Validate(field = "id",
                 required = true,
-                converter = UUIDTypeConverter.class)
-    })     
+                converter = StringTypeConverter.class)
+    })
     @Override
     public void setCategory(ProductCategory category) {
         super.setCategory(category);
     }
-    
+
     public List<Product> getProductList() {
         return productList;
     }
@@ -65,16 +66,21 @@ public class CategoryProductListActionBean extends CategoryBaseActionBean {
     public void validateCategoryIdIsAvalaible(ValidationErrors errors) {
         try {
             ProductCategory category = readProductCategory(getCategory().getId());
+            List<TaxCategory> taxCategories = readTaxCategoryList();
             if (category != null) {
                 setCategory(category);
-                setProductList(category.getProductList());
+                List<Product> products = category.getProductList();
+                for (Product product : products) {
+                    product.setTax(readTax(product.getTaxCategory().getId()));
+                }
+                setProductList(products);
             } else {
                 errors.add("category.id", new SimpleError(
-                        getLocalizationKey("label.error.CatalogNotInclude")));
+                        getLocalizationKey("error.CatalogNotInclude")));
             }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
         }
-    }    
+    }
 }

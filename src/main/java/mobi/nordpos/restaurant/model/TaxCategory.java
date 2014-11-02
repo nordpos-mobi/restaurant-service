@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2014 Nord Trading Network.
+ * Copyright (c) 2012-2013 Nord Trading Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,23 +16,18 @@
 package mobi.nordpos.restaurant.model;
 
 import com.j256.ormlite.dao.ForeignCollection;
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-@DatabaseTable(tableName = "CATEGORIES")
-public class ProductCategory {
+@DatabaseTable(tableName = "TAXCATEGORIES")
+public class TaxCategory {
 
     public static final String ID = "ID";
     public static final String NAME = "NAME";
-    public static final String CODE = "CODE";
-    public static final String IMAGE = "IMAGE";
 
     @DatabaseField(id = true, columnName = ID)
     private String id;
@@ -40,13 +35,7 @@ public class ProductCategory {
     @DatabaseField(columnName = NAME, unique = true, canBeNull = false)
     private String name;
 
-    @DatabaseField(columnName = CODE, canBeNull = true)
-    private String code;
-
-    @DatabaseField(columnName = IMAGE, dataType = DataType.BYTE_ARRAY, canBeNull = true)
-    private byte[] image;
-
-    @ForeignCollectionField(orderAscending = true, orderColumnName = Product.NAME)
+    @ForeignCollectionField
     private ForeignCollection<Product> productCollection;
 
     public String getId() {
@@ -65,41 +54,7 @@ public class ProductCategory {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-    
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }    
-
     public ForeignCollection<Product> getProductCollection() {
         return this.productCollection;
     }
-
-    public List<Product> getProductList() {
-        return Arrays.asList(this.getProductCollection().toArray(new Product[this.getProductCollection().size()]));
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == null || other.getClass() != getClass()) {
-            return false;
-        }
-        return name.equals(((ProductCategory) other).name);
-    }
-
 }

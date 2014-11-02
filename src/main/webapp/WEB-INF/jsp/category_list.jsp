@@ -11,29 +11,25 @@
                        pageid="ProductCategory">
 
     <stripes:layout-component name="button.return">
-        <sdynattr:link href="/Presentation.action"
+        <sdynattr:link href="/Welcome.action"
                        class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-notext">            
-            <stripes:label name="label.home" />
+            <fmt:message key="label.home" />
         </sdynattr:link>          
     </stripes:layout-component>
 
     <stripes:layout-component name="header.title">
-        <stripes:label name="label.ProductCategory"/>
+        <fmt:message key="label.Categories"/>
     </stripes:layout-component>
 
-    <stripes:layout-component name="button.action">         
+    <stripes:layout-component name="button.action">          
     </stripes:layout-component>
 
     <%-- Main content of the page implementation to the template for view --%>
-    <stripes:layout-component name="content">        
-        <%-- Errors after run action --%>
-        <stripes:errors />
-        <%-- Messages about completed action --%>
-        <stripes:messages />
+    <stripes:layout-component name="content">
         <%-- Listview include search by the name of elements --%>
         <ul data-role="listview" data-filter="true"
-            data-filter-placeholder="${actionBean.getLocalizationKey("label.ProductCategory.search")}"
-            data-inset="true">
+            data-filter-placeholder="<fmt:message key='label.ProductCategory.search' />"
+            data-inset="true" data-split-icon="edit" data-split-theme="a">
             <%-- Create dynamic listview. --%>
             <c:forEach items="${actionBean.categoryList}" var="category">                
                 <li>
@@ -42,8 +38,11 @@
                                    data-transition="slide">
                         <%-- Key parameter for search child elements --%>
                         <stripes:param name="category.id" value="${category.id}"/>
+                        <img src="${pageContext.servletContext.contextPath}/CategoryImage.action?preview&category.id=${category.id}&thumbnailSize=80"
+                             alt="${actionBean.category.name}"/>
                         <%-- Name of the list item --%>
-                        <c:out value="${category.name}"/>
+                        <h2><c:out value="${category.name}"/></h2>
+                        <p><c:out value="${category.code}"/></p>
                         <%-- Addional information about number of child elements --%>
                         <span class="ui-li-count"><c:out value="${category.productList.size()}"/></span>
                     </sdynattr:link>

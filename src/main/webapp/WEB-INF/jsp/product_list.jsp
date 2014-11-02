@@ -11,14 +11,13 @@
                        pageid="ProductCategoryView">
 
     <stripes:layout-component name="button.return">
-        <sdynattr:link href="/Presentation.action"
+        <sdynattr:link href="/Welcome.action"
                        class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-notext">            
-            <stripes:label name="label.home" />
+            <fmt:message key="label.home" />
         </sdynattr:link>    
         <sdynattr:link href="/CategoryList.action"
-                       class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-left"
-                       data-prefetch="true">
-            <stripes:label name="label.categories" />
+                       class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-left">
+            <fmt:message key="label.Categories" />
         </sdynattr:link>         
     </stripes:layout-component>
 
@@ -27,19 +26,12 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">
-        <sdynattr:link href="/ProductCreate.action"
-                       class="ui-btn ui-shadow ui-corner-all ui-icon-action ui-btn-icon-left">            
-            <stripes:param name="product.productCategory.id" value="${actionBean.category.id}"/>
-            <stripes:label name="label.create" />
-        </sdynattr:link>          
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
-        <stripes:errors/>
-        <stripes:messages/>
         <ul data-role="listview" 
             data-filter="true" 
-            data-filter-placeholder="${actionBean.getLocalizationKey("label.Product.search")}"
+            data-filter-placeholder="<fmt:message key='label.Product.search' />"
             data-inset="true">
             <c:forEach items="${actionBean.productList}" var="product">                
                 <li>
@@ -49,7 +41,7 @@
                         <c:out value="${product.name}"/>
                         <p class="ui-li-aside">
                             <strong>
-                                <fmt:formatNumber value="${product.priceSell}"
+                                <fmt:formatNumber value="${product.taxPriceSell}"
                                                   type="CURRENCY"
                                                   pattern="#0.00 ¤"                                                  
                                                   maxFractionDigits="2" 

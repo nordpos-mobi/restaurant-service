@@ -43,5 +43,4 @@ public class MobileActionBeanContext extends ActionBeanContext {
     public void logout() {
         getRequest().getSession().invalidate();
     }
-
 }

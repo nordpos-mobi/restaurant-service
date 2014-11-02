@@ -22,13 +22,13 @@ import net.sourceforge.stripes.action.Resolution;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public class PresentationActionBean extends BaseActionBean {
+public class WelcomeActionBean extends BaseActionBean {
 
     private static final String PRESENT = "/WEB-INF/jsp/present.jsp";
     private static final String INFO = "/WEB-INF/jsp/info.jsp";
 
     @DefaultHandler
-    public Resolution present() {
+    public Resolution title() {
         return new ForwardResolution(PRESENT);
     }
 

@@ -19,13 +19,28 @@
             <link rel="stylesheet" href="<c:url value='/css/jquery.mobile-1.4.4.min.css'/>" />
             <link rel="stylesheet" href="<c:url value='/css/jquery.mobile.icons-1.4.4.min.css'/>" />
             <link rel="stylesheet" href="<c:url value='/css/icon-pack-custom.css'/>" />
-            <link rel="stylesheet" href="<c:url value='/css/stripes.mobile.css'/>" />          
             <link rel="icon" type="image/png" href="<c:url value='/icon.png' />" />
-            <script src="<c:url value='/js/jquery-2.1.1.min.js'/>"></script>
-            <script src="<c:url value='/js/jquery.mobile-1.4.4.min.js'/>"></script>
-            <script src="<c:url value='/js/jquery.flot.min.js'/>" type="text/javascript" ></script>
-            <script src="<c:url value='/js/jquery.flot.pie.min.js'/>" type="text/javascript" ></script>
-            
+            <script src="<c:url value='/js/jquery-2.1.1.min.js'/>" type="text/javascript"></script>
+            <script src="<c:url value='/js/jquery.mobile-1.4.4.min.js'/>" type="text/javascript"></script>
+            <script src="<c:url value='/js/jquery.flot.min.js'/>" type="text/javascript"></script>
+            <script src="<c:url value='/js/jquery.flot.pie.min.js'/>" type="text/javascript"></script>
+            <script src="<c:url value='/js/jquery-ean13.min.js'/>" type="text/javascript"></script>
+            <script>
+                (function (i, s, o, g, r, a, m) {
+                    i['GoogleAnalyticsObject'] = r;
+                    i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+                    a = s.createElement(o),
+                            m = s.getElementsByTagName(o)[0];
+                    a.async = 1;
+                    a.src = g;
+                    m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+                ga('create', 'UA-35985632-2', 'nordpos.mobi');
+                ga('send', 'pageview');
+            </script>
         </head>
         <body>
             <div data-role="page" id="${pageid}">
@@ -38,23 +53,43 @@
                     </h2>
                     <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal" data-mini="true">
                         <stripes:layout-component name="button.action"/>
+                        <c:if test="${not empty user}">
+                            <sdynattr:link href="/UserView.action"
+                                           class="ui-btn ui-corner-all ui-btn-icon-left ui-icon-user">
+                                <span>
+                                    <c:out value="${user.name}"/>
+                                </span>
+                            </sdynattr:link>
+                        </c:if>
+                        <fmt:message var="otherLocale" key="layout.otherLocale"/>
+                        <sdynattr:link href="${actionBean.lastUrl}"
+                                       class="ui-btn ui-corner-all"
+                                       role="button">
+                            <stripes:param name="locale" value="${otherLocale}"/>
+                            <fmt:message key="layout.currentLanguage"/>
+                        </sdynattr:link>
                     </div>
                 </div>
                 <div data-role="content" style="padding: 15px" align="center">
+                    <stripes:errors />
+                    <stripes:messages />
                     <stripes:layout-component name="content"/>
+                    <a href="${actionBean.application.projectURL}">
+                        <img src="<c:url value='/image/poweredby-${actionBean.application.id}.png' />" alt="${actionBean.application.toString()}"/>
+                    </a>
                 </div>
                 <div data-role="footer" class="ui-bar">
-                    <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal" data-mini="true">
-                        <a href="tel:+00-000-000-00-00" class="ui-btn ui-corner-all ui-icon-phone ui-btn-icon-notext ui-state-disabled">+00-000-000-00-00</a>
-                        <a href="mailto:svininykh@gmail.com" class="ui-btn ui-corner-all ui-icon-mail ui-btn-icon-notext">svininykh@gmail.com</a>
+                    <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal" data-mini="true">                        
+                        <a href="mailto:<fmt:message key='mailto.address' />" class="ui-btn ui-corner-all ui-icon-mail ui-btn-icon-notext"><fmt:message key='mailto.address' /></a>
+                        <a href="tel:<fmt:message key='tel.number' />" class="ui-btn ui-corner-all ui-icon-phone ui-btn-icon-notext"><fmt:message key='tel.number' /></a>
                     </div>
 
                     <h2>
-                        <span>&copy;2012-2014 Nord Trading Network. <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License, v.2.0</a></span>
+                        <span><fmt:message key="label.Copyright" /></span>
                     </h2>
 
                     <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal" data-mini="true">
-                        <a href="https://github.com/nordpos-mobi/restaurant-service" data-role="button" data-icon="github" data-iconpos="notext">nordpos-mobi.restaurant-service</a>
+                        <a href="https://github.com/nordpos-mobi" data-role="button" data-icon="github" data-iconpos="notext">nordpos-mobi</a>
                     </div>                    
                 </div>
             </div>

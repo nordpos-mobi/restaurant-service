@@ -16,55 +16,50 @@
 package mobi.nordpos.restaurant.action;
 
 import java.sql.SQLException;
-import mobi.nordpos.restaurant.ext.Public;
+import javax.servlet.http.HttpServletResponse;
 import mobi.nordpos.restaurant.model.Product;
-import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.Resolution;
+import mobi.nordpos.restaurant.util.ImagePreview;
+import net.sourceforge.stripes.action.StreamingResolution;
 import net.sourceforge.stripes.validation.SimpleError;
-import net.sourceforge.stripes.validation.Validate;
-import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-@Public
-public class ProductViewActionBean extends ProductBaseActionBean {
+public class ProductImageActionBean extends ProductBaseActionBean {
 
-    private static final String PRODUCT_VIEW = "/WEB-INF/jsp/product_view.jsp";
+    private int thumbnailSize = 256;
 
-    @DefaultHandler
-    public Resolution content() {
-        return new ForwardResolution(PRODUCT_VIEW);
+    public StreamingResolution preview() {
+        return new StreamingResolution("image/jpeg") {
+            @Override
+            public void stream(HttpServletResponse response) throws Exception {
+                response.getOutputStream().write(ImagePreview.createThumbnail(getProduct().getImage(), thumbnailSize));
+                response.flushBuffer();
+            }
+        }.setFilename("product-".concat(getProduct().getCode()).concat(".jpeg")).setAttachment(true);
     }
 
-    @ValidateNestedProperties({
-        @Validate(field = "code",
-                required = true,
-                trim = true)
-    })
-    @Override
-    public void setProduct(Product product) {
-        super.setProduct(product);
-    }
-
-    @ValidationMethod
-    public void validateProductCodeIsAvalaible(ValidationErrors errors) {
+    @ValidationMethod(on = "preview")
+    public void validateProductIdIsAvalaible(ValidationErrors errors) {
         try {
-            Product product = readProduct(Product.CODE, getProduct().getCode());            
+            Product product = readProduct(getProduct().getId());
             if (product != null) {
-                product.setTax(readTax(product.getTaxCategory().getId()));
                 setProduct(product);
-            } else {
-                errors.add("product.code", new SimpleError(
-                        getLocalizationKey("error.CatalogNotInclude")));
             }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
         }
+    }
+
+    public int getThumbnailSize() {
+        return thumbnailSize;
+    }
+
+    public void setThumbnailSize(int thumbnailSize) {
+        this.thumbnailSize = thumbnailSize;
     }
 
 }

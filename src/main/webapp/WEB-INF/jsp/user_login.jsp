@@ -1,18 +1,34 @@
 <%--
-    Document   : login
+    Document   : user_login
     Author     : Andrey Svininykh (svininykh@gmail.com)
-    Copyright  : Nord Trading Network.
+    Copyright  : Nord Trading Network
+    License    : Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 --%>
 
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <stripes:layout-render name="/WEB-INF/jsp/common/layout_main.jsp"
-                       title="Home"
-                       pageid="home">
+                       title="User Authorization"
+                       pageid="UserAuthorization">
 
     <stripes:layout-component name="button.return">
+        <c:if test="${not empty user}">
+            <sdynattr:link href="/Welcome.action"
+                           class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
+                <fmt:message key="label.home" />
+            </sdynattr:link>
+        </c:if>
     </stripes:layout-component>
 
     <stripes:layout-component name="header.title">
+        <fmt:message key="label.UserAuthorization" />
+    </stripes:layout-component>
+
+    <stripes:layout-component name="button.action">
+        <sdynattr:link href="/UserRegistration.action"
+                       class="ui-btn ui-corner-all ui-icon-lock ui-btn-icon-left"
+                       role="button">
+            <fmt:message key="label.register" />
+        </sdynattr:link>
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
@@ -20,25 +36,26 @@
             <a href="http://www.nordpos.mobi">
                 <img src="<c:url value='/image/logo.png' />" alt="NORD POS mobi"/>
             </a>
-            <stripes:errors />
-            <stripes:form action="/Authorization.action">
+            <stripes:form action="/UserAuthorization.action">
                 <div class="ui-field-contain">
                     <stripes:label name="label.login.name"
                                    for="loginName" />
                     <input type="text"
-                           name="loginName"
+                           name="user.name"
                            id="loginName"
                            data-clear-btn="true"
-                           placeholder="${actionBean.getLocalizationKey("label.LoginName.enter")}" />
+                           placeholder="<fmt:message key='label.LoginName.enter' />"
+                           value=""/>
                 </div>
                 <div class="ui-field-contain">
                     <stripes:label name="label.login.password"
                                    for="loginPassword" />
                     <input type="password"
-                           name="loginPassword"
+                           name="user.password"
                            id="loginPassword"
                            data-clear-btn="true"
-                           placeholder="${actionBean.getLocalizationKey("label.LoginPassword.enter")}" />
+                           placeholder="<fmt:message key='label.LoginPassword.enter' />"
+                           value=""/>
                 </div>            
                 <stripes:hidden name="targetUrl" />
                 <stripes:submit name="login"/>

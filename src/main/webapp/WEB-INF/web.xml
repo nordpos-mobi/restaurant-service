@@ -22,6 +22,11 @@
         <param-value>dbpassword</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>db.application.id</param-name>
+        <param-value>nordpos</param-value>
+    </context-param>    
+
     <!-- STRIPES LOCALIZATION PARAMETERS -->
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
@@ -52,14 +57,14 @@
         <init-param>
             <param-name>ActionBeanContext.Class</param-name>
             <param-value>mobi.nordpos.restaurant.ext.MobileActionBeanContext</param-value>
-        </init-param>
+        </init-param>               
         
         <!-- STRIPES LOCALES -->
         <init-param>
             <param-name>LocalePicker.Locales</param-name>
             <param-value>en:UTF-8,ru:UTF-8</param-value>
         </init-param>
-                
+    
     </filter>
 
     <!-- FILTER MAPPINGS -->

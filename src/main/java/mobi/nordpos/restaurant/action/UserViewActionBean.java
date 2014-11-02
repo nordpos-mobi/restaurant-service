@@ -13,18 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package mobi.nordpos.restaurant.dao;
+package mobi.nordpos.restaurant.action;
 
-import com.j256.ormlite.dao.Dao;
-import java.sql.SQLException;
-import java.util.UUID;
-import mobi.nordpos.restaurant.model.Product;
+import net.sourceforge.stripes.action.DefaultHandler;
+import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.Resolution;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public interface ProductDAO extends Dao<Product, UUID> {
+public class UserViewActionBean extends UserBaseActionBean {
 
-        public Product read(String code) throws SQLException;
+    private static final String USER_VIEW = "/WEB-INF/jsp/user_view.jsp";
+
+    @DefaultHandler
+    public Resolution form() {
+        return new ForwardResolution(USER_VIEW);
+    }
 
 }

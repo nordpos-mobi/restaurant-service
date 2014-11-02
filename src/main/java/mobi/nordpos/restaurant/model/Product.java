@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -15,9 +15,11 @@
  */
 package mobi.nordpos.restaurant.model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import java.util.UUID;
+import java.math.BigDecimal;
+import static mobi.nordpos.restaurant.model.ProductCategory.IMAGE;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -28,24 +30,33 @@ public class Product {
     public static final String ID = "ID";
     public static final String NAME = "NAME";
     public static final String CODE = "CODE";
+    public static final String REFERENCE = "REFERENCE";
     public static final String PRICEBUY = "PRICEBUY";
     public static final String PRICESELL = "PRICESELL";
     public static final String CATEGORY = "CATEGORY";
+    public static final String TAXCAT = "TAXCAT";
+    public static final String IMAGE = "IMAGE";
 
-    @DatabaseField(generatedId = true, columnName = ID)
-    private UUID id;
+    @DatabaseField(id = true, columnName = ID)
+    private String id;
 
     @DatabaseField(columnName = NAME, unique = true, canBeNull = false)
     private String name;
-    
+
     @DatabaseField(columnName = CODE, unique = true, canBeNull = false)
     private String code;
 
+    @DatabaseField(columnName = REFERENCE, unique = true, canBeNull = false)
+    private String reference;
+
     @DatabaseField(columnName = PRICEBUY, canBeNull = false)
-    private Double pricebuy;
+    private BigDecimal pricebuy;
 
     @DatabaseField(columnName = PRICESELL, canBeNull = false)
-    private Double pricesell;
+    private BigDecimal pricesell;
+
+    @DatabaseField(columnName = IMAGE, dataType = DataType.BYTE_ARRAY, canBeNull = true)
+    private byte[] image;
 
     @DatabaseField(foreign = true,
             columnName = CATEGORY,
@@ -54,11 +65,24 @@ public class Product {
             canBeNull = false)
     private ProductCategory productCategory;
 
-    public UUID getId() {
+    @DatabaseField(foreign = true,
+            columnName = TAXCAT,
+            foreignColumnName = TaxCategory.ID,
+            foreignAutoRefresh = true,
+            canBeNull = false)
+    private TaxCategory taxCategory;
+
+    @DatabaseField(persisted = false)
+    private Tax tax;
+
+    @DatabaseField(persisted = false)
+    private BigDecimal taxPriceSell;
+
+    public String getId() {
         return id;
     }
-  
-    public void setId(UUID id) {
+
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -69,7 +93,7 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getCode() {
         return code;
     }
@@ -78,20 +102,49 @@ public class Product {
         this.code = code;
     }
 
-    public Double getPriceBuy() {
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public BigDecimal getPriceBuy() {
         return pricebuy;
     }
 
-    public void setPriceBuy(Double pricebuy) {
+    public void setPriceBuy(BigDecimal pricebuy) {
         this.pricebuy = pricebuy;
     }
 
-    public Double getPriceSell() {
+    public BigDecimal getPriceSell() {
         return pricesell;
     }
 
-    public void setPriceSell(Double pricesell) {
+    public void setPriceSell(BigDecimal pricesell) {
         this.pricesell = pricesell;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public BigDecimal getTaxPriceSell() {
+        if (taxPriceSell != null) {
+            return taxPriceSell;
+        } else {
+            taxPriceSell = pricesell.multiply(getTax().getRate().add(BigDecimal.ONE)).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+            return taxPriceSell;
+        }
+    }
+
+    public void setTaxPriceSell(BigDecimal taxPriceSell) {
+        this.taxPriceSell = taxPriceSell;
     }
 
     public ProductCategory getProductCategory() {
@@ -100,6 +153,22 @@ public class Product {
 
     public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
+    }
+
+    public TaxCategory getTaxCategory() {
+        return taxCategory;
+    }
+
+    public void setTaxCategory(TaxCategory taxCategory) {
+        this.taxCategory = taxCategory;
+    }
+
+    public Tax getTax() {
+        return tax;
+    }
+
+    public void setTax(Tax tax) {
+        this.tax = tax;
     }
 
     @Override
