@@ -30,98 +30,75 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
-        <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-collapsed="false">
-            <h2><fmt:message key="label.ProductImage"/></h2>
-            <div class="ui-grid-solo">
+        <div class="ui-body ui-body-a ui-corner-all">
+            <div class="ui-grid-a ui-responsive">  
                 <div class="ui-block-a">
-                    <img src="${pageContext.servletContext.contextPath}/ProductImage.action?preview&product.id=${actionBean.product.id}"
-                         alt="${actionBean.product.name}" />
+                    <div class="ui-body ui-body-d">
+                        <img src="${pageContext.servletContext.contextPath}/ProductImage.action?preview&product.id=${actionBean.product.id}"
+                             alt="${actionBean.product.name}" />
+                    </div>                    
+                </div>                    
+                <div class="ui-block-b">
+                    <div class="ui-grid-a ui-responsive">  
+                        <div class="ui-block-a">
+                            <div class="ui-body ui-body-d">
+                                <fmt:message key="label.Product.name" />
+                            </div>                    
+                        </div>                    
+                        <div class="ui-block-b">
+                            <div class="ui-body ui-body-d">
+                                <c:out value="${actionBean.product.name}"/>
+                            </div>                    
+                        </div>              
+                        <div class="ui-block-a">
+                            <div class="ui-body ui-body-d">
+                                <fmt:message key="label.Product.priceSell" />
+                            </div>                    
+                        </div>
+                        <div class="ui-block-b">
+                            <div class="ui-body ui-body-d">
+                                <fmt:formatNumber value="${actionBean.product.priceSell}"
+                                                  type="CURRENCY"
+                                                  pattern="#0.00 ¤"                                                  
+                                                  maxFractionDigits="2" 
+                                                  minFractionDigits="2"/>
+                            </div>                    
+                        </div>
+                        <div class="ui-block-a">
+                            <div class="ui-body ui-body-d">
+                                <fmt:message key="label.Product.taxCategory" />
+                            </div>                    
+                        </div>                    
+                        <div class="ui-block-b">
+                            <div class="ui-body ui-body-d">
+                                <c:out value="${actionBean.product.taxCategory.name}"/>
+                            </div>                    
+                        </div>                 
+                        <div class="ui-block-a">
+                            <div class="ui-body ui-body-d">
+                                <fmt:message key="label.Product.taxPriceSell" />
+                            </div>                    
+                        </div>                    
+                        <div class="ui-block-b">
+                            <div class="ui-body ui-body-d">
+                                <fmt:formatNumber value="${actionBean.product.taxPriceSell}"
+                                                  type="CURRENCY"
+                                                  pattern="#0.00 ¤"                                                  
+                                                  maxFractionDigits="2" 
+                                                  minFractionDigits="2"/>
+                            </div>                    
+                        </div>   
+                        <div class="ui-block">
+                            <div class="ui-body ui-body-d">
+                                <canvas id="ean" width="256" height="128"></canvas>  
+                                <script type="text/javascript">$("#ean").EAN13("${actionBean.product.code}");</script>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-collapsed="true">
-            <h2><fmt:message key="label.ProductGeneralInfo"/></h2>
-            <div class="ui-grid-a ui-responsive">  
-                <div class="ui-block-a">
-                    <div class="ui-body ui-body-d">
-                        <fmt:message key="label.Product.name" />
-                    </div>                    
-                </div>                    
-                <div class="ui-block-b">
-                    <div class="ui-body ui-body-d">
-                        <c:out value="${actionBean.product.name}"/>
-                    </div>                    
-                </div>
-                <div class="ui-block-a">
-                    <div class="ui-body ui-body-d">
-                        <fmt:message key="label.Product.reference" />
-                    </div>                    
-                </div>                    
-                <div class="ui-block-b">
-                    <div class="ui-body ui-body-d">
-                        <c:out value="${actionBean.product.reference}"/>
-                    </div>                    
-                </div>
-                <div class="ui-block-a">
-                    <div class="ui-body ui-body-d">
-                        <fmt:message key="label.Product.priceBuy" />
-                    </div>                    
-                </div>
-                <div class="ui-block-b">
-                    <div class="ui-body ui-body-d">
-                        <fmt:formatNumber value="${actionBean.product.priceBuy}"
-                                          type="CURRENCY"
-                                          pattern="#0.00 ¤"                                                  
-                                          maxFractionDigits="2" 
-                                          minFractionDigits="2"/>
-                    </div>                    
-                </div>                
-                <div class="ui-block-a">
-                    <div class="ui-body ui-body-d">
-                        <fmt:message key="label.Product.priceSell" />
-                    </div>                    
-                </div>
-                <div class="ui-block-b">
-                    <div class="ui-body ui-body-d">
-                        <fmt:formatNumber value="${actionBean.product.priceSell}"
-                                          type="CURRENCY"
-                                          pattern="#0.00 ¤"                                                  
-                                          maxFractionDigits="2" 
-                                          minFractionDigits="2"/>
-                    </div>                    
-                </div>
-                <div class="ui-block-a">
-                    <div class="ui-body ui-body-d">
-                        <fmt:message key="label.Product.taxCategory" />
-                    </div>                    
-                </div>                    
-                <div class="ui-block-b">
-                    <div class="ui-body ui-body-d">
-                        <c:out value="${actionBean.product.taxCategory.name}"/>
-                    </div>                    
-                </div>                 
-                <div class="ui-block-a">
-                    <div class="ui-body ui-body-d">
-                        <fmt:message key="label.Product.taxPriceSell" />
-                    </div>                    
-                </div>                    
-                <div class="ui-block-b">
-                    <div class="ui-body ui-body-d">
-                        <fmt:formatNumber value="${actionBean.product.taxPriceSell}"
-                                          type="CURRENCY"
-                                          pattern="#0.00 ¤"                                                  
-                                          maxFractionDigits="2" 
-                                          minFractionDigits="2"/>
-                    </div>                    
-                </div>                    
-            </div>
-            <div>                
-                <canvas id="ean" width="256" height="128"></canvas>  
-                <script type="text/javascript">
-                    $("#ean").EAN13("${actionBean.product.code}");</script>
-            </div>
-        </div>
     </stripes:layout-component>
 
     <stripes:layout-component name="footer">
