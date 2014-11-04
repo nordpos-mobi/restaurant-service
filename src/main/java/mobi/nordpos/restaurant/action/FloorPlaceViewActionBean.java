@@ -16,9 +16,7 @@
 package mobi.nordpos.restaurant.action;
 
 import java.sql.SQLException;
-import java.util.List;
-import mobi.nordpos.restaurant.model.Floor;
-import mobi.nordpos.restaurant.model.Place;
+import mobi.nordpos.restaurant.ext.Public;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -29,43 +27,20 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public class FloorListActionBean extends FloorBaseActionBean {
+@Public
+public class FloorPlaceViewActionBean extends FloorBaseActionBean {
 
-    private static final String FLOOR_LIST = "/WEB-INF/jsp/floor_list.jsp";
-
-    private List<Floor> floorList;
-
+    private static final String PLACE_VIEW = "/WEB-INF/jsp/place_view.jsp";
+    
     @DefaultHandler
     public Resolution view() {
-        return new ForwardResolution(FLOOR_LIST);
-    }
-
-    public List<Floor> getFloorList() {
-        return floorList;
-    }
-
-    public void setFloorList(List<Floor> floorList) {
-        this.floorList = floorList;
+        return new ForwardResolution(PLACE_VIEW);
     }
 
     @ValidationMethod
-    public void validateFloorListIsAvalaible(ValidationErrors errors) {
+    public void validatePlaceIsAvalaible(ValidationErrors errors) {
         try {
-            List<Floor> floors = readFloorList();
-            
-                for (int i = 0; i < floors.size(); i++) {
-                    Floor floor = floors.get(i);
-                    List<Place> places = floor.getPlaceList();
-                    for (int j = 0; j < places.size(); j++) {
-                        Place place = places.get(j);
-                        place = readPlace(place.getId());                        
-                        places.set(j, place);
-                    }
-                    floor.setPlaceList(places);
-                    floors.set(i, floor);
-                }          
-
-            setFloorList(floors);
+            setPlace(readPlace(getPlace().getId()));
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));

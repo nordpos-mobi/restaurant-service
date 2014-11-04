@@ -15,22 +15,19 @@
  */
 package mobi.nordpos.restaurant.model;
 
-import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-@DatabaseTable(tableName = "FLOORS")
-public class Floor {
+@DatabaseTable(tableName = "SHAREDTICKETS")
+public class SharedTicket {
 
     public static final String ID = "ID";
     public static final String NAME = "NAME";
-    public static final String IMAGE = "IMAGE";
+    public static final String CONTENT = "CONTENT";
 
     @DatabaseField(id = true, columnName = ID)
     private String id;
@@ -38,11 +35,8 @@ public class Floor {
     @DatabaseField(columnName = NAME, unique = true, canBeNull = false)
     private String name;
 
-    @ForeignCollectionField(orderAscending = true, orderColumnName = Place.NAME)
-    private ForeignCollection<Place> placeCollection;
-
-    @DatabaseField(persisted = false)
-    private List<Place> placeList;
+    @DatabaseField(columnName = CONTENT, dataType = DataType.SERIALIZABLE, canBeNull = true)
+    private com.openbravo.pos.ticket.TicketInfo content;
 
     public String getId() {
         return id;
@@ -60,22 +54,14 @@ public class Floor {
         this.name = name;
     }
 
-    public ForeignCollection<Place> getPlaceCollection() {
-        return this.placeCollection;
+    public com.openbravo.pos.ticket.TicketInfo getContent() {
+        return content;
     }
 
-    public List<Place> getPlaceList() {
-        if (placeList == null) {
-            return Arrays.asList(this.getPlaceCollection().toArray(new Place[this.getPlaceCollection().size()]));
-        } else {
-            return placeList;
-        }
+    public void setContent(com.openbravo.pos.ticket.TicketInfo content) {
+        this.content = content;
     }
-
-    public void setPlaceList(List<Place> placeList) {
-        this.placeList = placeList;
-    }
-
+    
     @Override
     public int hashCode() {
         return name.hashCode();
@@ -86,7 +72,7 @@ public class Floor {
         if (other == null || other.getClass() != getClass()) {
             return false;
         }
-        return name.equals(((Floor) other).name);
+        return name.equals(((SharedTicket) other).name);
     }
 
 }

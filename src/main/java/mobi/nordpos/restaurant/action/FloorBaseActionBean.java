@@ -20,7 +20,11 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import java.sql.SQLException;
 import java.util.List;
 import mobi.nordpos.restaurant.dao.ormlite.FloorPersist;
+import mobi.nordpos.restaurant.dao.ormlite.PlacePersist;
+import mobi.nordpos.restaurant.dao.ormlite.SharedTicketPersist;
 import mobi.nordpos.restaurant.model.Floor;
+import mobi.nordpos.restaurant.model.Place;
+import mobi.nordpos.restaurant.model.SharedTicket;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -28,6 +32,7 @@ import mobi.nordpos.restaurant.model.Floor;
 public abstract class FloorBaseActionBean extends BaseActionBean {
 
     private Floor floor;
+    private Place place;
 
     public Floor getFloor() {
         return floor;
@@ -36,6 +41,14 @@ public abstract class FloorBaseActionBean extends BaseActionBean {
     public void setFloor(Floor floor) {
         this.floor = floor;
     }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }    
 
     protected List<Floor> readFloorList() throws SQLException {
         try {
@@ -49,4 +62,19 @@ public abstract class FloorBaseActionBean extends BaseActionBean {
         }
     }
 
+    protected Place readPlace(String id) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            PlacePersist placeDao = new PlacePersist(connection);
+            place = placeDao.queryForId(id);            
+            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
+            SharedTicket ticket = sharedTicketDao.queryForId(place.getId());
+            place.setTicket(ticket);
+            return place;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
 }

@@ -48,6 +48,9 @@ public class Place {
             foreignAutoRefresh = true,
             canBeNull = false)
     private Floor floor;
+    
+    @DatabaseField(persisted = false)
+    private SharedTicket ticket;
 
     public String getId() {
         return id;
@@ -80,6 +83,14 @@ public class Place {
     public void setFloor(Floor floor) {
         this.floor = floor;
     }    
+
+    public SharedTicket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(SharedTicket ticket) {
+        this.ticket = ticket;
+    }
    
     @Override
     public int hashCode() {

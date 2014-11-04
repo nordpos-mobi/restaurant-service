@@ -19,7 +19,6 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import java.math.BigDecimal;
-import static mobi.nordpos.restaurant.model.ProductCategory.IMAGE;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
