@@ -25,16 +25,16 @@ import mobi.nordpos.restaurant.model.ProductCategory;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public abstract class CategoryBaseActionBean extends BaseActionBean {
+public abstract class CategoryProductBaseActionBean extends BaseActionBean {
 
-    private ProductCategory category;
+    private List<ProductCategory> categoryList;
 
-    public ProductCategory getCategory() {
-        return category;
+    public List<ProductCategory> getCategoryList() {
+        return categoryList;
     }
 
-    public void setCategory(ProductCategory category) {
-        this.category = category;
+    public void setCategoryList(List<ProductCategory> categoryList) {
+        this.categoryList = categoryList;
     }
 
     protected List<ProductCategory> readCategoryList() throws SQLException {
@@ -42,20 +42,6 @@ public abstract class CategoryBaseActionBean extends BaseActionBean {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
             return productCategoryDao.getList();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected ProductCategory readProductCategory(String column, String value) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            QueryBuilder qb = productCategoryDao.queryBuilder();
-            qb.where().like(column, value);
-            return (ProductCategory) qb.queryForFirst();
         } finally {
             if (connection != null) {
                 connection.close();

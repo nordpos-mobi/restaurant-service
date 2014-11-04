@@ -29,7 +29,7 @@
                 <img src="<c:url value='/image/logo.png' />" alt="NORD POS mobi"/>
             </a>            
             <p><fmt:message key="label.present" /></p>
-            <sdynattr:link href="/CategoryList.action"
+            <sdynattr:link href="/CategoryProductList.action"
                            class="ui-btn ui-shadow ui-corner-all"
                            role="button">
                 <fmt:message key="label.RestaurantMenu" />

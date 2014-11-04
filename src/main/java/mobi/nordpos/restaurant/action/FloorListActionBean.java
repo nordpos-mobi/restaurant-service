@@ -52,19 +52,17 @@ public class FloorListActionBean extends FloorBaseActionBean {
     public void validateFloorListIsAvalaible(ValidationErrors errors) {
         try {
             List<Floor> floors = readFloorList();
-            
-                for (int i = 0; i < floors.size(); i++) {
-                    Floor floor = floors.get(i);
-                    List<Place> places = floor.getPlaceList();
-                    for (int j = 0; j < places.size(); j++) {
-                        Place place = places.get(j);
-                        place = readPlace(place.getId());                        
-                        places.set(j, place);
-                    }
-                    floor.setPlaceList(places);
-                    floors.set(i, floor);
-                }          
-
+            for (int i = 0; i < floors.size(); i++) {
+                Floor floor = floors.get(i);
+                List<Place> places = floor.getPlaceList();
+                for (int j = 0; j < places.size(); j++) {
+                    Place place = places.get(j);
+                    place = readPlace(place.getId());
+                    places.set(j, place);
+                }
+                floor.setPlaceList(places);
+                floors.set(i, floor);
+            }
             setFloorList(floors);
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(

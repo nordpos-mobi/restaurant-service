@@ -49,6 +49,9 @@ public class ProductCategory {
     @ForeignCollectionField(orderAscending = true, orderColumnName = Product.NAME)
     private ForeignCollection<Product> productCollection;
 
+    @DatabaseField(persisted = false)
+    private List<Product> productList;
+
     public String getId() {
         return id;
     }
@@ -72,22 +75,30 @@ public class ProductCategory {
     public void setCode(String code) {
         this.code = code;
     }
-    
+
     public byte[] getImage() {
         return image;
     }
 
     public void setImage(byte[] image) {
         this.image = image;
-    }    
+    }
 
     public ForeignCollection<Product> getProductCollection() {
         return this.productCollection;
     }
 
     public List<Product> getProductList() {
-        return Arrays.asList(this.getProductCollection().toArray(new Product[this.getProductCollection().size()]));
+        if (productList == null) {
+            return Arrays.asList(this.getProductCollection().toArray(new Product[this.getProductCollection().size()]));
+        } else {
+            return productList;
+        }
     }
+    
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }    
 
     @Override
     public int hashCode() {

@@ -16,7 +16,6 @@
 package mobi.nordpos.restaurant.action;
 
 import java.sql.SQLException;
-import mobi.nordpos.restaurant.ext.Public;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -27,7 +26,6 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-@Public
 public class FloorPlaceViewActionBean extends FloorBaseActionBean {
 
     private static final String PLACE_VIEW = "/WEB-INF/jsp/place_view.jsp";
