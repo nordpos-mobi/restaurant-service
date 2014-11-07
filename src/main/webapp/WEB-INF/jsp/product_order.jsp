@@ -1,5 +1,5 @@
 <%--
-    Document   : product_view
+    Document   : product_order
     Author     : Andrey Svininykh (svininykh@gmail.com)
     Copyright  : Nord Trading Network
     License    : Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -29,6 +29,7 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
+
         <div class="ui-body ui-body-a ui-corner-all">
             <div class="ui-grid-a ui-responsive">  
                 <div class="ui-block-a">
@@ -38,41 +39,17 @@
                     </div>                    
                 </div>                    
                 <div class="ui-block-b">
-                    <div class="ui-grid-a ui-responsive">  
+                    <div class="ui-grid-a ui-responsive">
                         <div class="ui-block-a">
                             <div class="ui-body ui-body-d">
                                 <fmt:message key="label.Product.name" />
-                            </div>                    
-                        </div>                    
+                            </div>
+                        </div>
                         <div class="ui-block-b">
                             <div class="ui-body ui-body-d">
                                 <c:out value="${actionBean.product.name}"/>
                             </div>                    
-                        </div>              
-                        <div class="ui-block-a">
-                            <div class="ui-body ui-body-d">
-                                <fmt:message key="label.Product.priceSell" />
-                            </div>                    
                         </div>
-                        <div class="ui-block-b">
-                            <div class="ui-body ui-body-d">
-                                <fmt:formatNumber value="${actionBean.product.priceSell}"
-                                                  type="CURRENCY"
-                                                  pattern="#0.00 ¤"                                                  
-                                                  maxFractionDigits="2" 
-                                                  minFractionDigits="2"/>
-                            </div>                    
-                        </div>
-                        <div class="ui-block-a">
-                            <div class="ui-body ui-body-d">
-                                <fmt:message key="label.Product.taxCategory" />
-                            </div>                    
-                        </div>                    
-                        <div class="ui-block-b">
-                            <div class="ui-body ui-body-d">
-                                <c:out value="${actionBean.product.taxCategory.name}"/>
-                            </div>                    
-                        </div>                 
                         <div class="ui-block-a">
                             <div class="ui-body ui-body-d">
                                 <fmt:message key="label.Product.taxPriceSell" />
@@ -86,12 +63,41 @@
                                                   maxFractionDigits="2" 
                                                   minFractionDigits="2"/>
                             </div>                    
-                        </div>   
-                        <div class="ui-block">
-                            <div class="ui-body ui-body-d">
-                                <canvas id="ean" width="256" height="128"></canvas>  
-                                <script type="text/javascript">$("#ean").EAN13("${actionBean.product.code}");</script>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-grid-solo">
+                        <div class="ui-block-a">
+                            <sdynattr:form action="/ProductOrder.action">
+                                <ul data-role="listview" data-inset="false">  
+                                    <li>
+                                        <h1><fmt:message key="label.ProductOrder"/></h1>
+                                    </li>
+                                    <li class="ui-field-contain">
+                                        <stripes:label name="label.ProductOrder.place" for="productOrderPlace" class="select"/>
+                                        <sdynattr:select name="place.id" id="productOrderPlace" data-mini="true">
+                                            <c:forEach items="${actionBean.placeList}" var="place">
+                                                <stripes:option value="${place.id}">
+                                                    <c:out value="${place.name}"/>
+                                                </stripes:option>
+                                            </c:forEach>
+                                        </sdynattr:select>
+                                    </li>
+                                    <li class="ui-field-contain">
+                                        <stripes:label name="unit" for="productOrderUnit"/>
+                                        <input name="slider-fill" id="slider-productOrderUnit" value="1" min="0" max="100" step="1" data-highlight="true" type="range">                                        
+                                    </li>
+                                    <li class="ui-body ui-body-b">
+                                        <fieldset class="ui-grid-a">
+                                            <div class="ui-block-a">
+                                                <sdynattr:reset name="clear" data-theme="b"/>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <sdynattr:submit name="add" data-theme="a"/>
+                                            </div>
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                            </sdynattr:form>
                         </div>
                     </div>
                 </div>

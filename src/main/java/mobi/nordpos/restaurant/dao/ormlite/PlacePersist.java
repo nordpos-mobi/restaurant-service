@@ -17,8 +17,11 @@ package mobi.nordpos.restaurant.dao.ormlite;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
+import java.util.List;
 import mobi.nordpos.restaurant.model.Place;
 
 /**
@@ -30,6 +33,13 @@ public class PlacePersist extends BaseDaoImpl<Place, String> {
 
     public PlacePersist(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, Place.class);
+    }
+
+    public List<Place> getList() throws SQLException {
+        placeDao = DaoManager.createDao(connectionSource, Place.class);
+        QueryBuilder qb = placeDao.queryBuilder().orderBy(Place.NAME, true);
+        qb.where().isNotNull(Place.ID);
+        return qb.query();
     }
 
 }

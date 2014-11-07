@@ -15,8 +15,10 @@
  */
 package mobi.nordpos.restaurant.action;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
-import mobi.nordpos.restaurant.ext.Public;
+import java.util.List;
+import mobi.nordpos.restaurant.model.Place;
 import mobi.nordpos.restaurant.model.Product;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -30,16 +32,20 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-@Public
-public class ProductViewActionBean extends ProductBaseActionBean {
-
-    private static final String PRODUCT_VIEW = "/WEB-INF/jsp/product_view.jsp";
-
+public class ProductOrderActionBean extends ProductBaseActionBean {
+    
+    private static final String PRODUCT_VIEW = "/WEB-INF/jsp/product_order.jsp";
+    
+    List<Place> placeList;
+    Place place;
+    BigDecimal orderUnit;
+    
+    
     @DefaultHandler
     public Resolution content() {
         return new ForwardResolution(PRODUCT_VIEW);
     }
-
+    
     @ValidateNestedProperties({
         @Validate(field = "code",
                 required = true,
@@ -49,7 +55,41 @@ public class ProductViewActionBean extends ProductBaseActionBean {
     public void setProduct(Product product) {
         super.setProduct(product);
     }
+    
+    public List<Place> getPlaceList() {
+        return placeList;
+    }
+    
+    public void setPlaceList(List<Place> placeList) {
+        this.placeList = placeList;
+    }
 
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+
+    public BigDecimal getOrderUnit() {
+        return orderUnit;
+    }
+
+    public void setOrderUnit(BigDecimal orderUnit) {
+        this.orderUnit = orderUnit;
+    }    
+    
+    @ValidationMethod
+    public void validatePlaceListIsAvalaible(ValidationErrors errors) {
+        try {
+            setPlaceList(readPlaceList());
+        } catch (SQLException ex) {
+            getContext().getValidationErrors().addGlobalError(
+                    new SimpleError(ex.getMessage()));
+        }        
+    }
+    
     @ValidationMethod
     public void validateProductCodeIsAvalaible(ValidationErrors errors) {
         try {
@@ -66,5 +106,5 @@ public class ProductViewActionBean extends ProductBaseActionBean {
                     new SimpleError(ex.getMessage()));
         }
     }
-
+    
 }

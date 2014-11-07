@@ -1,5 +1,5 @@
 <%--
-    Document   : category_list
+    Document   : category_product_list
     Author     : Andrey Svininykh (svininykh@gmail.com)
     Copyright  : Nord Trading Network
     License    : Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -37,7 +37,7 @@
                 </li>     
                 <c:forEach items="${category.productList}" var="product">
                     <li>
-                        <sdynattr:link href="/ProductView.action"
+                        <sdynattr:link href="/ProductOrder.action"
                                        data-transition="slide">
                             <stripes:param name="product.code" value="${product.code}"/>
                             <img src="${pageContext.servletContext.contextPath}/ProductImage.action?preview&product.id=${product.id}&thumbnailSize=80"

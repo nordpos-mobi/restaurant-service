@@ -1,5 +1,5 @@
 <%--
-    Document   : product_view
+    Document   : place_view
     Author     : Andrey Svininykh (svininykh@gmail.com)
     Copyright  : Nord Trading Network
     License    : Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -7,8 +7,8 @@
 
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <stripes:layout-render name="/WEB-INF/jsp/common/layout_main.jsp"
-                       title="Product View"
-                       pageid="ProductView">
+                       title="Place View"
+                       pageid="PlaceView">
 
     <stripes:layout-component name="button.return">
         <sdynattr:link href="/Welcome.action"

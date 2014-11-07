@@ -19,7 +19,9 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import java.sql.SQLException;
 import java.util.List;
+import mobi.nordpos.restaurant.dao.ormlite.PlacePersist;
 import mobi.nordpos.restaurant.dao.ormlite.ProductPersist;
+import mobi.nordpos.restaurant.model.Place;
 import mobi.nordpos.restaurant.model.Product;
 
 /**
@@ -56,6 +58,18 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
             QueryBuilder qb = productDao.queryBuilder();
             qb.where().like(table, value);
             return (Product) qb.queryForFirst();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+    
+        protected List<Place> readPlaceList() throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            PlacePersist placeDao = new PlacePersist(connection);
+            return placeDao.getList();
         } finally {
             if (connection != null) {
                 connection.close();
