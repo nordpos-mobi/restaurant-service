@@ -15,14 +15,24 @@
  */
 package mobi.nordpos.restaurant.action;
 
+import com.openbravo.pos.ticket.ProductInfo;
+import com.openbravo.pos.ticket.TaxInfo;
+import com.openbravo.pos.ticket.TicketInfo;
+import com.openbravo.pos.ticket.TicketLineInfo;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.restaurant.model.Place;
 import mobi.nordpos.restaurant.model.Product;
+import mobi.nordpos.restaurant.model.SharedTicket;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.SimpleMessage;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
@@ -32,20 +42,62 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
+@Public
 public class ProductOrderActionBean extends ProductBaseActionBean {
-    
-    private static final String PRODUCT_VIEW = "/WEB-INF/jsp/product_order.jsp";
-    
+
+    private static final String PRODUCT_ORDER = "/WEB-INF/jsp/product_order.jsp";
+
     List<Place> placeList;
     Place place;
+    @Validate(on = "add", required = true)
     BigDecimal orderUnit;
-    
-    
+
     @DefaultHandler
-    public Resolution content() {
-        return new ForwardResolution(PRODUCT_VIEW);
+    public Resolution form() {
+        return new ForwardResolution(PRODUCT_ORDER);
     }
-    
+
+    public Resolution add() {
+
+        SharedTicket sharedTicket;
+        TicketInfo ticket;
+
+        Product product = getProduct();
+        ProductInfo productInfo = new ProductInfo();
+        productInfo.setId(product.getId());
+        productInfo.setPriceSell(product.getPriceSell().doubleValue());
+        productInfo.setName(product.getName());
+        productInfo.setTaxcat(product.getTaxCategory().getId());
+        productInfo.setCategoryId(product.getProductCategory().getId());
+        productInfo.setCom(product.getCom());
+
+        TaxInfo taxInfo = new TaxInfo();
+        taxInfo.setId(product.getTax().getId());
+        taxInfo.setRate(product.getTax().getRate().doubleValue());
+        taxInfo.setTaxcategoryid(product.getTaxCategory().getId());
+
+        TicketLineInfo ticketLine = new TicketLineInfo(productInfo, product.getPriceSell().doubleValue(), taxInfo);
+        ticketLine.setMultiply(orderUnit.doubleValue());
+
+        if (place.getTicket() == null) {
+            ticket = new TicketInfo();
+            ticket.setTickettype(TicketInfo.RECEIPT_NORMAL);
+            ticket.setM_dDate(new Date());
+            ticket.addLine(ticketLine);
+            sharedTicket = new SharedTicket();
+            sharedTicket.setId(place.getId());
+            sharedTicket.setName(ticket.getName());
+            sharedTicket.setContent(ticket);
+        } else {
+            sharedTicket = place.getTicket();
+            ticket = place.getTicket().getContent();
+            ticket.addLine(ticketLine);
+            sharedTicket.setContent(ticket);
+        }
+        
+        return new ForwardResolution(CategoryProductListActionBean.class);
+    }
+
     @ValidateNestedProperties({
         @Validate(field = "code",
                 required = true,
@@ -55,11 +107,11 @@ public class ProductOrderActionBean extends ProductBaseActionBean {
     public void setProduct(Product product) {
         super.setProduct(product);
     }
-    
+
     public List<Place> getPlaceList() {
         return placeList;
     }
-    
+
     public void setPlaceList(List<Place> placeList) {
         this.placeList = placeList;
     }
@@ -68,6 +120,12 @@ public class ProductOrderActionBean extends ProductBaseActionBean {
         return place;
     }
 
+    @ValidateNestedProperties({
+        @Validate(on = "add",
+                field = "id",
+                required = true,
+                trim = true)
+    })
     public void setPlace(Place place) {
         this.place = place;
     }
@@ -78,8 +136,8 @@ public class ProductOrderActionBean extends ProductBaseActionBean {
 
     public void setOrderUnit(BigDecimal orderUnit) {
         this.orderUnit = orderUnit;
-    }    
-    
+    }
+
     @ValidationMethod
     public void validatePlaceListIsAvalaible(ValidationErrors errors) {
         try {
@@ -87,13 +145,23 @@ public class ProductOrderActionBean extends ProductBaseActionBean {
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
-        }        
+        }
+    }
+
+    @ValidationMethod(on = "add")
+    public void validatePlaceIdIsAvalaible(ValidationErrors errors) {
+        try {
+            setPlace(readPlace(place.getId()));
+        } catch (SQLException ex) {
+            getContext().getValidationErrors().addGlobalError(
+                    new SimpleError(ex.getMessage()));
+        }
     }
     
     @ValidationMethod
     public void validateProductCodeIsAvalaible(ValidationErrors errors) {
         try {
-            Product product = readProduct(Product.CODE, getProduct().getCode());            
+            Product product = readProduct(Product.CODE, getProduct().getCode());
             if (product != null) {
                 product.setTax(readTax(product.getTaxCategory().getId()));
                 setProduct(product);
@@ -106,5 +174,5 @@ public class ProductOrderActionBean extends ProductBaseActionBean {
                     new SimpleError(ex.getMessage()));
         }
     }
-    
+
 }

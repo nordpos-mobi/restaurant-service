@@ -18,7 +18,7 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="header.title">
-        <fmt:message key="label.Categories"/>
+        <fmt:message key="label.RestaurantMenu"/>
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">          

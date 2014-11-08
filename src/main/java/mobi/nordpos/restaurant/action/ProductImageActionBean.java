@@ -17,6 +17,7 @@ package mobi.nordpos.restaurant.action;
 
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletResponse;
+import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.restaurant.model.Product;
 import mobi.nordpos.restaurant.util.ImagePreview;
 import net.sourceforge.stripes.action.StreamingResolution;
@@ -27,6 +28,7 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
+@Public
 public class ProductImageActionBean extends ProductBaseActionBean {
 
     private int thumbnailSize = 256;
@@ -38,7 +40,7 @@ public class ProductImageActionBean extends ProductBaseActionBean {
                 response.getOutputStream().write(ImagePreview.createThumbnail(getProduct().getImage(), thumbnailSize));
                 response.flushBuffer();
             }
-        }.setFilename("product-".concat(getProduct().getCode()).concat(".jpeg")).setAttachment(true);
+        }.setFilename("product-".concat(getProduct().getCode()).concat(".jpeg"));
     }
 
     @ValidationMethod(on = "preview")

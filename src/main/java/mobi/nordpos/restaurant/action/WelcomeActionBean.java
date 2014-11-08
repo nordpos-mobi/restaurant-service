@@ -15,6 +15,7 @@
  */
 package mobi.nordpos.restaurant.action;
 
+import mobi.nordpos.restaurant.ext.Public;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -22,6 +23,7 @@ import net.sourceforge.stripes.action.Resolution;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
+@Public
 public class WelcomeActionBean extends BaseActionBean {
 
     private static final String PRESENT = "/WEB-INF/jsp/present.jsp";

@@ -17,6 +17,7 @@ package mobi.nordpos.restaurant.action;
 
 import java.sql.SQLException;
 import java.util.List;
+import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.restaurant.model.Product;
 import mobi.nordpos.restaurant.model.ProductCategory;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -29,6 +30,7 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
+@Public
 public class CategoryProductListActionBean extends CategoryProductBaseActionBean {
 
     private static final String CATEGORY_PRODUCT_LIST = "/WEB-INF/jsp/category_product_list.jsp";

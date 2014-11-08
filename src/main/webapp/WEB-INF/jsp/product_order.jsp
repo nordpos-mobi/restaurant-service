@@ -68,6 +68,9 @@
                     <div class="ui-grid-solo">
                         <div class="ui-block-a">
                             <sdynattr:form action="/ProductOrder.action">
+                                <div>                
+                                    <stripes:hidden name="product.code" value="${actionBean.product.code}"/>
+                                </div>
                                 <ul data-role="listview" data-inset="false">  
                                     <li>
                                         <h1><fmt:message key="label.ProductOrder"/></h1>
@@ -83,8 +86,8 @@
                                         </sdynattr:select>
                                     </li>
                                     <li class="ui-field-contain">
-                                        <stripes:label name="unit" for="productOrderUnit"/>
-                                        <input name="slider-fill" id="slider-productOrderUnit" value="1" min="0" max="100" step="1" data-highlight="true" type="range">                                        
+                                        <stripes:label name="label.ProductOrder.unit" for="productOrderUnit"/>
+                                        <input name="orderUnit" id="productOrderUnit" value="1" min="0" max="100" step="1" data-highlight="true" type="range">                                        
                                     </li>
                                     <li class="ui-body ui-body-b">
                                         <fieldset class="ui-grid-a">

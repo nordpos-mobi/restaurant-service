@@ -183,10 +183,10 @@ public class TicketInfo implements Serializable, Externalizable {
 
     public String getName() {
 
-        StringBuffer name = new StringBuffer();
+        StringBuilder name = new StringBuilder();
 
         if (m_iTicketId == 0) {
-            name.append("(" + m_dateformat.format(m_dDate) + " " + Long.toString(m_dDate.getTime() % 1000) + ")");
+            name.append("(").append(m_dateformat.format(m_dDate)).append(" ").append(Long.toString(m_dDate.getTime() % 1000)).append(")");
         } else {
             name.append(Integer.toString(m_iTicketId));
         }

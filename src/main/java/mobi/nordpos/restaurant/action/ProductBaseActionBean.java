@@ -21,8 +21,10 @@ import java.sql.SQLException;
 import java.util.List;
 import mobi.nordpos.restaurant.dao.ormlite.PlacePersist;
 import mobi.nordpos.restaurant.dao.ormlite.ProductPersist;
+import mobi.nordpos.restaurant.dao.ormlite.SharedTicketPersist;
 import mobi.nordpos.restaurant.model.Place;
 import mobi.nordpos.restaurant.model.Product;
+import mobi.nordpos.restaurant.model.SharedTicket;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -64,8 +66,8 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
             }
         }
     }
-    
-        protected List<Place> readPlaceList() throws SQLException {
+
+    protected List<Place> readPlaceList() throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             PlacePersist placeDao = new PlacePersist(connection);
@@ -76,5 +78,21 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
             }
         }
     }
+    
+    protected Place readPlace(String id) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            PlacePersist placeDao = new PlacePersist(connection);
+            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
+            Place place = placeDao.queryForId(id);
+            SharedTicket ticket = sharedTicketDao.queryForId(place.getId());
+            place.setTicket(ticket);
+            return place;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }    
 
 }
