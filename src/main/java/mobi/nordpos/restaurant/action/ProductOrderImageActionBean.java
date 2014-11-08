@@ -29,7 +29,7 @@ import net.sourceforge.stripes.validation.ValidationMethod;
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
 @Public
-public class ProductImageActionBean extends ProductBaseActionBean {
+public class ProductOrderImageActionBean extends OrderBaseActionBean {
 
     private int thumbnailSize = 256;
 
@@ -37,8 +37,10 @@ public class ProductImageActionBean extends ProductBaseActionBean {
         return new StreamingResolution("image/jpeg") {
             @Override
             public void stream(HttpServletResponse response) throws Exception {
-                response.getOutputStream().write(ImagePreview.createThumbnail(getProduct().getImage(), thumbnailSize));
-                response.flushBuffer();
+                if (getProduct().getImage() != null) {
+                    response.getOutputStream().write(ImagePreview.createThumbnail(getProduct().getImage(), thumbnailSize));
+                    response.flushBuffer();
+                }
             }
         }.setFilename("product-".concat(getProduct().getCode()).concat(".jpeg"));
     }

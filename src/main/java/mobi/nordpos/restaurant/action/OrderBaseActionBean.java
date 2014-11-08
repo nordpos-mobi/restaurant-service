@@ -29,7 +29,7 @@ import mobi.nordpos.restaurant.model.SharedTicket;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public abstract class ProductBaseActionBean extends BaseActionBean {
+public abstract class OrderBaseActionBean extends BaseActionBean {
 
     private Product product;
 
@@ -78,7 +78,7 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
             }
         }
     }
-    
+
     protected Place readPlace(String id) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -93,6 +93,29 @@ public abstract class ProductBaseActionBean extends BaseActionBean {
                 connection.close();
             }
         }
-    }    
+    }
 
+    protected SharedTicket createTicket(SharedTicket ticket) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
+            return sharedTicketDao.createIfNotExists(ticket);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+
+    protected Boolean updateTicket(SharedTicket ticket) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
+            return sharedTicketDao.update(ticket) > 0;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
 }

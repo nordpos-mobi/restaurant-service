@@ -20,11 +20,9 @@ import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.restaurant.model.Place;
 import mobi.nordpos.restaurant.model.Product;
@@ -43,7 +41,7 @@ import net.sourceforge.stripes.validation.ValidationMethod;
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
 @Public
-public class ProductOrderActionBean extends ProductBaseActionBean {
+public class ProductOrderActionBean extends OrderBaseActionBean {
 
     private static final String PRODUCT_ORDER = "/WEB-INF/jsp/product_order.jsp";
 
@@ -79,22 +77,36 @@ public class ProductOrderActionBean extends ProductBaseActionBean {
         TicketLineInfo ticketLine = new TicketLineInfo(productInfo, product.getPriceSell().doubleValue(), taxInfo);
         ticketLine.setMultiply(orderUnit.doubleValue());
 
-        if (place.getTicket() == null) {
-            ticket = new TicketInfo();
-            ticket.setTickettype(TicketInfo.RECEIPT_NORMAL);
-            ticket.setM_dDate(new Date());
-            ticket.addLine(ticketLine);
-            sharedTicket = new SharedTicket();
-            sharedTicket.setId(place.getId());
-            sharedTicket.setName(ticket.getName());
-            sharedTicket.setContent(ticket);
-        } else {
-            sharedTicket = place.getTicket();
-            ticket = place.getTicket().getContent();
-            ticket.addLine(ticketLine);
-            sharedTicket.setContent(ticket);
+        try {
+            if (place.getTicket() == null) {
+                ticket = new TicketInfo();
+                ticket.setTickettype(TicketInfo.RECEIPT_NORMAL);
+                ticket.setM_dDate(new Date());
+                ticket.addLine(ticketLine);
+                sharedTicket = new SharedTicket();
+                sharedTicket.setId(place.getId());
+                sharedTicket.setName(ticket.getName());
+                sharedTicket.setContent(ticket);
+                getContext().getMessages().add(
+                        new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
+                                createTicket(sharedTicket).getName(), getProduct().getName(), getOrderUnit(), getPlace().getName())
+                );
+            } else {
+                sharedTicket = place.getTicket();
+                ticket = place.getTicket().getContent();
+                ticket.addLine(ticketLine);
+                sharedTicket.setContent(ticket);
+                if (updateTicket(sharedTicket)) {
+                getContext().getMessages().add(
+                        new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
+                                sharedTicket.getName(), getProduct().getName(), getOrderUnit(), getPlace().getName()));
+            }
+            }
+        } catch (SQLException ex) {
+            getContext().getValidationErrors().addGlobalError(
+                    new SimpleError(ex.getMessage()));
+            return getContext().getSourcePageResolution();
         }
-        
         return new ForwardResolution(CategoryProductListActionBean.class);
     }
 
@@ -157,7 +169,7 @@ public class ProductOrderActionBean extends ProductBaseActionBean {
                     new SimpleError(ex.getMessage()));
         }
     }
-    
+
     @ValidationMethod
     public void validateProductCodeIsAvalaible(ValidationErrors errors) {
         try {

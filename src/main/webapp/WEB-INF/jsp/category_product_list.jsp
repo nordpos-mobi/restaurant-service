@@ -40,7 +40,7 @@
                         <sdynattr:link href="/ProductOrder.action"
                                        data-transition="slide">
                             <stripes:param name="product.code" value="${product.code}"/>
-                            <img src="${pageContext.servletContext.contextPath}/ProductImage.action?preview&product.id=${product.id}&thumbnailSize=80"
+                            <img src="${pageContext.servletContext.contextPath}/ProductOrderImage.action?preview&product.id=${product.id}&thumbnailSize=80"
                                  alt="${product.name}"/>
                             <h2><c:out value="${product.name}"/></h2>
                             <span  class="ui-li-count">
