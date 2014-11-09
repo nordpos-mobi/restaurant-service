@@ -25,7 +25,15 @@
         <c:out value="${actionBean.place.name}"/>
     </stripes:layout-component>
 
-    <stripes:layout-component name="button.action">       
+    <stripes:layout-component name="button.action">
+        <c:if test="${empty actionBean.place.ticket}">
+            <sdynattr:link href="/PlaceView.action"
+                           event="create"
+                           class="ui-btn ui-corner-all ui-icon-action ui-btn-icon-left">
+                <stripes:param name="place.id" value="${actionBean.place.id}"/>
+                <fmt:message key="label.create" />
+            </sdynattr:link>
+        </c:if>
     </stripes:layout-component>
 
     <stripes:layout-component name="content">

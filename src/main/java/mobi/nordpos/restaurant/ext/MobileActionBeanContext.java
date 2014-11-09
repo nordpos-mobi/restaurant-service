@@ -15,6 +15,7 @@
  */
 package mobi.nordpos.restaurant.ext;
 
+import mobi.nordpos.restaurant.model.Place;
 import mobi.nordpos.restaurant.model.User;
 import net.sourceforge.stripes.action.ActionBeanContext;
 
@@ -36,6 +37,14 @@ public class MobileActionBeanContext extends ActionBeanContext {
     public void setUser(User currentUser) {
         getRequest().getSession().setAttribute("user", currentUser);
     }
+    
+    public Place getPlace() {
+        return (Place) getRequest().getSession().getAttribute("place");
+    }
+
+    public void setPlace(Place place) {
+        getRequest().getSession().setAttribute("place", place);
+    }    
 
     /**
      * Logs the user out by invalidating the session.

@@ -14,7 +14,7 @@
         <sdynattr:link href="/Welcome.action"
                        class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-notext">            
             <fmt:message key="label.home" />
-        </sdynattr:link>          
+        </sdynattr:link>       
     </stripes:layout-component>
 
     <stripes:layout-component name="header.title">

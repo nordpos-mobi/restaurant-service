@@ -36,20 +36,18 @@
                     <h2><c:out value="${floor.name}"/></h2>                    
                 </li>
                 <c:forEach items="${floor.placeList}" var="place">
-                    <c:if test="${place.ticket != null}">
+                    <c:if test="${not empty place.ticket}">
                         <c:set var="has_ticket" scope="page" value="tag"/>
                     </c:if>
-                    <c:if test="${place.ticket == null}">
+                    <c:if test="${empty place.ticket}">
                         <c:set var="has_ticket" scope="page" value="false"/>
                     </c:if>
-                    
                     <li data-icon="<c:out value='${has_ticket}'/>">
                         <sdynattr:link href="/PlaceView.action"
                                        data-transition="slide">
-
-                            <stripes:param name="place.id" value="${place.id}"/>                           
+                            <stripes:param name="place.id" value="${place.id}"/>
                             <c:out value="${place.name}"/>
-                        </sdynattr:link>                        
+                        </sdynattr:link>
                     </li>
                 </c:forEach>
             </c:forEach>

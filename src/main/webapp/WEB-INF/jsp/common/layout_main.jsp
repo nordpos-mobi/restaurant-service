@@ -28,9 +28,16 @@
         </head>
         <body>
             <div data-role="page" id="${pageid}">
-                <div data-role="header" role="banner"> 
+                <div data-role="header" role="banner">
                     <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal" data-mini="true">
                         <stripes:layout-component name="button.return"/>
+                        <c:if test="${not empty place}">
+                            <sdynattr:link href="/PlaceView.action"
+                                           class="ui-btn ui-corner-all ui-icon-bullets ui-btn-icon-left">
+                                <stripes:param name="place.id" value="${place.id}"/>
+                                <c:out value="${place.name}" />
+                            </sdynattr:link>
+                        </c:if>
                     </div>
                     <h2>
                         <stripes:layout-component name="header.title"/>

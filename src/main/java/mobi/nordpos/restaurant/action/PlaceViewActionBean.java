@@ -45,7 +45,13 @@ public class PlaceViewActionBean extends PlaceBaseActionBean {
 
     @DefaultHandler
     public Resolution view() {
+        getContext().setPlace(null);
         return new ForwardResolution(PLACE_VIEW);
+    }
+
+    public Resolution create() {
+        getContext().setPlace(getPlace());
+        return new ForwardResolution(CategoryProductListActionBean.class);
     }
 
     public Resolution remove() {
@@ -73,7 +79,7 @@ public class PlaceViewActionBean extends PlaceBaseActionBean {
                     new SimpleError(ex.getMessage()));
             return getContext().getSourcePageResolution();
         }
-        return new ForwardResolution(PLACE_VIEW);
+        return new ForwardResolution(PlaceViewActionBean.class);
     }
 
     public Integer getRemoveLineNumber() {
@@ -119,14 +125,5 @@ public class PlaceViewActionBean extends PlaceBaseActionBean {
                     new SimpleError(ex.getMessage()));
         }
     }
-
-//    @ValidationMethod(on = "remove")
-//    public void validateRemoveLineIsComplete(ValidationErrors errors) {
-//        try {
-//
-//        } catch (SQLException ex) {
-//            getContext().getValidationErrors().addGlobalError(
-//                    new SimpleError(ex.getMessage()));
-//        }
-//    }    
+    
 }

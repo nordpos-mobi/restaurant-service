@@ -14,10 +14,6 @@
         <sdynattr:link href="/Welcome.action"
                        class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
             <fmt:message key="label.home" />
-        </sdynattr:link>
-        <sdynattr:link href="/CategoryProductList.action"
-                       class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-left">
-            <c:out value="${actionBean.product.productCategory.name}"/>
         </sdynattr:link>                   
     </stripes:layout-component>
 
@@ -34,7 +30,7 @@
             <div class="ui-grid-a ui-responsive">  
                 <div class="ui-block-a">
                     <div class="ui-body ui-body-d">
-                        <img src="${pageContext.servletContext.contextPath}/ProductImage.action?preview&product.id=${actionBean.product.id}"
+                        <img src="${pageContext.servletContext.contextPath}/OrderProductImage.action?preview&product.id=${actionBean.product.id}"
                              alt="${actionBean.product.name}" />
                     </div>                    
                 </div>                    
@@ -70,11 +66,15 @@
                             <sdynattr:form action="/OrderProduct.action">
                                 <div>                
                                     <stripes:hidden name="product.code" value="${actionBean.product.code}"/>
+                                    <c:if test="${not empty place}">
+                                        <stripes:hidden name="place.id" value="${place.id}"/>
+                                    </c:if>
                                 </div>
                                 <ul data-role="listview" data-inset="false">  
                                     <li>
                                         <h1><fmt:message key="label.ProductOrder"/></h1>
                                     </li>
+                                    <c:if test="${empty place}">
                                     <li class="ui-field-contain">
                                         <stripes:label name="label.ProductOrder.place" for="productOrderPlace" class="select"/>
                                         <sdynattr:select name="place.id" id="productOrderPlace" data-mini="true">
@@ -85,6 +85,7 @@
                                             </c:forEach>
                                         </sdynattr:select>
                                     </li>
+                                    </c:if>
                                     <li class="ui-field-contain">
                                         <stripes:label name="label.ProductOrder.unit" for="productOrderUnit"/>
                                         <input name="orderUnit" id="productOrderUnit" value="1" min="0" max="100" step="1" data-highlight="true" type="range">                                        
