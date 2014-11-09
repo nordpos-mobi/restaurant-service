@@ -26,7 +26,7 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public class FloorPlaceViewActionBean extends FloorBaseActionBean {
+public class PlaceViewActionBean extends PlaceBaseActionBean {
 
     private static final String PLACE_VIEW = "/WEB-INF/jsp/place_view.jsp";
     

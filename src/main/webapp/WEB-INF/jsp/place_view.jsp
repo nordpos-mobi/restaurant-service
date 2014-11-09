@@ -25,7 +25,46 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="content">
-
+        <table data-role="table" 
+               id="ticket-table" 
+               data-mode="columntoggle" 
+               class="ui-body-d ui-shadow table-stripe ui-responsive"
+               data-column-btn-theme="b" 
+               data-column-btn-text="..." 
+               data-column-popup-theme="a"
+               cellspacing="0" cellpadding="0">
+            <thead>
+                <tr class="ui-bar-b">
+                    <th data-priority="persist" style="width: 10%"><fmt:message key="label.line.number" /></th>
+                    <th data-priority="persist" style="width: 35%"><fmt:message key="label.line.name" /></th>                    
+                    <th data-priority="persist" style="width: 5%"><fmt:message key="label.line.unit" /></th>
+                    <th data-priority="3" style="width: 10%"><fmt:message key="label.line.value" /></th>
+                    <th data-priority="2" style="width: 10%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${actionBean.place.ticket.content.lines}" var="line">
+                    <tr>
+                        <th style="text-align: center;">${line.getM_iLine() + 1}</th>
+                        <td>${line.attributes.getProperty("product.name")}</td>                        
+                        <td style="text-align: center;">${line.multiply}</td>
+                        <td style="text-align: right;">${line.value}</td>
+                        <td style="text-align: center;">
+                            <a href="#" ><fmt:message key="label.line.remove" /></a>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+            <tfoot>
+                <tr class="ui-bar-a">
+                    <th><fmt:message key="label.line.total" /></th>
+                    <td/>
+                    <td/>
+                    <td/>
+                    <td/>
+                </tr>
+            </tfoot>
+        </table>
     </stripes:layout-component>
 
     <stripes:layout-component name="footer">

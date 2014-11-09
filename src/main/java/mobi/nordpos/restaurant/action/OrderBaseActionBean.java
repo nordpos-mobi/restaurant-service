@@ -79,22 +79,6 @@ public abstract class OrderBaseActionBean extends BaseActionBean {
         }
     }
 
-    protected Place readPlace(String id) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            PlacePersist placeDao = new PlacePersist(connection);
-            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
-            Place place = placeDao.queryForId(id);
-            SharedTicket ticket = sharedTicketDao.queryForId(place.getId());
-            place.setTicket(ticket);
-            return place;
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
     protected SharedTicket createTicket(SharedTicket ticket) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());

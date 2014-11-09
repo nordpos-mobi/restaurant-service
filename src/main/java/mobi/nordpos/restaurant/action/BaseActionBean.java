@@ -25,13 +25,17 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import mobi.nordpos.restaurant.dao.ormlite.ApplicationPersist;
+import mobi.nordpos.restaurant.dao.ormlite.PlacePersist;
 import mobi.nordpos.restaurant.dao.ormlite.ProductCategoryPersist;
+import mobi.nordpos.restaurant.dao.ormlite.SharedTicketPersist;
 import mobi.nordpos.restaurant.dao.ormlite.TaxCategoryPersist;
 import mobi.nordpos.restaurant.dao.ormlite.TaxPersist;
 import mobi.nordpos.restaurant.ext.MobileActionBeanContext;
 import mobi.nordpos.restaurant.ext.MyLocalePicker;
 import mobi.nordpos.restaurant.model.Application;
+import mobi.nordpos.restaurant.model.Place;
 import mobi.nordpos.restaurant.model.ProductCategory;
+import mobi.nordpos.restaurant.model.SharedTicket;
 import mobi.nordpos.restaurant.model.Tax;
 import mobi.nordpos.restaurant.model.TaxCategory;
 import net.sourceforge.stripes.action.ActionBean;
@@ -147,36 +151,28 @@ public abstract class BaseActionBean implements ActionBean {
                 .getFormFieldBundle(getContext().getLocale()).getString(key);
     }
 
-    protected ProductCategory readProductCategory(String id) throws SQLException {
+    protected Place readPlace(String id) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.queryForId(id);
+            PlacePersist placeDao = new PlacePersist(connection);
+            Place place = placeDao.queryForId(id);            
+            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
+            SharedTicket ticket = sharedTicketDao.queryForId(place.getId());
+            place.setTicket(ticket);
+            return place;
         } finally {
             if (connection != null) {
                 connection.close();
             }
         }
     }
-
+    
     protected Tax readTax(String taxCategoryId) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             TaxPersist taxDao = new TaxPersist(connection);
             TaxesLogic taxLogic = new TaxesLogic(taxDao.queryForAll());
             return taxLogic.getTax(taxCategoryId, new Date());
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected List<TaxCategory> readTaxCategoryList() throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            TaxCategoryPersist taxCategoryDao = new TaxCategoryPersist(connection);
-            return taxCategoryDao.queryForAll();
         } finally {
             if (connection != null) {
                 connection.close();
