@@ -36,10 +36,10 @@
             <thead>
                 <tr class="ui-bar-b">
                     <th data-priority="persist" style="width: 10%"><fmt:message key="label.line.number" /></th>
-                    <th data-priority="persist" style="width: 35%"><fmt:message key="label.line.name" /></th>                    
-                    <th data-priority="persist" style="width: 5%"><fmt:message key="label.line.unit" /></th>
-                    <th data-priority="3" style="width: 10%"><fmt:message key="label.line.value" /></th>
-                    <th data-priority="2" style="width: 10%"></th>
+                    <th data-priority="persist" style="width: 50%"><fmt:message key="label.line.name" /></th>                    
+                    <th data-priority="persist" style="width: 10%"><fmt:message key="label.line.unit" /></th>
+                    <th data-priority="3" style="width: 15%"><fmt:message key="label.line.value" /></th>
+                    <th data-priority="2" style="width: 15%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -47,8 +47,14 @@
                     <tr>
                         <th style="text-align: center;">${line.getM_iLine() + 1}</th>
                         <td>${line.attributes.getProperty("product.name")}</td>                        
-                        <td style="text-align: center;">${line.multiply}</td>
-                        <td style="text-align: right;">${line.value}</td>
+                        <td style="text-align: center;"><fmt:formatNumber value="${line.multiply}"
+                                          type="NUMBER"                                   
+                                          maxFractionDigits="3"/></td>
+                        <td style="text-align: right;"><fmt:formatNumber value="${line.value}"
+                                          type="CURRENCY"
+                                          pattern="#0.00 ¤"                                                  
+                                          maxFractionDigits="2" 
+                                          minFractionDigits="2"/></td>
                         <td style="text-align: center;">
                             <a href="#" ><fmt:message key="label.line.remove" /></a>
                         </td>
@@ -59,8 +65,16 @@
                 <tr class="ui-bar-a">
                     <th><fmt:message key="label.line.total" /></th>
                     <td/>
-                    <td/>
-                    <td/>
+                    <td style="text-align: center;"><fmt:formatNumber value="${actionBean.totalUnit}"
+                                      type="NUMBER"                                   
+                                      maxFractionDigits="3"/>
+                    </td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${actionBean.totalValue}"
+                                          type="CURRENCY"
+                                          pattern="#0.00 ¤"                                                  
+                                          maxFractionDigits="2" 
+                                          minFractionDigits="2"/>
+                    </td>
                     <td/>
                 </tr>
             </tfoot>

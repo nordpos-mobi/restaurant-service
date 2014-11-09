@@ -15,6 +15,8 @@
  */
 package mobi.nordpos.restaurant.action;
 
+import com.openbravo.pos.ticket.TicketLineInfo;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -29,16 +31,33 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 public class PlaceViewActionBean extends PlaceBaseActionBean {
 
     private static final String PLACE_VIEW = "/WEB-INF/jsp/place_view.jsp";
-    
+
+    BigDecimal totalValue;
+    BigDecimal totalUnit;
+
     @DefaultHandler
     public Resolution view() {
         return new ForwardResolution(PLACE_VIEW);
+    }
+
+    public BigDecimal getTotalValue() {
+        return totalValue;
+    }
+
+    public BigDecimal getTotalUnit() {
+        return totalUnit;
     }
 
     @ValidationMethod
     public void validatePlaceIsAvalaible(ValidationErrors errors) {
         try {
             setPlace(readPlace(getPlace().getId()));
+            totalValue = BigDecimal.ZERO;
+            totalUnit = BigDecimal.ZERO;
+            for (TicketLineInfo line : getPlace().getTicket().getContent().getM_aLines()) {
+                totalValue = totalValue.add(BigDecimal.valueOf(line.getValue()));
+                totalUnit = totalUnit.add(BigDecimal.valueOf(line.getMultiply()));
+            }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));

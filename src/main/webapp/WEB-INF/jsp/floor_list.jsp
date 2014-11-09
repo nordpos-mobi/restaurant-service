@@ -44,7 +44,7 @@
                     </c:if>
                     
                     <li data-icon="<c:out value='${has_ticket}'/>">
-                        <sdynattr:link href="/FloorPlaceView.action"
+                        <sdynattr:link href="/PlaceView.action"
                                        data-transition="slide">
 
                             <stripes:param name="place.id" value="${place.id}"/>                           
