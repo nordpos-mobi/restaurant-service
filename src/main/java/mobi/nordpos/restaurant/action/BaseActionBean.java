@@ -21,23 +21,18 @@ import com.openbravo.pos.sales.TaxesLogic;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import mobi.nordpos.restaurant.dao.ormlite.ApplicationPersist;
 import mobi.nordpos.restaurant.dao.ormlite.PlacePersist;
-import mobi.nordpos.restaurant.dao.ormlite.ProductCategoryPersist;
 import mobi.nordpos.restaurant.dao.ormlite.SharedTicketPersist;
-import mobi.nordpos.restaurant.dao.ormlite.TaxCategoryPersist;
 import mobi.nordpos.restaurant.dao.ormlite.TaxPersist;
 import mobi.nordpos.restaurant.ext.MobileActionBeanContext;
 import mobi.nordpos.restaurant.ext.MyLocalePicker;
 import mobi.nordpos.restaurant.model.Application;
 import mobi.nordpos.restaurant.model.Place;
-import mobi.nordpos.restaurant.model.ProductCategory;
 import mobi.nordpos.restaurant.model.SharedTicket;
 import mobi.nordpos.restaurant.model.Tax;
-import mobi.nordpos.restaurant.model.TaxCategory;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.controller.StripesFilter;
@@ -155,7 +150,7 @@ public abstract class BaseActionBean implements ActionBean {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             PlacePersist placeDao = new PlacePersist(connection);
-            Place place = placeDao.queryForId(id);            
+            Place place = placeDao.queryForId(id);
             SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
             SharedTicket ticket = sharedTicketDao.queryForId(place.getId());
             place.setTicket(ticket);
@@ -166,7 +161,7 @@ public abstract class BaseActionBean implements ActionBean {
             }
         }
     }
-    
+
     protected Tax readTax(String taxCategoryId) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -185,6 +180,18 @@ public abstract class BaseActionBean implements ActionBean {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ApplicationPersist applicationDao = new ApplicationPersist(connection);
             return applicationDao.queryForId(id);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+
+    protected Boolean updateTicket(SharedTicket ticket) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
+            return sharedTicketDao.update(ticket) > 0;
         } finally {
             if (connection != null) {
                 connection.close();

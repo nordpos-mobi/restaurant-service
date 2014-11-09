@@ -91,15 +91,4 @@ public abstract class OrderBaseActionBean extends BaseActionBean {
         }
     }
 
-    protected Boolean updateTicket(SharedTicket ticket) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
-            return sharedTicketDao.update(ticket) > 0;
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
 }

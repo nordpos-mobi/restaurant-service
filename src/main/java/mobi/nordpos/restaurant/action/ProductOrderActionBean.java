@@ -93,14 +93,14 @@ public class ProductOrderActionBean extends OrderBaseActionBean {
                 );
             } else {
                 sharedTicket = place.getTicket();
-                ticket = place.getTicket().getContent();
+                ticket = sharedTicket.getContent();
                 ticket.addLine(ticketLine);
                 sharedTicket.setContent(ticket);
                 if (updateTicket(sharedTicket)) {
-                getContext().getMessages().add(
-                        new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
-                                sharedTicket.getName(), getProduct().getName(), getOrderUnit(), getPlace().getName()));
-            }
+                    getContext().getMessages().add(
+                            new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
+                                    sharedTicket.getName(), getProduct().getName(), getOrderUnit(), getPlace().getName()));
+                }
             }
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
