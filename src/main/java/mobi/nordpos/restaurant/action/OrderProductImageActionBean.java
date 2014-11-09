@@ -29,7 +29,7 @@ import net.sourceforge.stripes.validation.ValidationMethod;
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
 @Public
-public class ProductOrderImageActionBean extends OrderBaseActionBean {
+public class OrderProductImageActionBean extends OrderBaseActionBean {
 
     private int thumbnailSize = 256;
 

@@ -67,7 +67,7 @@
                     </div>
                     <div class="ui-grid-solo">
                         <div class="ui-block-a">
-                            <sdynattr:form action="/ProductOrder.action">
+                            <sdynattr:form action="/OrderProduct.action">
                                 <div>                
                                     <stripes:hidden name="product.code" value="${actionBean.product.code}"/>
                                 </div>

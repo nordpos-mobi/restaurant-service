@@ -106,10 +106,12 @@ public class PlaceViewActionBean extends PlaceBaseActionBean {
             setPlace(readPlace(getPlace().getId()));
             totalValue = BigDecimal.ZERO;
             totalUnit = BigDecimal.ZERO;
-            for (TicketLineInfo line : getPlace().getTicket().getContent().getM_aLines()) {                
-                if (removeLineNumber == null || line.getM_iLine() != removeLineNumber) {
-                    totalValue = totalValue.add(BigDecimal.valueOf(line.getValue()));
-                    totalUnit = totalUnit.add(BigDecimal.valueOf(line.getMultiply()));
+            if (getPlace().getTicket() != null) {
+                for (TicketLineInfo line : getPlace().getTicket().getContent().getM_aLines()) {
+                    if (removeLineNumber == null || line.getM_iLine() != removeLineNumber) {
+                        totalValue = totalValue.add(BigDecimal.valueOf(line.getValue()));
+                        totalUnit = totalUnit.add(BigDecimal.valueOf(line.getMultiply()));
+                    }
                 }
             }
         } catch (SQLException ex) {

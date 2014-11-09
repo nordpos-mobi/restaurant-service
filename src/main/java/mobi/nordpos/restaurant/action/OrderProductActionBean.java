@@ -41,7 +41,7 @@ import net.sourceforge.stripes.validation.ValidationMethod;
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
 @Public
-public class ProductOrderActionBean extends OrderBaseActionBean {
+public class OrderProductActionBean extends OrderBaseActionBean {
 
     private static final String PRODUCT_ORDER = "/WEB-INF/jsp/product_order.jsp";
 
