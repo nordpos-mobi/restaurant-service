@@ -57,7 +57,7 @@ public class FloorListActionBean extends FloorBaseActionBean {
                 List<Place> places = floor.getPlaceList();
                 for (int j = 0; j < places.size(); j++) {
                     Place place = places.get(j);
-                    place = readPlace(place.getId());
+                    place.setTicket(readTicket(place.getId()));
                     places.set(j, place);
                 }
                 floor.setPlaceList(places);

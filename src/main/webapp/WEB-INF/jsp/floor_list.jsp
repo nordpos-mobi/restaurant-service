@@ -43,7 +43,7 @@
                         <c:set var="has_ticket" scope="page" value="false"/>
                     </c:if>
                     <li data-icon="<c:out value='${has_ticket}'/>">
-                        <sdynattr:link href="/PlaceView.action"
+                        <sdynattr:link href="/OrderPlace.action"
                                        data-transition="slide">
                             <stripes:param name="place.id" value="${place.id}"/>
                             <c:out value="${place.name}"/>

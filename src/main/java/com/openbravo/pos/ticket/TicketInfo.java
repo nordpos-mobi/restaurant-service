@@ -16,7 +16,6 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
-
 package com.openbravo.pos.ticket;
 
 import java.io.Externalizable;
@@ -71,10 +70,9 @@ public class TicketInfo implements Serializable, Externalizable {
         taxes = new ArrayList<TicketTaxInfo>();
     }
 
- /*   public int  getLineIndex(){
+    /*   public int  getLineIndex(){
 
-    } */
-
+     } */
     public void addLine(TicketLineInfo oLine) {
 
         oLine.setTicket(m_sId, m_aLines.size());
@@ -186,6 +184,9 @@ public class TicketInfo implements Serializable, Externalizable {
         StringBuilder name = new StringBuilder();
 
         if (m_iTicketId == 0) {
+            if (m_User != null) {
+                name.append(m_User.getLogin()).append(" - ");
+            }
             name.append("(").append(m_dateformat.format(m_dDate)).append(" ").append(Long.toString(m_dDate.getTime() % 1000)).append(")");
         } else {
             name.append(Integer.toString(m_iTicketId));

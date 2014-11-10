@@ -101,7 +101,7 @@ public class UserAuthorizationActionBean extends UserBaseActionBean {
 
     public Resolution logout() throws SQLException {
         getContext().logout();
-        return new RedirectResolution(this.getClass());
+        return new RedirectResolution(WelcomeActionBean.class);
     }
 
     @ValidateNestedProperties({

@@ -146,15 +146,11 @@ public abstract class BaseActionBean implements ActionBean {
                 .getFormFieldBundle(getContext().getLocale()).getString(key);
     }
 
-    protected Place readPlace(String id) throws SQLException {
+    protected SharedTicket readTicket(String id) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            PlacePersist placeDao = new PlacePersist(connection);
-            Place place = placeDao.queryForId(id);
             SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
-            SharedTicket ticket = sharedTicketDao.queryForId(place.getId());
-            place.setTicket(ticket);
-            return place;
+            return sharedTicketDao.queryForId(id);
         } finally {
             if (connection != null) {
                 connection.close();
@@ -180,18 +176,6 @@ public abstract class BaseActionBean implements ActionBean {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
             ApplicationPersist applicationDao = new ApplicationPersist(connection);
             return applicationDao.queryForId(id);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected Boolean updateTicket(SharedTicket ticket) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
-            return sharedTicketDao.update(ticket) > 0;
         } finally {
             if (connection != null) {
                 connection.close();

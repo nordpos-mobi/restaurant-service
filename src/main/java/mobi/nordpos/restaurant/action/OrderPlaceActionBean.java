@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import mobi.nordpos.restaurant.model.Place;
 import mobi.nordpos.restaurant.model.SharedTicket;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -34,9 +35,9 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
-public class PlaceViewActionBean extends PlaceBaseActionBean {
+public class OrderPlaceActionBean extends OrderBaseActionBean {
 
-    private static final String PLACE_VIEW = "/WEB-INF/jsp/place_view.jsp";
+    private static final String PLACE_VIEW = "/WEB-INF/jsp/place_order.jsp";
 
     BigDecimal totalValue;
     BigDecimal totalUnit;
@@ -79,7 +80,23 @@ public class PlaceViewActionBean extends PlaceBaseActionBean {
                     new SimpleError(ex.getMessage()));
             return getContext().getSourcePageResolution();
         }
-        return new ForwardResolution(PlaceViewActionBean.class);
+        return new ForwardResolution(OrderPlaceActionBean.class, "view");
+    }
+
+    public Resolution delete() throws SQLException {
+        Place place = getPlace();
+        try {
+            if (deleteTicket(place.getId())) {
+                getContext().getMessages().add(
+                        new SimpleMessage(getLocalizationKey("message.Order.deleted"),
+                                place.getName()));
+            }
+        } catch (SQLException ex) {
+            getContext().getValidationErrors().addGlobalError(
+                    new SimpleError(ex.getMessage()));
+            return getContext().getSourcePageResolution();
+        }
+        return new ForwardResolution(FloorListActionBean.class);
     }
 
     public Integer getRemoveLineNumber() {
@@ -109,21 +126,33 @@ public class PlaceViewActionBean extends PlaceBaseActionBean {
     @ValidationMethod
     public void validatePlaceIsAvalaible(ValidationErrors errors) {
         try {
-            setPlace(readPlace(getPlace().getId()));
+            Place place = readPlace(getPlace().getId());
+            place.setTicket(readTicket(place.getId()));
             totalValue = BigDecimal.ZERO;
             totalUnit = BigDecimal.ZERO;
-            if (getPlace().getTicket() != null) {
-                for (TicketLineInfo line : getPlace().getTicket().getContent().getM_aLines()) {
-                    if (removeLineNumber == null || line.getM_iLine() != removeLineNumber) {
-                        totalValue = totalValue.add(BigDecimal.valueOf(line.getValue()));
-                        totalUnit = totalUnit.add(BigDecimal.valueOf(line.getMultiply()));
-                    }
+            if (place.getTicket() != null) {
+                for (TicketLineInfo line : place.getTicket().getContent().getM_aLines()) {
+                    totalValue = totalValue.add(BigDecimal.valueOf(line.getValue()));
+                    totalUnit = totalUnit.add(BigDecimal.valueOf(line.getMultiply()));
                 }
             }
+            setPlace(place);
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
         }
     }
-    
+
+    @ValidationMethod(on = "remove")
+    public void validateSharedTicketLineIsRemove(ValidationErrors errors) {
+        Place place = getPlace();
+        if (place.getTicket() != null) {
+            for (TicketLineInfo line : place.getTicket().getContent().getM_aLines()) {
+                if (removeLineNumber == line.getM_iLine()) {
+                    totalValue = totalValue.subtract(BigDecimal.valueOf(line.getValue()));
+                    totalUnit = totalUnit.subtract(BigDecimal.valueOf(line.getMultiply()));
+                }
+            }
+        }
+    }
 }

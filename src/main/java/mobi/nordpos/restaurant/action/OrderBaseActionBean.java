@@ -41,6 +41,16 @@ public abstract class OrderBaseActionBean extends BaseActionBean {
         this.product = product;
     }
 
+    private Place place;
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+
     protected Product readProduct(String id) throws SQLException {
         try {
             connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
@@ -60,6 +70,18 @@ public abstract class OrderBaseActionBean extends BaseActionBean {
             QueryBuilder qb = productDao.queryBuilder();
             qb.where().like(table, value);
             return (Product) qb.queryForFirst();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+
+    protected Place readPlace(String id) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            PlacePersist placeDao = new PlacePersist(connection);
+            return placeDao.queryForId(id);
         } finally {
             if (connection != null) {
                 connection.close();
@@ -91,4 +113,27 @@ public abstract class OrderBaseActionBean extends BaseActionBean {
         }
     }
 
+    protected Boolean updateTicket(SharedTicket ticket) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
+            return sharedTicketDao.update(ticket) > 0;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+
+    protected Boolean deleteTicket(String id) throws SQLException {
+        try {
+            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
+            return sharedTicketDao.deleteById(id) > 0;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
 }

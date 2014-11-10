@@ -1,5 +1,5 @@
 <%--
-    Document   : place_view
+    Document   : place_order
     Author     : Andrey Svininykh (svininykh@gmail.com)
     Copyright  : Nord Trading Network
     License    : Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -7,8 +7,8 @@
 
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <stripes:layout-render name="/WEB-INF/jsp/common/layout_main.jsp"
-                       title="Place View"
-                       pageid="PlaceView">
+                       title="Place Order"
+                       pageid="PlaceOrder">
 
     <stripes:layout-component name="button.return">
         <sdynattr:link href="/Welcome.action"
@@ -27,12 +27,53 @@
 
     <stripes:layout-component name="button.action">
         <c:if test="${empty actionBean.place.ticket}">
-            <sdynattr:link href="/PlaceView.action"
+            <sdynattr:link href="/OrderPlace.action"
                            event="create"
                            class="ui-btn ui-corner-all ui-icon-action ui-btn-icon-left">
                 <stripes:param name="place.id" value="${actionBean.place.id}"/>
                 <fmt:message key="label.create" />
             </sdynattr:link>
+        </c:if>
+        <c:if test="${not empty actionBean.place.ticket}">
+            <a href="#delete_place" 
+               data-rel="popup" 
+               data-position-to="window" 
+               data-transition="pop" 
+               class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-left ui-btn-b ui-shadow">
+                <fmt:message key="label.delete" />
+            </a>
+            <div data-role="popup" 
+                 id="delete_place" 
+                 data-overlay-theme="b" data-theme="b" 
+                 data-dismissible="false" style="max-width:400px;">
+                <div data-role="header" data-theme="a">
+                    <h1><fmt:message key="label.dialog.delete" /></h1>
+                </div>
+                <div role="main" class="ui-content">
+                    <h3 class="ui-title">
+                        <c:out value="${actionBean.place.name}"/>
+                    </h3>
+                    <p><fmt:message key="label.ask.delete" /></p>
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <a href="#" 
+                               class="ui-btn ui-corner-all ui-icon-forbidden ui-btn-icon-left ui-btn-b ui-shadow" 
+                               data-rel="back" 
+                               data-transition="flow">
+                                <fmt:message key="no" />
+                            </a>   
+                        </div>
+                        <div class="ui-block-b">
+                            <stripes:form action="/OrderPlace.action?delete">
+                                <div>
+                                    <stripes:hidden name="place.id" value="${actionBean.place.id}"/>
+                                </div>
+                                <sdynattr:submit name="yes" data-theme="a" data-icon="check"/>                    
+                            </stripes:form>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
         </c:if>
     </stripes:layout-component>
 
@@ -96,7 +137,7 @@
                                             </a>   
                                         </div>
                                         <div class="ui-block-b">
-                                            <stripes:form action="/PlaceView.action?remove">
+                                            <stripes:form action="/OrderPlace.action?remove">
                                                 <div>
                                                     <stripes:hidden name="place.id" value="${actionBean.place.id}"/>
                                                     <stripes:hidden name="removeLineNumber" value="${line.getM_iLine()}"/>

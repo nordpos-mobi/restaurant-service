@@ -19,6 +19,7 @@ import com.openbravo.pos.ticket.ProductInfo;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import com.openbravo.pos.ticket.UserInfo;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
@@ -46,7 +47,6 @@ public class OrderProductActionBean extends OrderBaseActionBean {
     private static final String PRODUCT_ORDER = "/WEB-INF/jsp/product_order.jsp";
 
     List<Place> placeList;
-    Place place;
     @Validate(on = "add", required = true)
     BigDecimal orderUnit;
 
@@ -59,6 +59,7 @@ public class OrderProductActionBean extends OrderBaseActionBean {
 
         SharedTicket sharedTicket;
         TicketInfo ticket;
+        UserInfo userInfo = null;
 
         Product product = getProduct();
         ProductInfo productInfo = new ProductInfo();
@@ -77,14 +78,22 @@ public class OrderProductActionBean extends OrderBaseActionBean {
         TicketLineInfo ticketLine = new TicketLineInfo(productInfo, product.getPriceSell().doubleValue(), taxInfo);
         ticketLine.setMultiply(orderUnit.doubleValue());
 
+        if (getContext().getUser() != null) {
+            userInfo = new UserInfo();
+            userInfo.setLogin(getContext().getUser().getName());
+        }
+
         try {
-            if (place.getTicket() == null) {
+            if (getPlace().getTicket() == null) {
                 ticket = new TicketInfo();
                 ticket.setTickettype(TicketInfo.RECEIPT_NORMAL);
                 ticket.setM_dDate(new Date());
+                if (userInfo != null) {
+                    ticket.setM_User(userInfo);
+                }
                 ticket.addLine(ticketLine);
                 sharedTicket = new SharedTicket();
-                sharedTicket.setId(place.getId());
+                sharedTicket.setId(getPlace().getId());
                 sharedTicket.setName(ticket.getName());
                 sharedTicket.setContent(ticket);
                 getContext().getMessages().add(
@@ -92,7 +101,7 @@ public class OrderProductActionBean extends OrderBaseActionBean {
                                 createTicket(sharedTicket).getName(), getProduct().getName(), getOrderUnit(), getPlace().getName())
                 );
             } else {
-                sharedTicket = place.getTicket();
+                sharedTicket = getPlace().getTicket();
                 ticket = sharedTicket.getContent();
                 ticket.addLine(ticketLine);
                 sharedTicket.setContent(ticket);
@@ -128,18 +137,15 @@ public class OrderProductActionBean extends OrderBaseActionBean {
         this.placeList = placeList;
     }
 
-    public Place getPlace() {
-        return place;
-    }
-
     @ValidateNestedProperties({
         @Validate(on = "add",
                 field = "id",
                 required = true,
                 trim = true)
     })
+    @Override
     public void setPlace(Place place) {
-        this.place = place;
+        super.setPlace(place);
     }
 
     public BigDecimal getOrderUnit() {
@@ -163,7 +169,9 @@ public class OrderProductActionBean extends OrderBaseActionBean {
     @ValidationMethod(on = "add")
     public void validatePlaceIdIsAvalaible(ValidationErrors errors) {
         try {
-            setPlace(readPlace(place.getId()));
+            Place place = readPlace(getPlace().getId());
+            place.setTicket(readTicket(place.getId()));
+            setPlace(place);
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
