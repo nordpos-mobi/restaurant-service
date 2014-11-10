@@ -50,7 +50,7 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
         return new ForwardResolution(PLACE_VIEW);
     }
 
-    public Resolution create() {
+    public Resolution add() {
         getContext().setPlace(getPlace());
         return new ForwardResolution(CategoryProductListActionBean.class);
     }

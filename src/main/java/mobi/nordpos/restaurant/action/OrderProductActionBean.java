@@ -19,7 +19,6 @@ import com.openbravo.pos.ticket.ProductInfo;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
-import com.openbravo.pos.ticket.UserInfo;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
@@ -59,7 +58,6 @@ public class OrderProductActionBean extends OrderBaseActionBean {
 
         SharedTicket sharedTicket;
         TicketInfo ticket;
-        UserInfo userInfo = null;
 
         Product product = getProduct();
         ProductInfo productInfo = new ProductInfo();
@@ -78,19 +76,11 @@ public class OrderProductActionBean extends OrderBaseActionBean {
         TicketLineInfo ticketLine = new TicketLineInfo(productInfo, product.getPriceSell().doubleValue(), taxInfo);
         ticketLine.setMultiply(orderUnit.doubleValue());
 
-        if (getContext().getUser() != null) {
-            userInfo = new UserInfo();
-            userInfo.setLogin(getContext().getUser().getName());
-        }
-
         try {
             if (getPlace().getTicket() == null) {
                 ticket = new TicketInfo();
                 ticket.setTickettype(TicketInfo.RECEIPT_NORMAL);
                 ticket.setM_dDate(new Date());
-                if (userInfo != null) {
-                    ticket.setM_User(userInfo);
-                }
                 ticket.addLine(ticketLine);
                 sharedTicket = new SharedTicket();
                 sharedTicket.setId(getPlace().getId());

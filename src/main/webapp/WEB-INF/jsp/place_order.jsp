@@ -26,14 +26,6 @@
     </stripes:layout-component>
 
     <stripes:layout-component name="button.action">
-        <c:if test="${empty actionBean.place.ticket}">
-            <sdynattr:link href="/OrderPlace.action"
-                           event="create"
-                           class="ui-btn ui-corner-all ui-icon-action ui-btn-icon-left">
-                <stripes:param name="place.id" value="${actionBean.place.id}"/>
-                <fmt:message key="label.create" />
-            </sdynattr:link>
-        </c:if>
         <c:if test="${not empty actionBean.place.ticket}">
             <a href="#delete_place" 
                data-rel="popup" 
@@ -172,6 +164,16 @@
                 </tr>
             </tfoot>
         </table>
+
+        <div class="ui-body">
+            <sdynattr:link href="/OrderPlace.action"
+                           event="add"
+                           class="ui-btn ui-shadow ui-corner-all"
+                           role="button">
+                <stripes:param name="place.id" value="${actionBean.place.id}"/>
+                <fmt:message key="label.line.add" />
+            </sdynattr:link>  
+        </div>
     </stripes:layout-component>
 
     <stripes:layout-component name="footer">
