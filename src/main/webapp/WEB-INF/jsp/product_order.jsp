@@ -14,7 +14,11 @@
         <sdynattr:link href="/Welcome.action"
                        class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
             <fmt:message key="label.home" />
-        </sdynattr:link>                   
+        </sdynattr:link>
+        <sdynattr:link href="/CategoryProductList.action"
+                       class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-left">
+            <c:out value="${actionBean.product.productCategory.name}"/>
+        </sdynattr:link>
     </stripes:layout-component>
 
     <stripes:layout-component name="header.title">
@@ -75,16 +79,16 @@
                                         <h1><fmt:message key="label.ProductOrder"/></h1>
                                     </li>
                                     <c:if test="${empty place}">
-                                    <li class="ui-field-contain">
-                                        <stripes:label name="label.ProductOrder.place" for="productOrderPlace" class="select"/>
-                                        <sdynattr:select name="place.id" id="productOrderPlace" data-mini="true">
-                                            <c:forEach items="${actionBean.placeList}" var="place">
-                                                <stripes:option value="${place.id}">
-                                                    <c:out value="${place.name}"/>
-                                                </stripes:option>
-                                            </c:forEach>
-                                        </sdynattr:select>
-                                    </li>
+                                        <li class="ui-field-contain">
+                                            <stripes:label name="label.ProductOrder.place" for="productOrderPlace" class="select"/>
+                                            <sdynattr:select name="place.id" id="productOrderPlace" data-mini="true">
+                                                <c:forEach items="${actionBean.placeList}" var="place">
+                                                    <stripes:option value="${place.id}">
+                                                        <c:out value="${place.name}"/>
+                                                    </stripes:option>
+                                                </c:forEach>
+                                            </sdynattr:select>
+                                        </li>
                                     </c:if>
                                     <li class="ui-field-contain">
                                         <stripes:label name="label.ProductOrder.unit" for="productOrderUnit"/>

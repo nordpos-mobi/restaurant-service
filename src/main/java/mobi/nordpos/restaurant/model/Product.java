@@ -58,7 +58,7 @@ public class Product {
     @DatabaseField(columnName = IMAGE, dataType = DataType.BYTE_ARRAY, canBeNull = true)
     private byte[] image;
     
-    @DatabaseField(columnName = ISCOM, canBeNull = false)
+    @DatabaseField(columnName = ISCOM, defaultValue = "false")
     private Boolean com;
 
     @DatabaseField(foreign = true,

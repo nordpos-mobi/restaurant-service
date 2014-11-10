@@ -28,7 +28,8 @@ public class Application {
 
         NORDPOS("http://github.com/nordpos/nordpos"),
         OPENBRAVOPOS("http://sourceforge.net/projects/openbravopos/"),
-        UNICENTAOPOS("http://sourceforge.net/projects/unicentaopos/");
+        UNICENTAOPOS("http://sourceforge.net/projects/unicentaopos/"),
+        WANDAPOS("http://sourceforge.net/projects/wandaposdapos/");
 
         private final String url;
 
