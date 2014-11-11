@@ -18,6 +18,7 @@ package mobi.nordpos.restaurant.model;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import java.math.BigDecimal;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -38,6 +39,12 @@ public class SharedTicket {
     @DatabaseField(columnName = CONTENT, dataType = DataType.SERIALIZABLE, canBeNull = true)
     private com.openbravo.pos.ticket.TicketInfo content;
 
+    @DatabaseField(persisted = false)
+    private BigDecimal totalValue;
+
+    @DatabaseField(persisted = false)
+    private BigDecimal totalUnit;
+    
     public String getId() {
         return id;
     }
@@ -60,6 +67,22 @@ public class SharedTicket {
 
     public void setContent(com.openbravo.pos.ticket.TicketInfo content) {
         this.content = content;
+    }
+
+    public BigDecimal getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(BigDecimal totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public BigDecimal getTotalUnit() {
+        return totalUnit;
+    }
+
+    public void setTotalUnit(BigDecimal totalUnit) {
+        this.totalUnit = totalUnit;
     }
     
     @Override

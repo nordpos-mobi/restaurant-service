@@ -39,8 +39,6 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
 
     private static final String PLACE_VIEW = "/WEB-INF/jsp/place_order.jsp";
 
-    BigDecimal totalValue;
-    BigDecimal totalUnit;
     @Validate(on = "remove", required = true)
     Integer removeLineNumber;
 
@@ -107,35 +105,23 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
         this.removeLineNumber = removeLineNumber;
     }
 
-    public BigDecimal getTotalValue() {
-        return totalValue;
-    }
-
-    public void setTotalValue(BigDecimal totalValue) {
-        this.totalValue = totalValue;
-    }
-
-    public BigDecimal getTotalUnit() {
-        return totalUnit;
-    }
-
-    public void setTotalUnit(BigDecimal totalUnit) {
-        this.totalUnit = totalUnit;
-    }
-
     @ValidationMethod
     public void validatePlaceIsAvalaible(ValidationErrors errors) {
         try {
             Place place = readPlace(getPlace().getId());
-            place.setTicket(readTicket(place.getId()));
-            totalValue = BigDecimal.ZERO;
-            totalUnit = BigDecimal.ZERO;
-            if (place.getTicket() != null) {
-                for (TicketLineInfo line : place.getTicket().getContent().getM_aLines()) {
-                    totalValue = totalValue.add(BigDecimal.valueOf(line.getValue()));
-                    totalUnit = totalUnit.add(BigDecimal.valueOf(line.getMultiply()));
+            SharedTicket ticket = readTicket(place.getId());
+            
+            if (ticket != null) {
+                BigDecimal value = BigDecimal.ZERO;
+                BigDecimal unit = BigDecimal.ZERO;
+                for (TicketLineInfo line : ticket.getContent().getM_aLines()) {
+                    value = value.add(BigDecimal.valueOf(line.getValue()));
+                    unit = unit.add(BigDecimal.valueOf(line.getMultiply()));
                 }
+                ticket.setTotalValue(value);
+                ticket.setTotalUnit(unit);
             }
+            place.setTicket(ticket);
             setPlace(place);
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
@@ -145,14 +131,15 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
 
     @ValidationMethod(on = "remove")
     public void validateSharedTicketLineIsRemove(ValidationErrors errors) {
-        Place place = getPlace();
-        if (place.getTicket() != null) {
-            for (TicketLineInfo line : place.getTicket().getContent().getM_aLines()) {
-                if (removeLineNumber == line.getM_iLine()) {
-                    totalValue = totalValue.subtract(BigDecimal.valueOf(line.getValue()));
-                    totalUnit = totalUnit.subtract(BigDecimal.valueOf(line.getMultiply()));
+        SharedTicket ticket = getPlace().getTicket();
+        if (ticket != null) {
+            for (TicketLineInfo line : ticket.getContent().getM_aLines()) {
+                if (removeLineNumber == line.getM_iLine()) {                    
+                    ticket.setTotalValue(ticket.getTotalValue().subtract(BigDecimal.valueOf(line.getValue())));
+                    ticket.setTotalUnit(ticket.getTotalUnit().subtract(BigDecimal.valueOf(line.getMultiply())));
                 }
             }
+            getPlace().setTicket(ticket);
         }
     }
 }

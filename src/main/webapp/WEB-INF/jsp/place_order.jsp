@@ -150,11 +150,11 @@
                 <tr class="ui-bar-a">
                     <th><fmt:message key="label.line.total" /></th>
                     <td/>
-                    <td style="text-align: center;"><fmt:formatNumber value="${actionBean.totalUnit}"
+                    <td style="text-align: center;"><fmt:formatNumber value="${actionBean.place.ticket.totalUnit}"
                                       type="NUMBER"                                   
                                       maxFractionDigits="3"/>
                     </td>
-                    <td style="text-align: right;"><fmt:formatNumber value="${actionBean.totalValue}"
+                    <td style="text-align: right;"><fmt:formatNumber value="${actionBean.place.ticket.totalValue}"
                                       type="CURRENCY"
                                       pattern="#0.00 ¤"                                                  
                                       maxFractionDigits="2" 

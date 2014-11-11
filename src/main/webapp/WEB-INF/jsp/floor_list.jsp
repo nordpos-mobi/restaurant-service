@@ -33,7 +33,8 @@
             <c:forEach items="${actionBean.floorList}" var="floor">                
                 <li data-role="list-divider">
                     <%-- Name of the list item --%>
-                    <h2><c:out value="${floor.name}"/></h2>                    
+                    <h2><c:out value="${floor.name}"/></h2>
+                    <span class="ui-li-count"><c:out value="${floor.placeList.size()}" /></span>
                 </li>
                 <c:forEach items="${floor.placeList}" var="place">
                     <c:if test="${not empty place.ticket}">
@@ -47,6 +48,15 @@
                                        data-transition="slide">
                             <stripes:param name="place.id" value="${place.id}"/>
                             <c:out value="${place.name}"/>
+                            <p class="ui-li-aside">
+                                <strong>
+                                    <fmt:formatNumber value="${place.ticket.totalValue}"
+                                                      type="CURRENCY"
+                                                      pattern="#0.00 ¤"                                                  
+                                                      maxFractionDigits="2" 
+                                                      minFractionDigits="2"/>
+                                </strong>
+                            </p>
                         </sdynattr:link>
                     </li>
                 </c:forEach>

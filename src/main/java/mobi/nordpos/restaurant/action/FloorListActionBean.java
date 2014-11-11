@@ -15,10 +15,13 @@
  */
 package mobi.nordpos.restaurant.action;
 
+import com.openbravo.pos.ticket.TicketLineInfo;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import mobi.nordpos.restaurant.model.Floor;
 import mobi.nordpos.restaurant.model.Place;
+import mobi.nordpos.restaurant.model.SharedTicket;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -57,7 +60,18 @@ public class FloorListActionBean extends FloorBaseActionBean {
                 List<Place> places = floor.getPlaceList();
                 for (int j = 0; j < places.size(); j++) {
                     Place place = places.get(j);
-                    place.setTicket(readTicket(place.getId()));
+                    SharedTicket ticket = readTicket(place.getId());                    
+                    if (ticket != null) {
+                        BigDecimal value = BigDecimal.ZERO;
+                        BigDecimal unit = BigDecimal.ZERO;
+                        for (TicketLineInfo line : ticket.getContent().getM_aLines()) {
+                            value = value.add(BigDecimal.valueOf(line.getValue()));
+                            unit = unit.add(BigDecimal.valueOf(line.getMultiply()));
+                        }
+                        ticket.setTotalValue(value);
+                        ticket.setTotalUnit(unit);
+                    }
+                    place.setTicket(ticket);
                     places.set(j, place);
                 }
                 floor.setPlaceList(places);
