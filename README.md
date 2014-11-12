@@ -5,7 +5,7 @@ Project: http://nordpos.mobi
 ## Release features
 * []():
   * create a Maven web application project based on Stripes Framework version 1.5.8;
-  * implement version 1.4.4 of jQuery Mobile for UI;
+  * implement version 1.4.5 of jQuery Mobile for UI;
   * persist all data from the database by jdbc from ORMLite library version 4.48;
   * one source code of a Java servlet for [NORD POS](http://github.com/nordpos/nordpos), [Openbravo POS](http://sourceforge.net/projects/openbravopos/), [uniCenta oPOS](http://sourceforge.net/projects/unicentaopos/) and [Wanda POS](https://sourceforge.net/projects/wandaposdapos/) applications;
   * realize security by Public and nonPublic ActionBean and authentication by the user password;
@@ -25,6 +25,7 @@ Java virtual machine: Java Oracle Corporation 1.7(**tested**)
 
 Java servlet container: Apache Tomcat 8.0.3(**tested**) and Apache Tomcat 7.0.55(**tested**)
 
+## Included by
 [Stripes](http://stripesframework.org) is a simply MVC framework.
 
 [ORMLite](http://ormlite.com/) provides some simple, lightweight functionality for persisting Java objects to SQL databases.

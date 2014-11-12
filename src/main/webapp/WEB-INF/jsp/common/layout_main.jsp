@@ -16,12 +16,12 @@
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>${title} - NORD POS mobi</title>
-            <link rel="stylesheet" href="<c:url value='/css/jquery.mobile-1.4.4.min.css'/>" />
-            <link rel="stylesheet" href="<c:url value='/css/jquery.mobile.icons-1.4.4.min.css'/>" />
+            <link rel="stylesheet" href="<c:url value='/css/jquery.mobile-1.4.5.min.css'/>" />
+            <link rel="stylesheet" href="<c:url value='/css/jquery.mobile.icons-1.4.5.min.css'/>" />
             <link rel="stylesheet" href="<c:url value='/css/icon-pack-custom.css'/>" />
             <link rel="icon" type="image/png" href="<c:url value='/icon.png' />" />
             <script src="<c:url value='/js/jquery-2.1.1.min.js'/>" type="text/javascript"></script>
-            <script src="<c:url value='/js/jquery.mobile-1.4.4.min.js'/>" type="text/javascript"></script>
+            <script src="<c:url value='/js/jquery.mobile-1.4.5.min.js'/>" type="text/javascript"></script>
             <script src="<c:url value='/js/jquery.flot.min.js'/>" type="text/javascript"></script>
             <script src="<c:url value='/js/jquery.flot.pie.min.js'/>" type="text/javascript"></script>
             <script src="<c:url value='/js/jquery-ean13.min.js'/>" type="text/javascript"></script>
