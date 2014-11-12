@@ -91,6 +91,16 @@
                         <c:out value="${actionBean.application.toString()}" />
                     </div>
                 </div>
+                <div class="ui-block-a">
+                    <div class="ui-body ui-body-c">
+                        <fmt:message key="label.orderUnit.max" />
+                    </div>
+                </div>
+                <div class="ui-block-b">
+                    <div class="ui-body ui-body-c">
+                        <c:out value="${actionBean.orderUnitMax}" />
+                    </div>
+                </div>
             </div>
         </div>
     </stripes:layout-component>

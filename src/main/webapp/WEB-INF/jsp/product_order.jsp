@@ -92,7 +92,11 @@
                                     </c:if>
                                     <li class="ui-field-contain">
                                         <stripes:label name="label.ProductOrder.unit" for="productOrderUnit"/>
-                                        <input name="orderUnit" id="productOrderUnit" value="1" min="0" max="100" step="1" data-highlight="true" type="range">                                        
+                                        <input name="orderUnit" id="productOrderUnit" value="1" min="1" max="<fmt:formatNumber value="${actionBean.orderUnitMax}"
+                                                          type="NUMBER"
+                                                          pattern="#0"                                                  
+                                                          maxFractionDigits="0" 
+                                                          minFractionDigits="0"/>" step="1" data-highlight="true" type="range">                                        
                                     </li>
                                     <li class="ui-body ui-body-b">
                                         <fieldset class="ui-grid-a">

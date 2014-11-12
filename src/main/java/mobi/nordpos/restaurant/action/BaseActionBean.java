@@ -18,6 +18,7 @@ package mobi.nordpos.restaurant.action;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.openbravo.pos.sales.TaxesLogic;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public abstract class BaseActionBean implements ActionBean {
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";
     private static final String DB_APP = "db.application.id";
+    private static final String ORDER_UNIT_MAX = "order.unit.max";
 
     private MobileActionBeanContext context;
     private Application application;
@@ -101,6 +103,15 @@ public abstract class BaseActionBean implements ActionBean {
 
     public String getDataBaseApplication() {
         return getContext().getServletContext().getInitParameter(DB_APP);
+    }
+
+    public BigDecimal getOrderUnitMax() {
+        String max = getContext().getServletContext().getInitParameter(ORDER_UNIT_MAX);
+        if (max != null && !max.isEmpty()) {
+            return BigDecimal.valueOf(Long.parseLong(max));
+        } else {
+            return BigDecimal.TEN;
+        }
     }
 
     @SuppressWarnings("unchecked")
