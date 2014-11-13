@@ -36,6 +36,7 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
+import net.sourceforge.stripes.validation.ValidationState;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -55,57 +56,6 @@ public class OrderProductActionBean extends OrderBaseActionBean {
     }
 
     public Resolution add() {
-
-        SharedTicket sharedTicket;
-        TicketInfo ticket;
-
-        Product product = getProduct();
-        ProductInfo productInfo = new ProductInfo();
-        productInfo.setId(product.getId());
-        productInfo.setPriceSell(product.getPriceSell().doubleValue());
-        productInfo.setName(product.getName());
-        productInfo.setTaxcat(product.getTaxCategory().getId());
-        productInfo.setCategoryId(product.getProductCategory().getId());
-        productInfo.setCom(product.getCom());
-
-        TaxInfo taxInfo = new TaxInfo();
-        taxInfo.setId(product.getTax().getId());
-        taxInfo.setRate(product.getTax().getRate().doubleValue());
-        taxInfo.setTaxcategoryid(product.getTaxCategory().getId());
-
-        TicketLineInfo ticketLine = new TicketLineInfo(productInfo, product.getPriceSell().doubleValue(), taxInfo);
-        ticketLine.setMultiply(orderUnit.doubleValue());
-
-        try {
-            if (getPlace().getTicket() == null) {
-                ticket = new TicketInfo();
-                ticket.setTickettype(TicketInfo.RECEIPT_NORMAL);
-                ticket.setM_dDate(new Date());
-                ticket.addLine(ticketLine);
-                sharedTicket = new SharedTicket();
-                sharedTicket.setId(getPlace().getId());
-                sharedTicket.setName(ticket.getName());
-                sharedTicket.setContent(ticket);
-                getContext().getMessages().add(
-                        new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
-                                createTicket(sharedTicket).getName(), getProduct().getName(), getOrderUnit(), getPlace().getName())
-                );
-            } else {
-                sharedTicket = getPlace().getTicket();
-                ticket = sharedTicket.getContent();
-                ticket.addLine(ticketLine);
-                sharedTicket.setContent(ticket);
-                if (updateTicket(sharedTicket)) {
-                    getContext().getMessages().add(
-                            new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
-                                    sharedTicket.getName(), getProduct().getName(), getOrderUnit(), getPlace().getName()));
-                }
-            }
-        } catch (SQLException ex) {
-            getContext().getValidationErrors().addGlobalError(
-                    new SimpleError(ex.getMessage()));
-            return getContext().getSourcePageResolution();
-        }
         return new ForwardResolution(CategoryProductListActionBean.class);
     }
 
@@ -156,18 +106,6 @@ public class OrderProductActionBean extends OrderBaseActionBean {
         }
     }
 
-    @ValidationMethod(on = "add")
-    public void validatePlaceIdIsAvalaible(ValidationErrors errors) {
-        try {
-            Place place = readPlace(getPlace().getId());
-            place.setTicket(readTicket(place.getId()));
-            setPlace(place);
-        } catch (SQLException ex) {
-            getContext().getValidationErrors().addGlobalError(
-                    new SimpleError(ex.getMessage()));
-        }
-    }
-
     @ValidationMethod
     public void validateProductCodeIsAvalaible(ValidationErrors errors) {
         try {
@@ -179,6 +117,60 @@ public class OrderProductActionBean extends OrderBaseActionBean {
                 errors.add("product.code", new SimpleError(
                         getLocalizationKey("error.CatalogNotInclude")));
             }
+        } catch (SQLException ex) {
+            getContext().getValidationErrors().addGlobalError(
+                    new SimpleError(ex.getMessage()));
+        }
+    }
+
+    @ValidationMethod(on = "add", priority = 1)
+    public void tryTicketSave(ValidationErrors errors) {
+        try {
+            TicketInfo ticket;
+            Place place = readPlace(getPlace().getId());
+            SharedTicket sharedTicket = readTicket(place.getId());
+
+            Product product = getProduct();
+            ProductInfo productInfo = new ProductInfo();
+            productInfo.setId(product.getId());
+            productInfo.setPriceSell(product.getPriceSell().doubleValue());
+            productInfo.setName(product.getName());
+            productInfo.setTaxcat(product.getTaxCategory().getId());
+            productInfo.setCategoryId(product.getProductCategory().getId());
+            productInfo.setCom(product.getCom());
+
+            TaxInfo taxInfo = new TaxInfo();
+            taxInfo.setId(product.getTax().getId());
+            taxInfo.setRate(product.getTax().getRate().doubleValue());
+            taxInfo.setTaxcategoryid(product.getTaxCategory().getId());
+
+            TicketLineInfo ticketLine = new TicketLineInfo(productInfo, product.getPriceSell().doubleValue(), taxInfo);
+            ticketLine.setMultiply(orderUnit.doubleValue());
+
+            if (sharedTicket == null) {
+                ticket = new TicketInfo();
+                ticket.setTickettype(TicketInfo.RECEIPT_NORMAL);
+                ticket.setM_dDate(new Date());
+                ticket.addLine(ticketLine);
+                sharedTicket = new SharedTicket();
+                sharedTicket.setId(place.getId());
+                sharedTicket.setName(ticket.getName());
+                sharedTicket.setContent(ticket);
+                getContext().getMessages().add(
+                        new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
+                                createTicket(sharedTicket).getName(), getProduct().getName(), getOrderUnit(), place.getName())
+                );
+            } else {
+                ticket = sharedTicket.getContent();
+                ticket.addLine(ticketLine);
+                sharedTicket.setContent(ticket);
+                if (updateTicket(sharedTicket)) {
+                    getContext().getMessages().add(
+                            new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
+                                    sharedTicket.getName(), getProduct().getName(), getOrderUnit(), place.getName()));
+                }
+            }
+
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
