@@ -10,7 +10,7 @@
                        title="User Authorization"
                        pageid="UserAuthorization">
 
-    <stripes:layout-component name="button.return">
+    <stripes:layout-component name="buttons_left">
         <c:if test="${not empty user}">
             <sdynattr:link href="/Welcome.action"
                            class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
@@ -19,11 +19,11 @@
         </c:if>
     </stripes:layout-component>
 
-    <stripes:layout-component name="header.title">
+    <stripes:layout-component name="title">
         <fmt:message key="label.UserAuthorization" />
     </stripes:layout-component>
 
-    <stripes:layout-component name="button.action">
+    <stripes:layout-component name="buttons_right">
         <sdynattr:link href="/UserRegistration.action"
                        class="ui-btn ui-corner-all ui-icon-lock ui-btn-icon-left"
                        role="button">

@@ -30,7 +30,7 @@
             <div data-role="page" id="${pageid}">
                 <div data-role="header" role="banner">
                     <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal" data-mini="true">
-                        <stripes:layout-component name="button.return"/>
+                        <stripes:layout-component name="buttons_left"/>
                         <c:if test="${not empty place}">
                             <sdynattr:link href="/OrderPlace.action"
                                            class="ui-btn ui-corner-all ui-icon-bullets ui-btn-icon-left">
@@ -40,10 +40,10 @@
                         </c:if>
                     </div>
                     <h2>
-                        <stripes:layout-component name="header.title"/>
+                        <stripes:layout-component name="title"/>
                     </h2>
                     <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal" data-mini="true">
-                        <stripes:layout-component name="button.action"/>
+                        <stripes:layout-component name="buttons_right"/>
                         <c:if test="${not empty user}">
                             <sdynattr:link href="/UserView.action"
                                            class="ui-btn ui-corner-all ui-btn-icon-left ui-icon-user">

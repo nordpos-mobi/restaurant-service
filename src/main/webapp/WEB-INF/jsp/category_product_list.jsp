@@ -10,18 +10,18 @@
                        title="Product Category"
                        pageid="ProductCategory">
 
-    <stripes:layout-component name="button.return">
+    <stripes:layout-component name="buttons_left">
         <sdynattr:link href="/Welcome.action"
                        class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-notext">            
             <fmt:message key="label.home" />
         </sdynattr:link>       
     </stripes:layout-component>
 
-    <stripes:layout-component name="header.title">
+    <stripes:layout-component name="title">
         <fmt:message key="label.RestaurantMenu"/>
     </stripes:layout-component>
 
-    <stripes:layout-component name="button.action">          
+    <stripes:layout-component name="buttons_right">          
     </stripes:layout-component>
 
     <%-- Main content of the page implementation to the template for view --%>

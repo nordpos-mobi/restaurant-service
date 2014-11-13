@@ -10,11 +10,11 @@
                        title="Welcome"
                        pageid="Welcome">
 
-    <stripes:layout-component name="header.title">
+    <stripes:layout-component name="title">
         <fmt:message key="label.welcome" />
     </stripes:layout-component>
 
-    <stripes:layout-component name="button.action">
+    <stripes:layout-component name="buttons_right">
         <sdynattr:link href="/Welcome.action"
                        event="info"
                        class="ui-btn ui-corner-all ui-icon-info ui-btn-icon-left"

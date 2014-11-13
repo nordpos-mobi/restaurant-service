@@ -10,14 +10,14 @@
                        title="User"
                        pageid="User">
 
-    <stripes:layout-component name="button.return">
+    <stripes:layout-component name="buttons_left">
         <sdynattr:link href="/Welcome.action"
                        class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
             <fmt:message key="label.home" />
         </sdynattr:link>        
     </stripes:layout-component>
 
-    <stripes:layout-component name="header.title">
+    <stripes:layout-component name="title">
         <fmt:message key="label.UserLogIn" />
     </stripes:layout-component>
 

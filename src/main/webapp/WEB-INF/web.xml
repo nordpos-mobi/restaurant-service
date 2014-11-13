@@ -24,7 +24,7 @@
 
     <context-param>
         <param-name>db.application.id</param-name>
-        <param-value>nordpos</param-value>
+        <param-value>unicentaopos</param-value>
     </context-param>    
 
     <!-- STRIPES LOCALIZATION PARAMETERS -->
@@ -41,7 +41,12 @@
         <display-name>Stripes Filter</display-name>
         <filter-name>StripesFilter</filter-name>
         <filter-class>net.sourceforge.stripes.controller.StripesFilter</filter-class>
-        
+
+        <init-param> 
+            <param-name>MultipartWrapper.Class</param-name> 
+            <param-value>net.sourceforge.stripes.controller.multipart.CommonsMultipartWrapper</param-value> 
+        </init-param>
+                
         <!-- Optional init parameter for the Stripes Filter. -->
         <init-param>
             <param-name>Extension.Packages</param-name>
@@ -64,7 +69,7 @@
             <param-name>LocalePicker.Locales</param-name>
             <param-value>en:UTF-8,ru:UTF-8</param-value>
         </init-param>
-    
+        
     </filter>
 
     <!-- FILTER MAPPINGS -->
