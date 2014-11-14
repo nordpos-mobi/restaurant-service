@@ -46,9 +46,9 @@
                     <li data-icon="<c:out value='${has_ticket}'/>">
                         <sdynattr:link href="/OrderPlace.action"
                                        data-transition="slide">
-                            <stripes:param name="place.id" value="${place.id}"/>
+                            <stripes:param name="place.id" value="${place.id}"/>      
                             <c:out value="${place.name}"/>
-                            <p class="ui-li-aside">
+                            <p class="ui-li-aside">                                
                                 <strong>
                                     <fmt:formatNumber value="${place.ticket.totalValue}"
                                                       type="CURRENCY"
