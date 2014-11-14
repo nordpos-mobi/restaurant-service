@@ -24,7 +24,7 @@
 
     <context-param>
         <param-name>db.application.id</param-name>
-        <param-value>unicentaopos</param-value>
+        <param-value>nordpos</param-value>
     </context-param>    
 
     <!-- STRIPES LOCALIZATION PARAMETERS -->
