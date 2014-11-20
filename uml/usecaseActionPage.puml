@@ -1,0 +1,35 @@
+@startuml
+
+skinparam usecase {
+    BackgroundColor<< Public >>  LightBlue
+    BackgroundColor<< Common >> LightGreen
+}
+
+actor Customer 
+actor Merchant
+
+(layout_main.jsp) << Common >>
+(present.jsp) << Public >>
+(info.jsp) << Public >>
+(user_reg.jsp) << Public >>
+(login.jsp) << Public >>
+(category_product_list.jsp) << Public >>
+(product_order.jsp) << Public >>
+
+Customer - (present.jsp)
+(present.jsp) - Merchant
+
+(present.jsp) -up-> (layout_main.jsp)
+(user_reg.jsp) -down-> (layout_main.jsp)
+(login.jsp) -up-> (user_reg.jsp) 
+(login.jsp) -down-> (layout_main.jsp)
+(user_view.jsp) .left-> (layout_main.jsp)
+
+(info.jsp) .up-> (present.jsp)
+(category_product_list.jsp) .up-> (present.jsp)
+(product_order.jsp) .up-> (category_product_list.jsp)
+
+(floor_list.jsp) .up-> (present.jsp)
+(place_order.jsp) .up-> (floor_list.jsp)
+ 
+@enduml
