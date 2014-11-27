@@ -75,6 +75,10 @@ public class Floor {
     public void setPlaceList(List<Place> placeList) {
         this.placeList = placeList;
     }
+    
+    public int getPlaceListSize() {
+        return this.getPlaceCollection().size();
+    }    
 
     @Override
     public int hashCode() {

@@ -98,8 +98,12 @@ public class ProductCategory {
     
     public void setProductList(List<Product> productList) {
         this.productList = productList;
-    }    
+    }
 
+    public int getProductListSize() {
+        return this.getProductCollection().size();
+    }
+    
     @Override
     public int hashCode() {
         return name.hashCode();

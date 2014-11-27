@@ -4,7 +4,7 @@
 
     <groupId>mobi.nordpos</groupId>
     <artifactId>nordpos-restaurant-service</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>restaurant-service</name>
