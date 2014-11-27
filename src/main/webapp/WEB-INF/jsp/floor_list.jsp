@@ -34,7 +34,7 @@
                 <li data-role="list-divider">
                     <%-- Name of the list item --%>
                     <h2><c:out value="${floor.name}"/></h2>
-                    <span class="ui-li-count"><c:out value="${floor.placeList.placeListSize}" /></span>
+                    <span class="ui-li-count"><c:out value="${floor.placeListSize}" /></span>
                 </li>
                 <c:forEach items="${floor.placeList}" var="place">
                     <c:if test="${not empty place.ticket}">
