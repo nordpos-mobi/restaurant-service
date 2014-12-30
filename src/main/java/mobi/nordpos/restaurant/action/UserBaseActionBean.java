@@ -15,10 +15,7 @@
  */
 package mobi.nordpos.restaurant.action;
 
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import java.sql.SQLException;
-import mobi.nordpos.restaurant.dao.ormlite.UserPersist;
-import mobi.nordpos.restaurant.model.User;
+import mobi.nordpos.dao.model.User;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -33,42 +30,6 @@ public abstract class UserBaseActionBean extends BaseActionBean {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    protected User readUser(String name) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            UserPersist userDao = new UserPersist(connection);
-            return userDao.read(name);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected User createUser(User user) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            UserPersist userDao = new UserPersist(connection);
-            return userDao.createIfNotExists(user);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected Boolean updateUser(User user) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            UserPersist userDao = new UserPersist(connection);
-            return userDao.update(user) > 0;
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
     }
 
 }

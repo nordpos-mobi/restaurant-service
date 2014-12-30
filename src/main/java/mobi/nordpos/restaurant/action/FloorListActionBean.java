@@ -19,9 +19,12 @@ import com.openbravo.pos.ticket.TicketLineInfo;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
-import mobi.nordpos.restaurant.model.Floor;
-import mobi.nordpos.restaurant.model.Place;
-import mobi.nordpos.restaurant.model.SharedTicket;
+import mobi.nordpos.dao.model.Floor;
+import mobi.nordpos.dao.model.Place;
+import mobi.nordpos.dao.model.SharedTicket;
+import mobi.nordpos.dao.ormlite.FloorPersist;
+import mobi.nordpos.dao.ormlite.PlacePersist;
+import mobi.nordpos.dao.ormlite.SharedTicketPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -54,13 +57,15 @@ public class FloorListActionBean extends FloorBaseActionBean {
     @ValidationMethod
     public void validateFloorListIsAvalaible(ValidationErrors errors) {
         try {
-            List<Floor> floors = readFloorList();
+            FloorPersist floorPersist = new FloorPersist(getDataBaseConnection());
+            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            List<Floor> floors = floorPersist.readList();
             for (int i = 0; i < floors.size(); i++) {
                 Floor floor = floors.get(i);
                 List<Place> places = floor.getPlaceList();
                 for (int j = 0; j < places.size(); j++) {
                     Place place = places.get(j);
-                    SharedTicket ticket = readTicket(place.getId());                    
+                    SharedTicket ticket = sharedTicketPersist.read(place.getId());                    
                     if (ticket != null) {
                         BigDecimal value = BigDecimal.ZERO;
                         BigDecimal unit = BigDecimal.ZERO;

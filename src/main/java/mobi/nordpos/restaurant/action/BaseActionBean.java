@@ -17,23 +17,15 @@ package mobi.nordpos.restaurant.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
-import com.openbravo.pos.sales.TaxesLogic;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import mobi.nordpos.restaurant.dao.ormlite.ApplicationPersist;
-import mobi.nordpos.restaurant.dao.ormlite.PlacePersist;
-import mobi.nordpos.restaurant.dao.ormlite.SharedTicketPersist;
-import mobi.nordpos.restaurant.dao.ormlite.TaxPersist;
+import mobi.nordpos.dao.model.Application;
+import mobi.nordpos.dao.ormlite.ApplicationPersist;
 import mobi.nordpos.restaurant.ext.MobileActionBeanContext;
 import mobi.nordpos.restaurant.ext.MyLocalePicker;
-import mobi.nordpos.restaurant.model.Application;
-import mobi.nordpos.restaurant.model.Place;
-import mobi.nordpos.restaurant.model.SharedTicket;
-import mobi.nordpos.restaurant.model.Tax;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.controller.StripesFilter;
@@ -59,8 +51,6 @@ public abstract class BaseActionBean implements ActionBean {
 
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-    ConnectionSource connection;
-
     @Override
     public MobileActionBeanContext getContext() {
         return this.context;
@@ -78,7 +68,8 @@ public abstract class BaseActionBean implements ActionBean {
     @ValidationMethod
     public void validateApplicationAvalaible(ValidationErrors errors) {
         try {
-            application = readApplication(getDataBaseApplication());
+            ApplicationPersist applicationPersist = new ApplicationPersist(new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword()));
+            application = applicationPersist.read(getDataBaseApplication());
             if (application == null) {
                 errors.add("application.id", new SimpleError(
                         getLocalizationKey("error.DatabaseNotSupportApplication"), getDataBaseApplication()));
@@ -89,15 +80,19 @@ public abstract class BaseActionBean implements ActionBean {
         }
     }
 
-    public String getDataBaseURL() {
+    protected ConnectionSource getDataBaseConnection() throws SQLException {
+        return new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
+    }
+
+    private String getDataBaseURL() {
         return getContext().getServletContext().getInitParameter(DB_URL);
     }
 
-    public String getDataBaseUser() {
+    private String getDataBaseUser() {
         return getContext().getServletContext().getInitParameter(DB_USER);
     }
 
-    public String getDataBasePassword() {
+    private String getDataBasePassword() {
         return getContext().getServletContext().getInitParameter(DB_PASSWORD);
     }
 
@@ -155,43 +150,6 @@ public abstract class BaseActionBean implements ActionBean {
     public String getLocalizationKey(String key) {
         return StripesFilter.getConfiguration().getLocalizationBundleFactory()
                 .getFormFieldBundle(getContext().getLocale()).getString(key);
-    }
-
-    protected SharedTicket readTicket(String id) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            SharedTicketPersist sharedTicketDao = new SharedTicketPersist(connection);
-            return sharedTicketDao.queryForId(id);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected Tax readTax(String taxCategoryId) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            TaxPersist taxDao = new TaxPersist(connection);
-            TaxesLogic taxLogic = new TaxesLogic(taxDao.queryForAll());
-            return taxLogic.getTax(taxCategoryId, new Date());
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    protected Application readApplication(String id) throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ApplicationPersist applicationDao = new ApplicationPersist(connection);
-            return applicationDao.queryForId(id);
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
     }
 
 }

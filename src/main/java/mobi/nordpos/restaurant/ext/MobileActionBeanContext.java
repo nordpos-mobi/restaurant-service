@@ -15,8 +15,8 @@
  */
 package mobi.nordpos.restaurant.ext;
 
-import mobi.nordpos.restaurant.model.Place;
-import mobi.nordpos.restaurant.model.User;
+import mobi.nordpos.dao.model.Place;
+import mobi.nordpos.dao.model.User;
 import net.sourceforge.stripes.action.ActionBeanContext;
 
 /**

@@ -15,11 +15,7 @@
  */
 package mobi.nordpos.restaurant.action;
 
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import java.sql.SQLException;
-import java.util.List;
-import mobi.nordpos.restaurant.dao.ormlite.FloorPersist;
-import mobi.nordpos.restaurant.model.Floor;
+import mobi.nordpos.dao.model.Floor;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -34,18 +30,6 @@ public abstract class FloorBaseActionBean extends BaseActionBean {
 
     public void setFloor(Floor floor) {
         this.floor = floor;
-    }
-
-    protected List<Floor> readFloorList() throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            FloorPersist floorDao = new FloorPersist(connection);
-            return floorDao.getList();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
     }
 
 }

@@ -19,8 +19,9 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import mobi.nordpos.restaurant.ext.Public;
-import mobi.nordpos.restaurant.model.User;
+import mobi.nordpos.dao.model.User;
 import com.openbravo.pos.util.Hashcypher;
+import mobi.nordpos.dao.ormlite.UserPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -54,11 +55,12 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
 
     public Resolution accept() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         User user = getUser();
+        user.setPassword(Hashcypher.hashString(user.getPassword()));
         try {
-            user.setPassword(Hashcypher.hashString(user.getPassword()));
+            UserPersist userPersist = new UserPersist(getDataBaseConnection());
             getContext().getMessages().add(
                     new SimpleMessage(getLocalizationKey("message.User.registered"),
-                            createUser(user).getName())
+                            userPersist.add(user).getName())
             );
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
@@ -102,7 +104,8 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
     @ValidationMethod(on = {"accept"})
     public void validateUserNameIsAvalaible(ValidationErrors errors) {
         try {
-            User user = readUser(getUser().getName());
+            UserPersist userPersist = new UserPersist(getDataBaseConnection());
+            User user = userPersist.read(getUser().getName());
             if (user != null) {
                 errors.add("user.name", new SimpleError(
                         getLocalizationKey("error.User.AlreadyExists"), user.getName()));

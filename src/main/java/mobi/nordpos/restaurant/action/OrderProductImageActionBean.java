@@ -17,8 +17,9 @@ package mobi.nordpos.restaurant.action;
 
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletResponse;
+import mobi.nordpos.dao.model.Product;
+import mobi.nordpos.dao.ormlite.ProductPersist;
 import mobi.nordpos.restaurant.ext.Public;
-import mobi.nordpos.restaurant.model.Product;
 import mobi.nordpos.restaurant.util.ImagePreview;
 import net.sourceforge.stripes.action.StreamingResolution;
 import net.sourceforge.stripes.validation.SimpleError;
@@ -48,7 +49,8 @@ public class OrderProductImageActionBean extends OrderBaseActionBean {
     @ValidationMethod(on = "preview")
     public void validateProductIdIsAvalaible(ValidationErrors errors) {
         try {
-            Product product = readProduct(getProduct().getId());
+            ProductPersist productPersist = new ProductPersist(getDataBaseConnection());
+            Product product = productPersist.read(getProduct().getId());
             if (product != null) {
                 setProduct(product);
             }

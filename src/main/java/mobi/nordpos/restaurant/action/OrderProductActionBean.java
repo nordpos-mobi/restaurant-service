@@ -24,9 +24,13 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import mobi.nordpos.restaurant.ext.Public;
-import mobi.nordpos.restaurant.model.Place;
-import mobi.nordpos.restaurant.model.Product;
-import mobi.nordpos.restaurant.model.SharedTicket;
+import mobi.nordpos.dao.model.Place;
+import mobi.nordpos.dao.model.Product;
+import mobi.nordpos.dao.model.SharedTicket;
+import mobi.nordpos.dao.ormlite.PlacePersist;
+import mobi.nordpos.dao.ormlite.ProductPersist;
+import mobi.nordpos.dao.ormlite.SharedTicketPersist;
+import mobi.nordpos.dao.ormlite.TaxPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -36,7 +40,6 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
-import net.sourceforge.stripes.validation.ValidationState;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -99,7 +102,8 @@ public class OrderProductActionBean extends OrderBaseActionBean {
     @ValidationMethod
     public void validatePlaceListIsAvalaible(ValidationErrors errors) {
         try {
-            setPlaceList(readPlaceList());
+            PlacePersist placePersist = new PlacePersist(getDataBaseConnection());
+            setPlaceList(placePersist.readList());
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
@@ -109,9 +113,11 @@ public class OrderProductActionBean extends OrderBaseActionBean {
     @ValidationMethod
     public void validateProductCodeIsAvalaible(ValidationErrors errors) {
         try {
-            Product product = readProduct(Product.CODE, getProduct().getCode());
+            ProductPersist productPersist = new ProductPersist(getDataBaseConnection());
+            TaxPersist taxPersist = new TaxPersist(getDataBaseConnection());
+            Product product = productPersist.find(Product.CODE, getProduct().getCode());
             if (product != null) {
-                product.setTax(readTax(product.getTaxCategory().getId()));
+                product.setTax(taxPersist.read(product.getTaxCategory().getId()));
                 setProduct(product);
             } else {
                 errors.add("product.code", new SimpleError(
@@ -125,10 +131,12 @@ public class OrderProductActionBean extends OrderBaseActionBean {
 
     @ValidationMethod(on = "add", priority = 1)
     public void tryTicketSave(ValidationErrors errors) {
+        TicketInfo ticket;
         try {
-            TicketInfo ticket;
-            Place place = readPlace(getPlace().getId());
-            SharedTicket sharedTicket = readTicket(place.getId());
+            PlacePersist placePersist = new PlacePersist(getDataBaseConnection());
+            Place place = placePersist.read(getPlace().getId());
+            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            SharedTicket sharedTicket = sharedTicketPersist.read(place.getId());
 
             Product product = getProduct();
             ProductInfo productInfo = new ProductInfo();
@@ -158,13 +166,13 @@ public class OrderProductActionBean extends OrderBaseActionBean {
                 sharedTicket.setContent(ticket);
                 getContext().getMessages().add(
                         new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
-                                createTicket(sharedTicket).getName(), getProduct().getName(), getOrderUnit(), place.getName())
+                                sharedTicketPersist.add(sharedTicket).getName(), getProduct().getName(), getOrderUnit(), place.getName())
                 );
             } else {
                 ticket = sharedTicket.getContent();
                 ticket.addLine(ticketLine);
                 sharedTicket.setContent(ticket);
-                if (updateTicket(sharedTicket)) {
+                if (sharedTicketPersist.change(sharedTicket)) {
                     getContext().getMessages().add(
                             new SimpleMessage(getLocalizationKey("message.OrderTicketLine.added"),
                                     sharedTicket.getName(), getProduct().getName(), getOrderUnit(), place.getName()));

@@ -15,12 +15,8 @@
  */
 package mobi.nordpos.restaurant.action;
 
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.stmt.QueryBuilder;
-import java.sql.SQLException;
 import java.util.List;
-import mobi.nordpos.restaurant.dao.ormlite.ProductCategoryPersist;
-import mobi.nordpos.restaurant.model.ProductCategory;
+import mobi.nordpos.dao.model.ProductCategory;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -35,18 +31,6 @@ public abstract class CategoryProductBaseActionBean extends BaseActionBean {
 
     public void setCategoryList(List<ProductCategory> categoryList) {
         this.categoryList = categoryList;
-    }
-
-    protected List<ProductCategory> readCategoryList() throws SQLException {
-        try {
-            connection = new JdbcConnectionSource(getDataBaseURL(), getDataBaseUser(), getDataBasePassword());
-            ProductCategoryPersist productCategoryDao = new ProductCategoryPersist(connection);
-            return productCategoryDao.getList();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
     }
 
 }

@@ -21,8 +21,10 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import mobi.nordpos.restaurant.model.Place;
-import mobi.nordpos.restaurant.model.SharedTicket;
+import mobi.nordpos.dao.model.Place;
+import mobi.nordpos.dao.model.SharedTicket;
+import mobi.nordpos.dao.ormlite.PlacePersist;
+import mobi.nordpos.dao.ormlite.SharedTicketPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -68,7 +70,8 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
         }
         sharedTicket.setContent(ticket);
         try {
-            if (updateTicket(sharedTicket)) {
+            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            if (sharedTicketPersist.change(sharedTicket)) {
                 getContext().getMessages().add(
                         new SimpleMessage(getLocalizationKey("message.PlaceTicketLine.removed"),
                                 sharedTicket.getName(), removeLine.getAttributes().getProperty("product.name"), removeLine.getMultiply(), getPlace().getName()));
@@ -84,7 +87,8 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
     public Resolution delete() throws SQLException {
         Place place = getPlace();
         try {
-            if (deleteTicket(place.getId())) {
+            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            if (sharedTicketPersist.delete(place.getId())) {
                 getContext().getMessages().add(
                         new SimpleMessage(getLocalizationKey("message.Order.deleted"),
                                 place.getName()));
@@ -108,9 +112,11 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
     @ValidationMethod
     public void validatePlaceIsAvalaible(ValidationErrors errors) {
         try {
-            Place place = readPlace(getPlace().getId());
-            SharedTicket ticket = readTicket(place.getId());
-            
+            PlacePersist placePersist = new PlacePersist(getDataBaseConnection());
+            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            Place place = placePersist.read(getPlace().getId());
+            SharedTicket ticket = sharedTicketPersist.read(place.getId());
+
             if (ticket != null) {
                 BigDecimal value = BigDecimal.ZERO;
                 BigDecimal unit = BigDecimal.ZERO;
@@ -134,7 +140,7 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
         SharedTicket ticket = getPlace().getTicket();
         if (ticket != null) {
             for (TicketLineInfo line : ticket.getContent().getM_aLines()) {
-                if (removeLineNumber == line.getM_iLine()) {                    
+                if (removeLineNumber == line.getM_iLine()) {
                     ticket.setTotalValue(ticket.getTotalValue().subtract(BigDecimal.valueOf(line.getValue())));
                     ticket.setTotalUnit(ticket.getTotalUnit().subtract(BigDecimal.valueOf(line.getMultiply())));
                 }

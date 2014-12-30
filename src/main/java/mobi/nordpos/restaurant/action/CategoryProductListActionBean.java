@@ -18,8 +18,10 @@ package mobi.nordpos.restaurant.action;
 import java.sql.SQLException;
 import java.util.List;
 import mobi.nordpos.restaurant.ext.Public;
-import mobi.nordpos.restaurant.model.Product;
-import mobi.nordpos.restaurant.model.ProductCategory;
+import mobi.nordpos.dao.model.Product;
+import mobi.nordpos.dao.model.ProductCategory;
+import mobi.nordpos.dao.ormlite.ProductCategoryPersist;
+import mobi.nordpos.dao.ormlite.TaxPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -42,14 +44,17 @@ public class CategoryProductListActionBean extends CategoryProductBaseActionBean
 
     @ValidationMethod
     public void validateCategoryListIsAvalaible(ValidationErrors errors) {
+        
         try {
-            List<ProductCategory> categories = readCategoryList();
+            ProductCategoryPersist pcPersist = new ProductCategoryPersist(getDataBaseConnection());
+            TaxPersist taxPersist = new TaxPersist(getDataBaseConnection());
+            List<ProductCategory> categories = pcPersist.readList();
             for (int i = 0; i < categories.size(); i++) {
                 ProductCategory category = categories.get(i);
                 List<Product> products = category.getProductList();
                 for (int j = 0; j < products.size(); j++) {
                     Product product = products.get(j);
-                    product.setTax(readTax(product.getTaxCategory().getId()));
+                    product.setTax(taxPersist.read(product.getTaxCategory().getId()));
                     products.set(j, product);
                 }
                 category.setProductList(products);
