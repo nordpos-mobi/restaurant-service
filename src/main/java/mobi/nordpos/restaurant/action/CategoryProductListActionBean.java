@@ -47,11 +47,11 @@ public class CategoryProductListActionBean extends CategoryProductBaseActionBean
         
         try {
             ProductCategoryPersist pcPersist = new ProductCategoryPersist(getDataBaseConnection());
-            TaxPersist taxPersist = new TaxPersist(getDataBaseConnection());
+            TaxPersist taxPersist = new TaxPersist(getDataBaseConnection());            
             List<ProductCategory> categories = pcPersist.readList();
             for (int i = 0; i < categories.size(); i++) {
                 ProductCategory category = categories.get(i);
-                List<Product> products = category.getProductList();
+                List<Product> products = pcPersist.readProductList(category);
                 for (int j = 0; j < products.size(); j++) {
                     Product product = products.get(j);
                     product.setTax(taxPersist.read(product.getTaxCategory().getId()));
