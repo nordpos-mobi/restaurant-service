@@ -20,7 +20,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.dao.model.User;
-import com.openbravo.pos.util.Hashcypher;
 import mobi.nordpos.dao.ormlite.UserPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -79,7 +78,7 @@ public class UserAuthorizationActionBean extends UserBaseActionBean {
                 ValidationError error = new LocalizableError("error.User.usernameDoesNotExist", getUser().getName());
                 getContext().getValidationErrors().add("loginName", error);
                 return getContext().getSourcePageResolution();
-            } else if (!Hashcypher.authenticate(getUser().getPassword(), loginUser.getPassword())) {
+            } else if (!getUser().isAuthentication(loginUser.getPassword())) {
                 ValidationError error = new LocalizableError("error.User.incorrectPassword");
                 getContext().getValidationErrors().add("loginPassword", error);
                 return getContext().getSourcePageResolution();
