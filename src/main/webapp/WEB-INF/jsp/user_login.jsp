@@ -11,12 +11,10 @@
                        pageid="UserAuthorization">
 
     <stripes:layout-component name="buttons_left">
-        <c:if test="${not empty user}">
-            <sdynattr:link href="/Welcome.action"
-                           class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
-                <fmt:message key="label.home" />
-            </sdynattr:link>
-        </c:if>
+        <sdynattr:link href="/Welcome.action"
+                       class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext">
+            <fmt:message key="label.home" />
+        </sdynattr:link>
     </stripes:layout-component>
 
     <stripes:layout-component name="title">
@@ -51,7 +49,7 @@
                     <stripes:label name="label.login.password"
                                    for="loginPassword" />
                     <input type="password"
-                           name="user.password"
+                           name="enterPassword"
                            id="loginPassword"
                            data-clear-btn="true"
                            placeholder="<fmt:message key='label.LoginPassword.enter' />"

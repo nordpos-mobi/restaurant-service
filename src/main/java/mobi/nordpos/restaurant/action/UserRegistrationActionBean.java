@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2014 Nord Trading Network.
+ * Copyright (c) 2012-2015 Nord Trading Network.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -43,8 +43,7 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
     @Validate(on = {"accept"},
             required = true,
             minlength = 5,
-            maxlength = 20,
-            expression = "confirmPassword == user.password")
+            maxlength = 20)
     private String confirmPassword;
 
     @DefaultHandler
@@ -90,12 +89,12 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
         super.setUser(user);
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
     public String getConfirmPassword() {
         return confirmPassword;
+    }
+    
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     @ValidationMethod(on = {"accept"})
@@ -111,6 +110,14 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
         }
+    }
+    
+        @ValidationMethod(on = {"accept"})
+    public void validateConfirmPassword(ValidationErrors errors) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+            if (!getUser().isAuthentication(confirmPassword)) {
+                errors.add("confirmPassword", new SimpleError(
+                        getLocalizationKey("error.User.incorrectConfirmPassword")));
+            }
     }
 
 }

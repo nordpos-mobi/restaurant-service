@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2014 Nord Trading Network.
+ * Copyright (c) 2012-2015 Nord Trading Network.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -48,6 +48,12 @@ public class UserAuthorizationActionBean extends UserBaseActionBean {
 
     private String targetUrl;
 
+    @Validate(on = {"login"},
+            required = true,
+            minlength = 5,
+            maxlength = 20)
+    private String enterPassword;
+
     /**
      * The URL the user was trying to access (null if the login page was
      * accessed directly).
@@ -64,6 +70,14 @@ public class UserAuthorizationActionBean extends UserBaseActionBean {
         this.targetUrl = targetUrl;
     }
 
+    public String getEnterPassword() {
+        return enterPassword;
+    }
+
+    public void setEnterPassword(String enterPassword) {
+        this.enterPassword = enterPassword;
+    }
+
     @DefaultHandler
     public Resolution view() {
         return new ForwardResolution(LOGIN);
@@ -78,15 +92,15 @@ public class UserAuthorizationActionBean extends UserBaseActionBean {
                 ValidationError error = new LocalizableError("error.User.usernameDoesNotExist", getUser().getName());
                 getContext().getValidationErrors().add("loginName", error);
                 return getContext().getSourcePageResolution();
-            } else if (!getUser().isAuthentication(loginUser.getPassword())) {
+            } else if (!loginUser.isAuthentication(enterPassword)) {
                 ValidationError error = new LocalizableError("error.User.incorrectPassword");
                 getContext().getValidationErrors().add("loginPassword", error);
                 return getContext().getSourcePageResolution();
             } else {
                 getContext().setUser(loginUser);
                 getContext().getMessages().add(
-                    new SimpleMessage(getLocalizationKey("message.User.loged"), loginUser.getName())
-            );
+                        new SimpleMessage(getLocalizationKey("message.User.loged"), loginUser.getName())
+                );
                 if (this.targetUrl != null) {
                     return new RedirectResolution(this.targetUrl);
                 } else {
@@ -106,13 +120,8 @@ public class UserAuthorizationActionBean extends UserBaseActionBean {
     }
 
     @ValidateNestedProperties({
-        @Validate(on={"login"},
+        @Validate(on = {"login"},
                 field = "name",
-                required = true,
-                minlength = 5,
-                maxlength = 20),
-        @Validate(on={"login"},
-                field = "password",
                 required = true,
                 minlength = 5,
                 maxlength = 20)})
