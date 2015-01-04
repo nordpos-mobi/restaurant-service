@@ -17,13 +17,25 @@ package mobi.nordpos.restaurant.action;
 
 import mobi.nordpos.dao.model.Place;
 import mobi.nordpos.dao.model.Product;
+import mobi.nordpos.dao.ormlite.PlacePersist;
+import mobi.nordpos.dao.ormlite.ProductPersist;
+import mobi.nordpos.dao.ormlite.SharedTicketPersist;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
  */
 public abstract class OrderBaseActionBean extends BaseActionBean {
 
+    public final PlacePersist placePersist;
+    public final ProductPersist productPersist;
+    public final SharedTicketPersist sharedTicketPersist;
     private Product product;
+
+    public OrderBaseActionBean() {
+        productPersist = new ProductPersist();
+        placePersist = new PlacePersist();
+        sharedTicketPersist = new SharedTicketPersist();
+    }
 
     public Product getProduct() {
         return product;

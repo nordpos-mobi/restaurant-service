@@ -16,6 +16,7 @@
 package mobi.nordpos.restaurant.action;
 
 import mobi.nordpos.dao.model.User;
+import mobi.nordpos.dao.ormlite.UserPersist;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -23,7 +24,12 @@ import mobi.nordpos.dao.model.User;
 public abstract class UserBaseActionBean extends BaseActionBean {
 
     private User user;
+    public final UserPersist userPersist;
 
+    public UserBaseActionBean(){
+        userPersist = new UserPersist();
+    }
+    
     public User getUser() {
         return user;
     }

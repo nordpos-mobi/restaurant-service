@@ -20,7 +20,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.dao.model.User;
-import mobi.nordpos.dao.ormlite.UserPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -53,7 +52,7 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
 
     public Resolution accept() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         try {
-            UserPersist userPersist = new UserPersist(getDataBaseConnection());
+            userPersist.init(getDataBaseConnection());
             getContext().getMessages().add(
                     new SimpleMessage(getLocalizationKey("message.User.registered"),
                             userPersist.add(getUser()).getName())
@@ -63,7 +62,7 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
                     new SimpleError(ex.getMessage()));
             return getContext().getSourcePageResolution();
         }
-        return new ForwardResolution(WelcomeActionBean.class);
+        return new ForwardResolution(UserAuthorizationActionBean.class);
     }
 
     @ValidateNestedProperties({
@@ -82,7 +81,7 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
                 required = true,
                 converter = BooleanTypeConverter.class),
         @Validate(on = {"accept"},
-                field = "role",
+                field = "role.id",
                 required = true)})
     @Override
     public void setUser(User user) {
@@ -92,7 +91,7 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
     public String getConfirmPassword() {
         return confirmPassword;
     }
-    
+
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
@@ -100,8 +99,8 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
     @ValidationMethod(on = {"accept"})
     public void validateUserNameIsAvalaible(ValidationErrors errors) {
         try {
-            UserPersist userPersist = new UserPersist(getDataBaseConnection());
-            User user = userPersist.read(getUser().getName());
+            userPersist.init(getDataBaseConnection());
+            User user = userPersist.find(User.NAME, getUser().getName());
             if (user != null) {
                 errors.add("user.name", new SimpleError(
                         getLocalizationKey("error.User.AlreadyExists"), user.getName()));
@@ -111,13 +110,13 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
                     new SimpleError(ex.getMessage()));
         }
     }
-    
-        @ValidationMethod(on = {"accept"})
+
+    @ValidationMethod(on = {"accept"})
     public void validateConfirmPassword(ValidationErrors errors) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-            if (!getUser().isAuthentication(confirmPassword)) {
-                errors.add("confirmPassword", new SimpleError(
-                        getLocalizationKey("error.User.incorrectConfirmPassword")));
-            }
+        if (!getUser().isAuthentication(confirmPassword)) {
+            errors.add("confirmPassword", new SimpleError(
+                    getLocalizationKey("error.User.incorrectConfirmPassword")));
+        }
     }
 
 }

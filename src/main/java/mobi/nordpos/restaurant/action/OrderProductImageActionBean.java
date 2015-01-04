@@ -31,9 +31,9 @@ import net.sourceforge.stripes.validation.ValidationMethod;
  */
 @Public
 public class OrderProductImageActionBean extends OrderBaseActionBean {
-
+    
     private int thumbnailSize = 256;
-
+    
     public StreamingResolution preview() {
         return new StreamingResolution("image/jpeg") {
             @Override
@@ -45,11 +45,11 @@ public class OrderProductImageActionBean extends OrderBaseActionBean {
             }
         }.setFilename("product-".concat(getProduct().getCode()).concat(".jpeg"));
     }
-
+    
     @ValidationMethod(on = "preview")
     public void validateProductIdIsAvalaible(ValidationErrors errors) {
         try {
-            ProductPersist productPersist = new ProductPersist(getDataBaseConnection());
+            productPersist.init(getDataBaseConnection());
             Product product = productPersist.read(getProduct().getId());
             if (product != null) {
                 setProduct(product);
@@ -59,13 +59,13 @@ public class OrderProductImageActionBean extends OrderBaseActionBean {
                     new SimpleError(ex.getMessage()));
         }
     }
-
+    
     public int getThumbnailSize() {
         return thumbnailSize;
     }
-
+    
     public void setThumbnailSize(int thumbnailSize) {
         this.thumbnailSize = thumbnailSize;
     }
-
+    
 }

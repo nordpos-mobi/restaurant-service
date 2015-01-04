@@ -20,7 +20,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.dao.model.User;
-import mobi.nordpos.dao.ormlite.UserPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.RedirectResolution;
@@ -85,9 +84,8 @@ public class UserAuthorizationActionBean extends UserBaseActionBean {
 
     public Resolution login() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         try {
-            UserPersist userPersist = new UserPersist(getDataBaseConnection());
-            User loginUser = userPersist.read(getUser().getName());
-
+            userPersist.init(getDataBaseConnection());
+            User loginUser = userPersist.find(User.NAME, getUser().getName());
             if (loginUser == null) {
                 ValidationError error = new LocalizableError("error.User.usernameDoesNotExist", getUser().getName());
                 getContext().getValidationErrors().add("loginName", error);

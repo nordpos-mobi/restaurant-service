@@ -55,9 +55,12 @@ public class FloorListActionBean extends FloorBaseActionBean {
 
     @ValidationMethod
     public void validateFloorListIsAvalaible(ValidationErrors errors) {
+        FloorPersist floorPersist = new FloorPersist();
+        SharedTicketPersist sharedTicketPersist = new SharedTicketPersist();
+
         try {
-            FloorPersist floorPersist = new FloorPersist(getDataBaseConnection());
-            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            floorPersist.init(getDataBaseConnection());
+            sharedTicketPersist.init(getDataBaseConnection());
             List<Floor> floors = floorPersist.readList();
             for (int i = 0; i < floors.size(); i++) {
                 Floor floor = floors.get(i);

@@ -27,7 +27,6 @@ import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.dao.model.Place;
 import mobi.nordpos.dao.model.Product;
 import mobi.nordpos.dao.model.SharedTicket;
-import mobi.nordpos.dao.ormlite.PlacePersist;
 import mobi.nordpos.dao.ormlite.ProductPersist;
 import mobi.nordpos.dao.ormlite.SharedTicketPersist;
 import mobi.nordpos.dao.ormlite.TaxPersist;
@@ -102,7 +101,7 @@ public class OrderProductActionBean extends OrderBaseActionBean {
     @ValidationMethod
     public void validatePlaceListIsAvalaible(ValidationErrors errors) {
         try {
-            PlacePersist placePersist = new PlacePersist(getDataBaseConnection());
+            placePersist.init(getDataBaseConnection());
             setPlaceList(placePersist.readList());
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
@@ -112,9 +111,10 @@ public class OrderProductActionBean extends OrderBaseActionBean {
 
     @ValidationMethod
     public void validateProductCodeIsAvalaible(ValidationErrors errors) {
+        TaxPersist taxPersist = new TaxPersist();
         try {
-            ProductPersist productPersist = new ProductPersist(getDataBaseConnection());
-            TaxPersist taxPersist = new TaxPersist(getDataBaseConnection());
+            productPersist.init(getDataBaseConnection());
+            taxPersist.init(getDataBaseConnection());
             Product product = productPersist.find(Product.CODE, getProduct().getCode());
             if (product != null) {
                 product.setTax(taxPersist.read(product.getTaxCategory().getId()));
@@ -133,9 +133,9 @@ public class OrderProductActionBean extends OrderBaseActionBean {
     public void tryTicketSave(ValidationErrors errors) {
         TicketInfo ticket;
         try {
-            PlacePersist placePersist = new PlacePersist(getDataBaseConnection());
+            placePersist.init(getDataBaseConnection());
             Place place = placePersist.read(getPlace().getId());
-            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            sharedTicketPersist.init(getDataBaseConnection());
             SharedTicket sharedTicket = sharedTicketPersist.read(place.getId());
 
             Product product = getProduct();

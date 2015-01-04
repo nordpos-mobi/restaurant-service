@@ -83,7 +83,17 @@
             <div class="ui-grid-a ui-responsive">
                 <div class="ui-block-a">
                     <div class="ui-body ui-body-c">
-                        <fmt:message key="label.application.version" />
+                        <fmt:message key="label.web.application.version" />
+                    </div>
+                </div>
+                <div class="ui-block-b">
+                    <div class="ui-body ui-body-c">
+                        <c:out value="${actionBean.webApplicationVersion.toString()}" />
+                    </div>
+                </div>
+                <div class="ui-block-a">
+                    <div class="ui-body ui-body-c">
+                        <fmt:message key="label.database.application.version" />
                     </div>
                 </div>
                 <div class="ui-block-b">

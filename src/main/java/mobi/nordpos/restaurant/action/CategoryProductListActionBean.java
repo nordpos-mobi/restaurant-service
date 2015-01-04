@@ -44,10 +44,11 @@ public class CategoryProductListActionBean extends CategoryProductBaseActionBean
 
     @ValidationMethod
     public void validateCategoryListIsAvalaible(ValidationErrors errors) {
-        
+        ProductCategoryPersist pcPersist = new ProductCategoryPersist();
+        TaxPersist taxPersist = new TaxPersist();
         try {
-            ProductCategoryPersist pcPersist = new ProductCategoryPersist(getDataBaseConnection());
-            TaxPersist taxPersist = new TaxPersist(getDataBaseConnection());            
+            pcPersist.init(getDataBaseConnection());
+            taxPersist.init(getDataBaseConnection());
             List<ProductCategory> categories = pcPersist.readList();
             for (int i = 0; i < categories.size(); i++) {
                 ProductCategory category = categories.get(i);

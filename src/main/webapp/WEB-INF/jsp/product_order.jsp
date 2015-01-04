@@ -76,7 +76,7 @@
                                 </div>
                                 <ul data-role="listview" data-inset="false">  
                                     <li>
-                                        <h1><fmt:message key="label.ProductOrder"/></h1>
+                                        <strong><fmt:message key="label.ProductOrder"/></strong>
                                     </li>
                                     <c:if test="${empty place}">
                                         <li class="ui-field-contain">

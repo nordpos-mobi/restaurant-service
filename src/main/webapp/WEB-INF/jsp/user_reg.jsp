@@ -27,7 +27,7 @@
     <stripes:layout-component name="content">
         <stripes:form action="/UserRegistration.action">
             <div>
-                <stripes:hidden name="user.role" value="3"/>
+                <stripes:hidden name="user.role.id" value="3"/>
                 <stripes:hidden name="user.visible" value="false"/>
             </div>
             <ul data-role="listview" data-inset="true">                

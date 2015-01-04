@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import mobi.nordpos.dao.model.Place;
 import mobi.nordpos.dao.model.SharedTicket;
-import mobi.nordpos.dao.ormlite.PlacePersist;
-import mobi.nordpos.dao.ormlite.SharedTicketPersist;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -70,7 +68,7 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
         }
         sharedTicket.setContent(ticket);
         try {
-            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            sharedTicketPersist.init(getDataBaseConnection());
             if (sharedTicketPersist.change(sharedTicket)) {
                 getContext().getMessages().add(
                         new SimpleMessage(getLocalizationKey("message.PlaceTicketLine.removed"),
@@ -87,7 +85,7 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
     public Resolution delete() throws SQLException {
         Place place = getPlace();
         try {
-            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            sharedTicketPersist.init(getDataBaseConnection());
             if (sharedTicketPersist.delete(place.getId())) {
                 getContext().getMessages().add(
                         new SimpleMessage(getLocalizationKey("message.Order.deleted"),
@@ -112,8 +110,8 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
     @ValidationMethod
     public void validatePlaceIsAvalaible(ValidationErrors errors) {
         try {
-            PlacePersist placePersist = new PlacePersist(getDataBaseConnection());
-            SharedTicketPersist sharedTicketPersist = new SharedTicketPersist(getDataBaseConnection());
+            placePersist.init(getDataBaseConnection());
+            sharedTicketPersist.init(getDataBaseConnection());
             Place place = placePersist.read(getPlace().getId());
             SharedTicket ticket = sharedTicketPersist.read(place.getId());
 
