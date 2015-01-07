@@ -58,61 +58,26 @@
 
     <stripes:layout-component name="content">
         <div class="ui-body ui-body-a ui-corner-all" data-inset="true">
-            <div class="ui-grid-a ui-responsive">  
+            <div class="ui-grid-a ui-responsive">
                 <div class="ui-block-a">
                     <div class="ui-body ui-body-d">
-                        <img src="${pageContext.servletContext.contextPath}/UserImage.action?preview"
-                             alt="${user.name}" />
-                    </div>                    
-                </div>                    
+                        <fmt:message key="label.User.name" />
+                    </div>
+                </div>
                 <div class="ui-block-b">
-                    <div class="ui-grid-a ui-responsive">
-                        <div class="ui-block-a">
-                            <div class="ui-body ui-body-d">
-                                <fmt:message key="label.User.name" />
-                            </div>
-                        </div>
-                        <div class="ui-block-b">
-                            <div class="ui-body ui-body-d">
-                                <c:out value="${user.name}"/>
-                            </div>                    
-                        </div>
-                        <div class="ui-block-a">
-                            <div class="ui-body ui-body-d">
-                                <fmt:message key="label.UserRole.name" />
-                            </div>
-                        </div>
-                        <div class="ui-block-b">
-                            <div class="ui-body ui-body-d">
-                                <c:out value="${user.role.name}"/>
-                            </div>                    
-                        </div>
+                    <div class="ui-body ui-body-d">
+                        <c:out value="${user.name}"/>
+                    </div>                    
+                </div>
+                <div class="ui-block-a">
+                    <div class="ui-body ui-body-d">
+                        <fmt:message key="label.UserRole.name" />
                     </div>
-                    <div class="ui-grid-solo">
-                        <div class="ui-block-a">
-                            <sdynattr:form action="/UserView.action?update" data-ajax="false">
-                                <ul data-role="listview" data-inset="false">
-                                    <li>
-                                        <strong><fmt:message key="label.ChangeImage"/></strong>
-                                    </li>
-                                    <li class="ui-field-contain">
-                                        <stripes:label name="label.UserImage.file" for="userImageFile" />                    
-                                        <stripes:file name="imageFile" id="userImageFile" />
-                                    </li>
-                                    <li class="ui-body ui-body-b">
-                                        <fieldset class="ui-grid-a">
-                                            <div class="ui-block-a">
-                                                <sdynattr:reset name="clear" data-theme="b"/>                            
-                                            </div>
-                                            <div class="ui-block-b">
-                                                <sdynattr:submit name="update" data-theme="a"/>
-                                            </div>
-                                        </fieldset>
-                                    </li>
-                                </ul>
-                            </sdynattr:form>
-                        </div>
-                    </div>
+                </div>
+                <div class="ui-block-b">
+                    <div class="ui-body ui-body-d">
+                        <c:out value="${user.role.name}"/>
+                    </div>                    
                 </div>
             </div>
         </div>        

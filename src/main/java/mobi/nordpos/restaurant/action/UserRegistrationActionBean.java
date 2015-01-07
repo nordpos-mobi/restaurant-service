@@ -18,6 +18,7 @@ package mobi.nordpos.restaurant.action;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.UUID;
 import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.dao.model.User;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -53,9 +54,11 @@ public class UserRegistrationActionBean extends UserBaseActionBean {
     public Resolution accept() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         try {
             userPersist.init(getDataBaseConnection());
+            User user = getUser();
+            user.setId(UUID.randomUUID().toString());
             getContext().getMessages().add(
                     new SimpleMessage(getLocalizationKey("message.User.registered"),
-                            userPersist.add(getUser()).getName())
+                            userPersist.add(user).getName())
             );
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
