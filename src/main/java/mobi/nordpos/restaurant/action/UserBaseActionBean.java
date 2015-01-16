@@ -16,7 +16,7 @@
 package mobi.nordpos.restaurant.action;
 
 import mobi.nordpos.dao.model.User;
-import mobi.nordpos.dao.ormlite.UserPersist;
+import mobi.nordpos.dao.factory.UserPersist;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>

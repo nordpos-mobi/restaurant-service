@@ -17,7 +17,6 @@ package mobi.nordpos.restaurant.action;
 
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,36 +113,11 @@ public class OrderPlaceActionBean extends OrderBaseActionBean {
             sharedTicketPersist.init(getDataBaseConnection());
             Place place = placePersist.read(getPlace().getId());
             SharedTicket ticket = sharedTicketPersist.read(place.getId());
-
-            if (ticket != null) {
-                BigDecimal value = BigDecimal.ZERO;
-                BigDecimal unit = BigDecimal.ZERO;
-                for (TicketLineInfo line : ticket.getContent().getM_aLines()) {
-                    value = value.add(BigDecimal.valueOf(line.getValue()));
-                    unit = unit.add(BigDecimal.valueOf(line.getMultiply()));
-                }
-                ticket.setTotalValue(value);
-                ticket.setTotalUnit(unit);
-            }
             place.setTicket(ticket);
             setPlace(place);
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
-        }
-    }
-
-    @ValidationMethod(on = "remove")
-    public void validateSharedTicketLineIsRemove(ValidationErrors errors) {
-        SharedTicket ticket = getPlace().getTicket();
-        if (ticket != null) {
-            for (TicketLineInfo line : ticket.getContent().getM_aLines()) {
-                if (removeLineNumber == line.getM_iLine()) {
-                    ticket.setTotalValue(ticket.getTotalValue().subtract(BigDecimal.valueOf(line.getValue())));
-                    ticket.setTotalUnit(ticket.getTotalUnit().subtract(BigDecimal.valueOf(line.getMultiply())));
-                }
-            }
-            getPlace().setTicket(ticket);
         }
     }
 }

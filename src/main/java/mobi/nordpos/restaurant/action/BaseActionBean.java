@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import mobi.nordpos.dao.model.Application;
-import mobi.nordpos.dao.ormlite.ApplicationPersist;
+import mobi.nordpos.dao.factory.ApplicationPersist;
 import mobi.nordpos.restaurant.ext.MobileActionBeanContext;
 import mobi.nordpos.restaurant.ext.MyLocalePicker;
 import net.sourceforge.stripes.action.ActionBean;
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class BaseActionBean implements ActionBean {
 
-    private static final String WEB_APP_VERSION = "1.1.0";
+    private static final String WEB_APP_VERSION = "1.1.1";
     private static final String DB_URL = "db.URL";
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";

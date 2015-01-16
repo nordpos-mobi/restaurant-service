@@ -18,7 +18,7 @@ package mobi.nordpos.restaurant.action;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletResponse;
 import mobi.nordpos.dao.model.Product;
-import mobi.nordpos.dao.ormlite.ProductPersist;
+import mobi.nordpos.dao.factory.ProductPersist;
 import mobi.nordpos.restaurant.ext.Public;
 import mobi.nordpos.restaurant.util.ImagePreview;
 import net.sourceforge.stripes.action.StreamingResolution;
