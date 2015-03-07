@@ -34,6 +34,9 @@
                 <li data-role="list-divider">
                     <%-- Name of the list item --%>
                     <h2><c:out value="${category.name}"/></h2>
+                    <span  class="ui-li-count">
+                        <c:out value="${category.productList.size()}"/>
+                    </span>
                 </li>     
                 <c:forEach items="${category.productList}" var="product">
                     <li>
