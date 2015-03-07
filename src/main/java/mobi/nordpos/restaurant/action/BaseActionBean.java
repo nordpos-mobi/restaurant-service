@@ -32,6 +32,7 @@ import net.sourceforge.stripes.controller.StripesFilter;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
+import net.sourceforge.stripes.validation.ValidationState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +41,15 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class BaseActionBean implements ActionBean {
 
-    private static final String WEB_APP_VERSION = "1.1.2-SNAPSHOT";
+    private static final String WEB_APP_VERSION = "1.2.0-SNAPSHOT";
     private static final String DB_URL = "db.URL";
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";
     private static final String DB_APP = "db.application.id";
     private static final String ORDER_UNIT_MAX = "order.unit.max";
+
+    private static final String PRINT_WELCOME = "/WEB-INF/templates/Printer.Welcome.xml";
+    private static final String PRINTER_SHEMA = "/WEB-INF/templates/Schema.Printer.xsd";
 
     private MobileActionBeanContext context;
     private Application application;
@@ -72,7 +76,7 @@ public abstract class BaseActionBean implements ActionBean {
         return application;
     }
 
-    @ValidationMethod
+    @ValidationMethod(priority = 1)
     public void validateApplicationAvalaible(ValidationErrors errors) {
         try {
             appPersist.init(getDataBaseConnection());
@@ -106,9 +110,13 @@ public abstract class BaseActionBean implements ActionBean {
     public String getDataBaseApplication() {
         return getContext().getServletContext().getInitParameter(DB_APP);
     }
-    
+
     public String getWebApplicationVersion() {
         return WEB_APP_VERSION;
+    }
+
+    public String getPrinterSchema() {
+        return PRINTER_SHEMA;
     }
 
     public BigDecimal getOrderUnitMax() {
@@ -163,4 +171,24 @@ public abstract class BaseActionBean implements ActionBean {
                 .getFormFieldBundle(getContext().getLocale()).getString(key);
     }
 
+//    @ValidationMethod(when = ValidationState.NO_ERRORS, priority = 9)
+//    public void printWelcomeMessage() {
+//        DeviceTicketFactory ticketFactory = new DeviceTicketFactory();
+//        ticketFactory.setReceiptPrinterParameter(getContext().getServletContext().getInitParameter("machine.printer"));
+//        ticketFactory.setDisplayParameter(getContext().getServletContext().getInitParameter("machine.display"));
+//        TicketParser receiptParser = new TicketParser(getContext().getServletContext().getResourceAsStream(getPrinterSchema()), ticketFactory);
+//        try {
+//            ScriptEngine script;
+//            script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
+//            script.put("this", this);
+//            script.put("application", this.getApplication());
+//            receiptParser.printTicket(getContext().getServletContext().getResourceAsStream(PRINT_WELCOME), script);
+//        } catch (TicketPrinterException ex) {
+//            logger.error(ex.getMessage());
+//            logger.error(ex.getCause().getMessage());
+//        } catch (ScriptException ex) {
+//            logger.error(ex.getMessage());
+//            logger.error(ex.getCause().getMessage());
+//        }
+//    }
 }

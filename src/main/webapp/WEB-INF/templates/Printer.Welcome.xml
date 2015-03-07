@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+-->
+<output xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xsi:noNamespaceSchemaLocation="Schema.Printer.xsd">
+    <display>
+        <line>
+            <text align="center">${application.getName()}</text>
+        </line>
+        <line>
+            <text align="center">${this.getLocalizationKey("print.welcome")}</text>
+        </line>
+    </display>
+    <ticket>
+        <line/>
+        <line>
+            <text align="center" size="42">${application.getName()}</text>
+        </line>
+        <line>
+            <text align="center" size="42">${this.getLocalizationKey("print.welcome")}</text>
+        </line>
+        <line>
+            <text align="center" size="42">www.nordpos.mobi</text>
+        </line>
+        <line/>
+    </ticket>
+</output>
