@@ -76,6 +76,18 @@
             <version>1.2</version>
         </dependency>
         <dependency>
+            <groupId>com.nordpos</groupId>
+            <artifactId>nordpos-device</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.nordpos</groupId>
+            <artifactId>nordpos-escpos-display</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>6.0</version>

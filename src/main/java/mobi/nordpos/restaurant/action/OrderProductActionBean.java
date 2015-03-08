@@ -15,6 +15,12 @@
  */
 package mobi.nordpos.restaurant.action;
 
+import com.nordpos.device.ticket.DeviceTicketFactory;
+import com.nordpos.device.ticket.TicketParser;
+import com.nordpos.device.ticket.TicketPrinterException;
+import com.openbravo.pos.scripting.ScriptEngine;
+import com.openbravo.pos.scripting.ScriptException;
+import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.ticket.ProductInfo;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.TicketInfo;
@@ -37,6 +43,7 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
+import net.sourceforge.stripes.validation.ValidationState;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -45,6 +52,8 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 public class OrderProductActionBean extends OrderBaseActionBean {
 
     private static final String PRODUCT_ORDER = "/WEB-INF/jsp/product_order.jsp";
+        
+    private static final String PRINT_ORDER = "/templates/Printer.Order.xml";
 
     List<Place> placeList;
     @Validate(on = "add", required = true)
@@ -133,6 +142,7 @@ public class OrderProductActionBean extends OrderBaseActionBean {
         try {
             placePersist.init(getDataBaseConnection());
             Place place = placePersist.read(getPlace().getId());
+            this.setPlace(place);
             sharedTicketPersist.init(getDataBaseConnection());
             SharedTicket sharedTicket = sharedTicketPersist.read(place.getId());
 
@@ -180,6 +190,29 @@ public class OrderProductActionBean extends OrderBaseActionBean {
         } catch (SQLException ex) {
             getContext().getValidationErrors().addGlobalError(
                     new SimpleError(ex.getMessage()));
+        }
+    }
+
+    @ValidationMethod(when = ValidationState.NO_ERRORS, priority = 9)
+    public void printProductOrderMessage() {
+        DeviceTicketFactory ticketFactory = new DeviceTicketFactory();
+        ticketFactory.setReceiptPrinterParameter(getContext().getServletContext().getInitParameter("machine.printer"));
+        ticketFactory.setDisplayParameter(getContext().getServletContext().getInitParameter("machine.display"));
+        TicketParser receiptParser = new TicketParser(getClass().getClassLoader().getResourceAsStream(getPrinterSchema()), ticketFactory);
+        try {
+            ScriptEngine script;
+            script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
+            script.put("this", this);
+            script.put("product", this.getProduct());
+            script.put("unit", this.getOrderUnit());
+            script.put("place", this.getPlace());
+            receiptParser.printTicket(getClass().getClassLoader().getResourceAsStream(PRINT_ORDER), script);
+        } catch (TicketPrinterException ex) {
+            logger.error(ex.getMessage());
+            logger.error(ex.getCause().getMessage());
+        } catch (ScriptException ex) {
+            logger.error(ex.getMessage());
+            logger.error(ex.getCause().getMessage());
         }
     }
 

@@ -17,6 +17,12 @@ package mobi.nordpos.restaurant.action;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
+import com.nordpos.device.ticket.DeviceTicketFactory;
+import com.nordpos.device.ticket.TicketParser;
+import com.nordpos.device.ticket.TicketPrinterException;
+import com.openbravo.pos.scripting.ScriptEngine;
+import com.openbravo.pos.scripting.ScriptException;
+import com.openbravo.pos.scripting.ScriptFactory;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -48,8 +54,7 @@ public abstract class BaseActionBean implements ActionBean {
     private static final String DB_APP = "db.application.id";
     private static final String ORDER_UNIT_MAX = "order.unit.max";
 
-    private static final String PRINT_WELCOME = "/WEB-INF/templates/Printer.Welcome.xml";
-    private static final String PRINTER_SHEMA = "/WEB-INF/templates/Schema.Printer.xsd";
+    private static final String PRINTER_SHEMA = "/templates/Schema.Printer.xsd";
 
     private MobileActionBeanContext context;
     private Application application;
@@ -171,24 +176,4 @@ public abstract class BaseActionBean implements ActionBean {
                 .getFormFieldBundle(getContext().getLocale()).getString(key);
     }
 
-//    @ValidationMethod(when = ValidationState.NO_ERRORS, priority = 9)
-//    public void printWelcomeMessage() {
-//        DeviceTicketFactory ticketFactory = new DeviceTicketFactory();
-//        ticketFactory.setReceiptPrinterParameter(getContext().getServletContext().getInitParameter("machine.printer"));
-//        ticketFactory.setDisplayParameter(getContext().getServletContext().getInitParameter("machine.display"));
-//        TicketParser receiptParser = new TicketParser(getContext().getServletContext().getResourceAsStream(getPrinterSchema()), ticketFactory);
-//        try {
-//            ScriptEngine script;
-//            script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
-//            script.put("this", this);
-//            script.put("application", this.getApplication());
-//            receiptParser.printTicket(getContext().getServletContext().getResourceAsStream(PRINT_WELCOME), script);
-//        } catch (TicketPrinterException ex) {
-//            logger.error(ex.getMessage());
-//            logger.error(ex.getCause().getMessage());
-//        } catch (ScriptException ex) {
-//            logger.error(ex.getMessage());
-//            logger.error(ex.getCause().getMessage());
-//        }
-//    }
 }

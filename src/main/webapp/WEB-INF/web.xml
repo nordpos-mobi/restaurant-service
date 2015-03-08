@@ -26,6 +26,17 @@
     <context-param>
         <param-name>db.application.id</param-name>
         <param-value>nordpos</param-value>
+    </context-param>   
+    
+    <context-param>
+        <param-name>machine.printer</param-name>
+        <param-value>none</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>machine.display</param-name>
+        <param-value>none</param-value>
+        <!--<param-value>epson.cp866.7:file,/dev/ttyUSB0</param-value>-->
     </context-param>
 
     <!-- STRIPES LOCALIZATION PARAMETERS -->

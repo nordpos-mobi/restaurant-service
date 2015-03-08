@@ -15,11 +15,18 @@
  */
 package mobi.nordpos.restaurant.action;
 
+import com.nordpos.device.ticket.DeviceTicketFactory;
+import com.nordpos.device.ticket.TicketParser;
+import com.nordpos.device.ticket.TicketPrinterException;
+import com.openbravo.pos.scripting.ScriptEngine;
+import com.openbravo.pos.scripting.ScriptException;
+import com.openbravo.pos.scripting.ScriptFactory;
 import mobi.nordpos.restaurant.ext.Public;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.validation.ValidationMethod;
+import net.sourceforge.stripes.validation.ValidationState;
 
 /**
  * @author Andrey Svininykh <svininykh@gmail.com>
@@ -29,6 +36,8 @@ public class WelcomeActionBean extends BaseActionBean {
 
     private static final String PRESENT = "/WEB-INF/jsp/present.jsp";
     private static final String INFO = "/WEB-INF/jsp/info.jsp";
+
+    private static final String PRINT_WELCOME = "/templates/Printer.Welcome.xml";
 
     @DefaultHandler
     public Resolution title() {
@@ -59,4 +68,24 @@ public class WelcomeActionBean extends BaseActionBean {
         return System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch");
     }
 
+    @ValidationMethod(when = ValidationState.NO_ERRORS, priority = 9)
+    public void printWelcomeMessage() {
+        DeviceTicketFactory ticketFactory = new DeviceTicketFactory();
+        ticketFactory.setReceiptPrinterParameter(getContext().getServletContext().getInitParameter("machine.printer"));
+        ticketFactory.setDisplayParameter(getContext().getServletContext().getInitParameter("machine.display"));
+        TicketParser receiptParser = new TicketParser(getClass().getClassLoader().getResourceAsStream(getPrinterSchema()), ticketFactory);
+        try {
+            ScriptEngine script;
+            script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
+            script.put("this", this);
+            script.put("application", this.getApplication());
+            receiptParser.printTicket(getClass().getClassLoader().getResourceAsStream(PRINT_WELCOME), script);
+        } catch (TicketPrinterException ex) {
+            logger.error(ex.getMessage());
+            logger.error(ex.getCause().getMessage());
+        } catch (ScriptException ex) {
+            logger.error(ex.getMessage());
+            logger.error(ex.getCause().getMessage());
+        }
+    }
 }
